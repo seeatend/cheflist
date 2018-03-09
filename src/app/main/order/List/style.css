@@ -1,0 +1,25 @@
+.order-list .total-order {
+  text-align: center; }
+  .order-list .total-order .c-state-card__content {
+    margin: 0 auto; }
+
+.order-list .filter .search-filter {
+  margin-bottom: 10px; }
+
+.order-list .filter .status-filter {
+  margin-right: 10px; }
+
+.order-list .order-table table {
+  display: table; }
+  .order-list .order-table table .status {
+    width: 100px; }
+  .order-list .order-table table .order-number {
+    width: 80px; }
+  .order-list .order-table table .creation-date {
+    width: 160px; }
+  .order-list .order-table table .delivery-date {
+    width: 100px; }
+  .order-list .order-table table .order-total {
+    width: 100px; }
+  .order-list .order-table table .more {
+    width: 100px; }

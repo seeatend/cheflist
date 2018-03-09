@@ -1,0 +1,15 @@
+.product-list .vendor-filter .c-dropdown__menu {
+  width: max-content; }
+
+.product-list .product-table {
+  margin-top: 20px; }
+  .product-list .product-table table {
+    display: table; }
+    .product-list .product-table table tbody tr .no {
+      width: 50px; }
+    .product-list .product-table table tbody tr .price {
+      width: 100px; }
+    .product-list .product-table table tbody tr .qty {
+      width: 100px; }
+    .product-list .product-table table tbody tr .add-action {
+      width: 100px; }

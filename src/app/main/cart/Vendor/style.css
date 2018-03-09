@@ -1,0 +1,51 @@
+.vendor .vendor-name {
+  display: inline-block; }
+
+.vendor .total-price {
+  float: right; }
+
+.vendor .valid-message {
+  color: #1bb934; }
+
+.vendor .invalid-message {
+  color: #ed1c24; }
+
+.vendor .actions .toggle-items {
+  margin-right: 10px; }
+
+.vendor .actions .delivery-date {
+  display: inline-block;
+  width: 150px; }
+
+.vendor .actions .order-action {
+  float: right; }
+  @media screen and (max-width: 1199px) {
+    .vendor .actions .order-action {
+      float: none;
+      text-align: right;
+      margin-top: 20px; } }
+  @media screen and (max-width: 991px) {
+    .vendor .actions .order-action {
+      float: right;
+      text-align: none;
+      margin: 0; } }
+  @media screen and (max-width: 619px) {
+    .vendor .actions .order-action {
+      float: none;
+      text-align: right;
+      margin-top: 20px; } }
+  .vendor .actions .order-action .place-order {
+    margin-right: 5px; }
+
+.vendor .item-table {
+  margin-top: 20px; }
+  .vendor .item-table table {
+    display: table; }
+    .vendor .item-table table .no {
+      width: 50px; }
+    .vendor .item-table table .quantity {
+      width: 100px; }
+    .vendor .item-table table .price {
+      width: 100px; }
+    .vendor .item-table table .action {
+      width: 100px; }

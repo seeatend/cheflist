@@ -1,0 +1,40 @@
+.order-item {
+    .back-to-list {
+        margin-bottom: 10px;
+    }
+    .order-to {
+        float: right;
+        text-align: right;
+    }
+    .summary-list {
+        display: inline-block;
+        li {
+            margin-bottom: 10px;
+            .label {
+                color: gray;
+            }
+            .content {
+                color: #333;
+                font-size: 14px;
+            }
+        }
+    }
+    .item-table {
+        margin-bottom: 10px !important;
+        table {
+            display: table;
+            .quantity {
+                width: 100px;
+            }
+            .price-unit {
+                width: 100px;
+            }
+            .total-price {
+                width: 100px;
+            }
+        }
+    }
+    .sub-total {
+        text-align: right;
+    }
+}

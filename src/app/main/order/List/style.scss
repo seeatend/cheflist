@@ -1,0 +1,39 @@
+.order-list {
+    .total-order {
+        text-align: center;
+        .c-state-card__content {
+            margin: 0 auto;
+        }
+    }
+    .filter {
+        .search-filter {
+            margin-bottom: 10px;
+        }
+        .status-filter {
+            margin-right: 10px;
+        }
+    }
+    .order-table {
+        table {
+            display: table;
+            .status {
+                width: 100px;
+            }
+            .order-number {
+                width: 80px;
+            }
+            .creation-date {
+                width: 160px;
+            }
+            .delivery-date {
+                width: 100px;
+            }
+            .order-total {
+                width: 100px;
+            }
+            .more {
+                width: 100px;
+            }
+        }
+    }
+}

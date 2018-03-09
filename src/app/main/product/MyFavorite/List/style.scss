@@ -1,0 +1,19 @@
+.my-favorite-list {
+    .create-new-fav {
+        margin-bottom: 20px;
+    }
+    .my-favorite-item {
+        .u-p-medium {
+            display: table;
+            width: 100%;
+            .delete {
+                float: right;
+                margin: 0 5px;
+            }
+            .edit {
+                float: right;
+                margin: 0 5px;
+            }
+        }
+    }
+}

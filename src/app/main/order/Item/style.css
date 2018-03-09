@@ -1,0 +1,30 @@
+.order-item .back-to-list {
+  margin-bottom: 10px; }
+
+.order-item .order-to {
+  float: right;
+  text-align: right; }
+
+.order-item .summary-list {
+  display: inline-block; }
+  .order-item .summary-list li {
+    margin-bottom: 10px; }
+    .order-item .summary-list li .label {
+      color: gray; }
+    .order-item .summary-list li .content {
+      color: #333;
+      font-size: 14px; }
+
+.order-item .item-table {
+  margin-bottom: 10px !important; }
+  .order-item .item-table table {
+    display: table; }
+    .order-item .item-table table .quantity {
+      width: 100px; }
+    .order-item .item-table table .price-unit {
+      width: 100px; }
+    .order-item .item-table table .total-price {
+      width: 100px; }
+
+.order-item .sub-total {
+  text-align: right; }

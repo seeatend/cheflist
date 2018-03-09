@@ -1,0 +1,29 @@
+.product-list {
+    .vendor-filter {
+        .c-dropdown__menu {
+            width: max-content;
+        }
+    }
+    .product-table {
+        margin-top: 20px;
+        table {
+            display: table;
+            tbody {
+                tr {
+                    .no {
+                        width: 50px;
+                    }
+                    .price {
+                        width: 100px;
+                    }
+                    .qty {
+                        width: 100px;
+                    }
+                    .add-action {
+                        width: 100px;
+                    }
+                }
+            }
+        }
+    }
+}

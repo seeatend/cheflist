@@ -1,0 +1,6 @@
+.my-connection .my-connection-table {
+  display: table; }
+  .my-connection .my-connection-table .status {
+    width: 100px; }
+  .my-connection .my-connection-table .remove {
+    width: 100px; }

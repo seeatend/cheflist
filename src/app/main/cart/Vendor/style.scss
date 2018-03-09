@@ -1,0 +1,62 @@
+.vendor {
+    .vendor-name {
+        display: inline-block;
+    }
+    .total-price {
+        float: right;
+    }
+    .valid-message {
+        color: #1bb934;
+    }
+    .invalid-message {
+        color: #ed1c24;
+    }
+    .actions {
+        .toggle-items {
+            margin-right: 10px;
+        }
+        .delivery-date {
+            display: inline-block;
+            width: 150px;
+        }
+        .order-action {
+            float: right;
+            @media screen and (max-width: 1199px) {
+                float: none;
+                text-align: right;
+                margin-top: 20px;
+            }
+            @media screen and (max-width: 991px) {
+                float: right;
+                text-align: none;
+                margin: 0;
+            }
+            @media screen and (max-width: 619px) {
+                float: none;
+                text-align: right;
+                margin-top: 20px;
+            }
+            .place-order {
+                margin-right: 5px;
+            }
+        }
+    }
+    .item-table {
+        margin-top: 20px;
+        table {
+            display: table;
+            .no {
+                width: 50px;
+            }
+            .quantity {
+                width: 100px;
+            }
+            .price {
+                width: 100px;
+            }
+            .action {
+                width: 100px;
+            }
+        }
+    }
+}

@@ -1,0 +1,11 @@
+.cart .cart-container {
+  display: table;
+  width: 100%; }
+  .cart .cart-container .checkout-box {
+    float: right; }
+    .cart .cart-container .checkout-box .title {
+      display: inline-block; }
+    .cart .cart-container .checkout-box .price {
+      float: right; }
+  .cart .cart-container .vendor-list {
+    float: right; }

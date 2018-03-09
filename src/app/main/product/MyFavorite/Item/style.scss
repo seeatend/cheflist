@@ -1,0 +1,23 @@
+.my-favorite-item {
+    .back-to-favorite {
+        float: right;
+    }
+    .product-table {
+        margin-top: 20px;
+        table {
+            display: table;
+            .no {
+                width: 50px;
+            }
+            .price {
+                width: 100px;
+            }
+            .qty {
+                width: 100px;
+            }
+            .action {
+                width: 100px;
+            }
+        }
+    }
+}
