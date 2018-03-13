@@ -17,7 +17,7 @@ class Login extends Component {
         }
 
         if (tokenType === 'restaurant') {
-            this.state ={
+            this.state = {
                 redirect: '/restaurant/home'
             }
         }

@@ -9,7 +9,7 @@ class List extends Component {
         super(props);
         this.state = {
 			list: props.list,
-			check: null,
+			check: props.check,
 			filtered: props.list,
 			totalPrice: this.totalPrice(props.list)
 		}
@@ -55,14 +55,14 @@ class List extends Component {
 							</div>
 						</div>
 					</div>
-					<div className="col-sm-12 col-lg-6 col-xl-3">
+					{/* <div className="col-sm-12 col-lg-6 col-xl-3">
 						<div className="c-state-card total-order">
 							<div className="c-state-card__content">
 								<h5 className="c-state-card__number u-text-success">&euro; {totalPrice.toFixed(2)}</h5>
 								<p>Total Purchases</p>
 							</div>
 						</div>
-					</div>
+					</div> */}
 				</div>
                 {/* <div className="row">
 					<div className="col-sm-12">
@@ -97,7 +97,8 @@ class List extends Component {
 						<div className="c-table-responsive">
 							<table className="c-table">
 								<caption className="c-table__title">
-                                    {filtered.length} orders
+									{/* {filtered.length} orders */}
+									Order Details
 								</caption>
 								<thead className="c-table__head c-table__head--slim">
 									<tr className="c-table__row">
@@ -114,7 +115,9 @@ class List extends Component {
 									{filtered.map((order, i) =>
 										<tr className="c-table__row" key={i}>
 											<td className="c-table__cell status">
-												{order.status}
+												{order.status === 0 && 'pending'}
+												{order.status === 1 && 'accepted'}
+												{order.status === 2 && 'rejected'}
 											</td>
 											<td className="c-table__cell order-number">
 												{order.uid}

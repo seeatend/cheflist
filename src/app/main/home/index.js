@@ -1,8 +1,12 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { Redirect } from 'react-router-dom'
 import { sidebar_menu_update } from '../../reducer/sidebar_menu'
+import { SERVER_URL } from '../../config'
 import './style.css'
+
+const $ = window.$;
 
 class Home extends Component {
 
@@ -11,7 +15,10 @@ class Home extends Component {
         var tokenType = localStorage.getItem('tokenType');
 
         this.state = {
-            redirect: null
+			redirect: null,
+			products: 0,
+			orders: 0,
+			suppliers: 0
         }
 
         if (tokenType !== 'restaurant') {
@@ -26,11 +33,78 @@ class Home extends Component {
 			index: 'rest-home',
 			navTitle: 'Home'
 		});
+		this.load();
+		window.Sidebar();
+	}
+
+	load() {
+		var scope = this;
+        this.getVendors().done(function(response) {
+            response.connections.forEach(function(d) {
+                scope.getProducts(d.catalog).done(function(response) {
+					scope.setState({
+						products: scope.state.products + response.products.length
+					})
+                })
+            });
+        });
+		
+		this.getOrders().done(function(response) {
+			scope.setState({
+				orders: response.orders.length
+			})
+		});
+
+		this.getAcceptedConnection().done(function(response) {
+			scope.setState({
+				suppliers: response.connections.length
+			})
+		})
+	}
+
+	getVendors() {
+        return $.ajax({
+            method: 'GET',
+            url: SERVER_URL + '/connection/accepted',
+            headers: {
+                'x-api-token': localStorage.getItem('accessToken')
+            }
+        });
+    }
+
+    getProducts(catalog) {
+        return $.ajax({
+            method: 'GET',
+            url: SERVER_URL + '/restaurant/catalog/'+catalog,
+            headers: {
+                'x-api-token': localStorage.getItem('accessToken')
+            }
+        });
+	}
+	
+	getOrders() {
+        return $.ajax({
+            method: 'GET',
+            url: SERVER_URL + '/order/all',
+            headers: {
+                'x-api-token': localStorage.getItem('accessToken')
+            }
+        });
+	}
+	
+	getAcceptedConnection() {
+        return $.ajax({
+            method: 'GET',
+            url: SERVER_URL + '/connection/accepted',
+            headers: {
+                'x-api-token': localStorage.getItem('accessToken')
+            }
+		});
 	}
 
 	render() {
 
-		let {redirect} = this.state;
+		let {redirect, products, orders, suppliers} = this.state;
 		if (redirect) {
 			return <Redirect push to={redirect} />;
 		}
@@ -39,7 +113,7 @@ class Home extends Component {
 			<div id="home" className="container">
 				<h1 className="welcome">Welcome!</h1>
 				<div className="row">
-					<a className="col-sm-12 col-lg-6 col-xl-4" href="/product">
+					<Link className="col-sm-12 col-lg-6 col-xl-4 box" to="/restaurant/product">
 						<div className="c-state-card" data-mh="state-cards">
 							<div className="c-state-card__icon c-state-card__icon--info">
 								<i className="fa fa-cutlery"></i>
@@ -47,12 +121,12 @@ class Home extends Component {
 
 							<div className="c-state-card__content">
 								<h5 className="c-state-card__number">Product</h5>
-								<p className="c-state-card__meta"><span className="u-text-success">286</span></p>
+								<p className="c-state-card__meta"><span className="u-text-success">{products}</span></p>
 							</div>
 						</div>
-					</a>
+					</Link>
 
-					<a className="col-sm-12 col-lg-6 col-xl-4" href="/order">
+					<Link className="col-sm-12 col-lg-6 col-xl-4 box" to="/restaurant/order">
 						<div className="c-state-card" data-mh="state-cards">
 							<div className="c-state-card__icon c-state-card__icon--fancy">
 								<i className="fa fa-file-text-o"></i>
@@ -60,12 +134,12 @@ class Home extends Component {
 
 							<div className="c-state-card__content">
 								<h5 className="c-state-card__number">Order List</h5>
-								<p className="c-state-card__meta"><span className="u-text-success">28</span></p>
+								<p className="c-state-card__meta"><span className="u-text-success">{orders}</span></p>
 							</div>
 						</div>
-					</a>
+					</Link>
 
-					<a className="col-sm-12 col-lg-6 col-xl-4" href="/supplier">
+					<Link className="col-sm-12 col-lg-6 col-xl-4 box" to="/restaurant/supplier">
 						<div className="c-state-card" data-mh="state-cards">
 							<div className="c-state-card__icon c-state-card__icon--warning">
 								<i className="fa fa-truck"></i>
@@ -73,10 +147,10 @@ class Home extends Component {
 
 							<div className="c-state-card__content">
 								<h5 className="c-state-card__number">My Supplier</h5>
-								<p className="c-state-card__meta"><span className="u-text-success">20</span></p>
+								<p className="c-state-card__meta"><span className="u-text-success">{suppliers}</span></p>
 							</div>
 						</div>
-					</a>
+					</Link>
 				</div>
 			</div>
 		)

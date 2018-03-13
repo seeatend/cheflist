@@ -4,6 +4,9 @@
     }
     .total-price {
         float: right;
+        @media screen and (max-width: 499px) {
+            float: none;
+        }
     }
     .valid-message {
         color: #1bb934;
@@ -14,10 +17,23 @@
     .actions {
         .toggle-items {
             margin-right: 10px;
+            float: left;
+            @media screen and (max-width: 399px) {
+                width: 100%;
+                margin-bottom: 10px;
+            }
         }
         .delivery-date {
             display: inline-block;
-            width: 150px;
+            @media screen and (max-width: 399px) {
+                width: 100%;
+            }
+            input {
+                width: 100%;
+            }
+            span {
+                font-size: 12px;
+            }
         }
         .order-action {
             float: right;
@@ -31,31 +47,45 @@
                 text-align: none;
                 margin: 0;
             }
-            @media screen and (max-width: 619px) {
+            @media screen and (max-width: 670px) {
                 float: none;
                 text-align: right;
                 margin-top: 20px;
             }
             .place-order {
                 margin-right: 5px;
+                @media screen and (max-width: 399px) {
+                    width: 100%;
+                    margin-bottom: 10px;
+                }
+            }
+            .remove-order {
+                @media screen and (max-width: 399px) {
+                    width: 100%;
+                }
             }
         }
     }
     .item-table {
         margin-top: 20px;
-        table {
-            display: table;
-            .no {
-                width: 50px;
-            }
-            .quantity {
-                width: 100px;
-            }
-            .price {
-                width: 100px;
-            }
-            .action {
-                width: 100px;
+        .table-container {
+            display: block;
+            width: 100%;
+            overflow-x: auto;
+            table {
+                display: table;
+                .no {
+                    width: 50px;
+                }
+                .quantity {
+                    width: 100px;
+                }
+                .price {
+                    width: 100px;
+                }
+                .action {
+                    width: 100px;
+                }
             }
         }
     }

@@ -3,6 +3,9 @@
 
 .vendor .total-price {
   float: right; }
+  @media screen and (max-width: 499px) {
+    .vendor .total-price {
+      float: none; } }
 
 .vendor .valid-message {
   color: #1bb934; }
@@ -11,11 +14,22 @@
   color: #ed1c24; }
 
 .vendor .actions .toggle-items {
-  margin-right: 10px; }
+  margin-right: 10px;
+  float: left; }
+  @media screen and (max-width: 399px) {
+    .vendor .actions .toggle-items {
+      width: 100%;
+      margin-bottom: 10px; } }
 
 .vendor .actions .delivery-date {
-  display: inline-block;
-  width: 150px; }
+  display: inline-block; }
+  @media screen and (max-width: 399px) {
+    .vendor .actions .delivery-date {
+      width: 100%; } }
+  .vendor .actions .delivery-date input {
+    width: 100%; }
+  .vendor .actions .delivery-date span {
+    font-size: 12px; }
 
 .vendor .actions .order-action {
   float: right; }
@@ -29,23 +43,34 @@
       float: right;
       text-align: none;
       margin: 0; } }
-  @media screen and (max-width: 619px) {
+  @media screen and (max-width: 670px) {
     .vendor .actions .order-action {
       float: none;
       text-align: right;
       margin-top: 20px; } }
   .vendor .actions .order-action .place-order {
     margin-right: 5px; }
+    @media screen and (max-width: 399px) {
+      .vendor .actions .order-action .place-order {
+        width: 100%;
+        margin-bottom: 10px; } }
+  @media screen and (max-width: 399px) {
+    .vendor .actions .order-action .remove-order {
+      width: 100%; } }
 
 .vendor .item-table {
   margin-top: 20px; }
-  .vendor .item-table table {
-    display: table; }
-    .vendor .item-table table .no {
-      width: 50px; }
-    .vendor .item-table table .quantity {
-      width: 100px; }
-    .vendor .item-table table .price {
-      width: 100px; }
-    .vendor .item-table table .action {
-      width: 100px; }
+  .vendor .item-table .table-container {
+    display: block;
+    width: 100%;
+    overflow-x: auto; }
+    .vendor .item-table .table-container table {
+      display: table; }
+      .vendor .item-table .table-container table .no {
+        width: 50px; }
+      .vendor .item-table .table-container table .quantity {
+        width: 100px; }
+      .vendor .item-table .table-container table .price {
+        width: 100px; }
+      .vendor .item-table .table-container table .action {
+        width: 100px; }

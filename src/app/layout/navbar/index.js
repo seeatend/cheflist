@@ -1,8 +1,10 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 import { SERVER_URL } from '../../config'
+import { cart_update } from '../../reducer/cart'
 import './style.css'
+
 const $ = window.$;
 
 class Navbar extends Component {
@@ -10,7 +12,8 @@ class Navbar extends Component {
 	constructor(props) {
         super(props);
         this.state = {
-            name: "User"
+			name: "User",
+			cartAmount: 0
         }
     }
 
@@ -26,7 +29,31 @@ class Navbar extends Component {
 			scope.setState({
 				name: d.account.firstName + ' ' + d.account.lastName
 			})
-		})
+		});
+		this.getCarts();
+	}
+
+	cartAmount() {
+		var cartAmount = 0;
+		this.props.carts.carts.forEach(function(cart) {
+			cartAmount += cart.products.length;
+		});
+		return cartAmount
+	}
+
+	getCarts() {
+        var scope = this;
+        $.ajax({
+            method: 'GET',
+            url: SERVER_URL + '/restaurant/carts',
+            headers: {
+                'x-api-token': localStorage.getItem('accessToken')
+            }
+        }).done(function(response) {
+            scope.props.cart_update({
+                carts: response.carts
+            });
+        })
 	}
 
 	render() {
@@ -39,22 +66,23 @@ class Navbar extends Component {
 				</button>
 
 				<h2 className="c-navbar__title u-mr-auto">{this.props.activeMenu.navTitle}</h2>
-				
-				{/* <a className="c-btn c-btn--success to-cart">
-					<i className="fa fa-shopping-cart u-mr-xsmall"></i>Cart
-				</a> */}
-				<Link className="c-btn c-btn--success to-cart" to="/restaurant/cart">
-					<i className="fa fa-shopping-cart u-mr-xsmall"></i>Cart
-				</Link>
-
-				<a className="c-btn c-btn--secondary to-cart">
-					<i className="fa fa-user-o u-mr-xsmall"></i>{this.state.name}
-				</a>
+				<div className="right-pane">
+					<Link className="c-btn c-btn--success to-cart" to="/restaurant/cart">
+						<i className="fa fa-shopping-cart u-mr-xsmall"></i>Cart ({this.cartAmount()})
+					</Link>
+					<a className="c-btn c-btn--secondary to-cart">
+						<i className="fa fa-user-o u-mr-xsmall"></i>{this.state.name}
+					</a>
+				</div>				
 			</header>
 		)
 	}
 }
 
 export default connect(
-	(state) => ({activeMenu: state.sidebarMenu}),
+	(state) => ({
+		activeMenu: state.sidebarMenu,
+		carts: state.carts
+	}),
+	{cart_update}
 )(Navbar)

@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
+import { connect } from 'react-redux'
 import { SERVER_URL } from '../../../config'
+import { cart_update } from '../../../reducer/cart'
 import './style.css'
 
 const $ = window.$;
@@ -51,6 +53,7 @@ class Vendor extends Component {
                 }
             }).done(function() {
                 scope.props.load();
+                scope.getCarts();
             });
         });
     }
@@ -67,7 +70,25 @@ class Vendor extends Component {
                 deliveryDate: moment(this.refs.deliveryDate.value, 'MM/DD/YYYY').format('YYYY-MM-DD')
             }
         }).done(function(response) {
-            console.log(response);
+            // console.log(response);
+        }).fail(function() {
+            console.log('error');
+        });
+    }
+
+    updateCart(product) {
+        var {cart} = this.props;
+        $.ajax({
+            method: 'POST',
+            url: SERVER_URL + '/restaurant/cart/update/' + cart.uid + '/' + product.product.uid,
+            headers: {
+                'x-api-token': localStorage.getItem('accessToken')
+            },
+            data: {
+                message: '',
+                quantity: $('#' + product.product.uid).val()
+            }
+        }).done(function(response) {
         }).fail(function() {
             console.log('error');
         });
@@ -83,6 +104,7 @@ class Vendor extends Component {
             }
         }).done(function() {
             scope.props.load();
+            scope.getCarts();
         });
     }
 
@@ -96,6 +118,7 @@ class Vendor extends Component {
             }
         }).done(function() {
             scope.props.load();
+            scope.getCarts();
         });
     }
 
@@ -105,11 +128,27 @@ class Vendor extends Component {
         })
     }
 
+    getCarts() {
+        var scope = this;
+        $.ajax({
+            method: 'GET',
+            url: SERVER_URL + '/restaurant/carts',
+            headers: {
+                'x-api-token': localStorage.getItem('accessToken')
+            }
+        }).done(function(response) {
+            console.log('test', response);
+            scope.props.cart_update({
+                carts: response.carts
+            });
+        })
+	}
+
 	render() {
         var {cart} = this.props;
         var {showTable} = this.state;
 		return (
-            <div className="c-card u-p-medium u-mb-medium vendor" onMouseOut={() => this.updateDeliveryDate()}>
+            <div className="c-card u-p-medium u-mb-medium vendor">
                 <h4 className="u-mb-small">
                     <div className="vendor-name">{cart.vendor.firstName} {cart.vendor.lastName}</div>
                     <div className="total-price">&euro; {this.cartPrice(cart).toFixed(2)}</div>
@@ -123,14 +162,17 @@ class Vendor extends Component {
                 <div className="actions">
                     <a className="c-btn c-btn--secondary toggle-items" onClick={() => this.toggleTable()}>
                         {showTable?'Hide':'Show'}
-                         {cart.products.length} Item(s)
+                        {cart.products.length} Item(s)
                     </a>
-                    <input className="c-input delivery-date"
-                        data-toggle="datepicker"
-                        type="text"
-                        placeholder="Delivery Date"
-                        ref="deliveryDate"
-                        defaultValue={moment(cart.deliveryDate).format('MM/DD/YYYY')}/>
+                    <div className="delivery-date">
+                        <input className="c-input"
+                            data-toggle="datepicker"
+                            type="text"
+                            placeholder="Delivery Date"
+                            ref="deliveryDate"
+                            defaultValue={moment(cart.deliveryDate).format('MM/DD/YYYY')}/>
+                        <span className="u-color-info">Delivery Date</span>
+                    </div>
                     <div className="order-action">
                         <a className="c-btn c-btn--success place-order" onClick={() => this.placeOrder(cart)}>Place Order</a>
                         <a className="c-btn c-btn--danger remove-order" onClick={() => this.removeOrder(cart)}>Remove Order</a>
@@ -139,7 +181,7 @@ class Vendor extends Component {
                 {showTable &&
                     <div className="row u-mb-large item-table">
                         <div className="col-sm-12">
-                            <div className="c-table-responsive">
+                            <div className="table-container">
                                 <table className="c-table">
                                     <caption className="c-table__title">
                                     {cart.products.length} Items
@@ -165,7 +207,7 @@ class Vendor extends Component {
                                                     {p.product.name}
                                                 </td>
                                                 <td className="c-table__cell quantity">
-                                                    {p.quantity}
+                                                    <input className="c-input" type="text" placeholder="Qty" defaultValue={p.quantity} id={p.product.uid} onBlur={() => this.updateCart(p)}/>
                                                 </td>
                                                 <td className="c-table__cell price">
                                                     &euro; {(p.product.price * p.quantity).toFixed(2)}
@@ -199,4 +241,7 @@ class Vendor extends Component {
 	}
 }
 
-export default Vendor;
+export default connect(
+	(state) => ({carts: state.carts}),
+	{ cart_update }
+)(Vendor)

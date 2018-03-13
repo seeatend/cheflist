@@ -44,7 +44,7 @@ class Item extends Component {
 								</li>
 								<li>
 									<div className="label">Requested Delivery Date:</div>
-									<div className="content">{moment(item.deliveryDate).format('MMM DD, YYYY hh:mm:ss A')}</div>
+									<div className="content">{moment(item.deliveryDate).format('MMM DD, YYYY')}</div>
 								</li>
 							</ul>
 							<ul className="summary-list order-to">
@@ -59,11 +59,11 @@ class Item extends Component {
 								</li>
 								<li>
 									<div className="label">Order Date:</div>
-									<div className="content">{moment(item.creationDate).format('MMM DD, YYYY hh:mm:ss A')}</div>
+									<div className="content">{moment(item.creationDate).format('MMM DD, YYYY')}</div>
 								</li>
 								<li>
 									<div className="label">Delivery Date:</div>
-									<div className="content">{moment(item.deliveryDate).format('MMM DD, YYYY hh:mm:ss A')}</div>
+									<div className="content">{moment(item.deliveryDate).format('MMM DD, YYYY')}</div>
 								</li>
 							</ul>
 							<div className="row u-mb-large item-table">
@@ -116,7 +116,7 @@ class Item extends Component {
 							<ul className="summary-list">
 								<li>
 									<div className="label">Order Date:</div>
-									<div className="content">{moment(item.creationDate).format('MMM DD, YYYY hh:mm:ss A')}</div>
+									<div className="content">{moment(item.creationDate).format('MMM DD, YYYY')}</div>
 								</li>
 								<li>
 									<div className="label">Delivery Charge:</div>

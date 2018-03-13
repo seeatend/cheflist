@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { sidebar_menu_update } from '../../reducer/sidebar_menu'
 import { SERVER_URL } from '../../config'
+import { cart_update } from '../../reducer/cart'
 
 import Vendor from './Vendor'
 
@@ -80,7 +81,8 @@ class Cart extends Component {
             }
 		}).done(function() {
 			scope.load();
-		})
+			scope.getUpdatedCarts();
+		});
 	}
 
 	updateDeliveryDate() {
@@ -97,12 +99,27 @@ class Cart extends Component {
 					deliveryDate: moment($(this).val(), 'MM/DD/YYYY').format('YYYY-MM-DD')
 				}
 			}).done(function(response) {
-				console.log(response);
+				// console.log(response);
 			}).fail(function() {
 				console.log('error');
 			});
 		})
-    }
+	}
+	
+	getUpdatedCarts() {
+        var scope = this;
+        $.ajax({
+            method: 'GET',
+            url: SERVER_URL + '/restaurant/carts',
+            headers: {
+                'x-api-token': localStorage.getItem('accessToken')
+            }
+        }).done(function(response) {
+            scope.props.cart_update({
+                carts: response.carts
+            });
+        })
+	}
 	
 	render() {
 		var {redirect} = this.state;
@@ -115,6 +132,11 @@ class Cart extends Component {
 		return (
 			<div className="container-fluid cart">
                 <div className="row cart-container">
+                    <div className="col-lg-8 col-sm-12 vendor-list">
+						{carts.map((c, i) =>
+							<Vendor cart={c} key={i} load={() => this.load()}/>
+						)}
+                    </div>
 					<div className="col-lg-4 col-sm-12 checkout-box">
 						<div className="c-card u-p-medium u-mb-medium">
 							<h3 className="u-mb-small">
@@ -132,11 +154,6 @@ class Cart extends Component {
 							</p> */}
 						</div>
 					</div>
-                    <div className="col-lg-8 col-sm-12 vendor-list">
-						{carts.map((c, i) =>
-							<Vendor cart={c} key={i} load={() => this.load()}/>
-						)}
-                    </div>
                 </div>
             </div>
 		)
@@ -144,6 +161,9 @@ class Cart extends Component {
 }
 
 export default connect(
-	(state) => ({activeMenu: state.sidebarMenu}),
-	{ sidebar_menu_update }
+	(state) => ({
+		activeMenu: state.sidebarMenu,
+		carts: state.carts
+	}),
+	{ sidebar_menu_update, cart_update }
 )(Cart)

@@ -66,15 +66,14 @@ class Order extends Component {
     check(item) {
 		this.setState({
 			item: item,
-			page: 'check'
+			page: 'item'
 		});
     }
 
     back() {
         this.setState({
             page: 'list',
-            item: null,
-            products: null
+            item: null
         })
     }
 

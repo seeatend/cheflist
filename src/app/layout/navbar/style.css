@@ -1,2 +1,12 @@
-.navbar .to-cart {
-  margin-right: 20px; }
+.navbar .right-pane {
+  float: right; }
+  @media screen and (max-width: 429px) {
+    .navbar .right-pane {
+      width: 100%;
+      margin-top: 15px; } }
+  .navbar .right-pane .to-cart {
+    margin-right: 10px; }
+    @media screen and (max-width: 429px) {
+      .navbar .right-pane .to-cart {
+        width: 100%;
+        margin-top: 10px; } }

@@ -12,7 +12,7 @@ export const SIDEBAR_MENU_LIST = [
 		index: 'rest-product'
 	},
 	{
-		title: 'Order List',
+		title: 'Order History',
 		icon: 'fa fa-file-text-o',
 		link: '/restaurant/order',
 		index: 'rest-order'

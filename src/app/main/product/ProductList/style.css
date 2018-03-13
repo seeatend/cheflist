@@ -10,6 +10,7 @@
     .product-list .product-table table tbody tr .price {
       width: 100px; }
     .product-list .product-table table tbody tr .qty {
+      min-width: 100px;
       width: 100px; }
     .product-list .product-table table tbody tr .add-action {
       width: 100px; }

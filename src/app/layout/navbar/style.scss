@@ -1,5 +1,16 @@
 .navbar {
-    .to-cart {
-        margin-right: 20px;
+    .right-pane {
+        float: right;
+        @media screen and (max-width: 429px) {
+            width: 100%;
+            margin-top: 15px;
+        }
+        .to-cart {
+            margin-right: 10px;
+            @media screen and (max-width: 429px) {
+                width: 100%;
+                margin-top: 10px;
+            }
+        }
     }
 }

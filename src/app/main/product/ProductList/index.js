@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
+import { connect } from 'react-redux'
 import { SERVER_URL } from '../../../config'
+import { cart_update } from '../../../reducer/cart'
 import DropDownFilter from './DropDownFilter'
 
 import './style.css'
@@ -53,10 +55,28 @@ class ProductList extends Component {
         });
     }
 
+    getCarts() {
+        var scope = this;
+        $.ajax({
+            method: 'GET',
+            url: SERVER_URL + '/restaurant/carts',
+            headers: {
+                'x-api-token': localStorage.getItem('accessToken')
+            }
+        }).done(function(response) {
+            scope.props.cart_update({
+                carts: response.carts
+            });
+        })
+	}
+
     addToCart(p) {
+        var scope = this;
+
         var catalogId = this.state.vendors.filter(function(v) {
             return v.accountId === p.vendor
         })[0].catalog;
+
         $.ajax({
             method: 'POST',
             url: SERVER_URL + '/restaurant/cart/add/'+catalogId,
@@ -67,7 +87,9 @@ class ProductList extends Component {
                 productId: p.uid,
                 quantity: $('#'+p.uid).val()
             }
-        });
+        }).done(function() {
+            scope.getCarts();
+        })
     }
 
     addList(_vendor, _products) {
@@ -142,7 +164,7 @@ class ProductList extends Component {
                                                 &euro; {p.price.toFixed(2)}/{p.unit}
                                             </td>
                                             <td className="c-table__cell qty">
-                                                <input className="c-input" type="text" placeholder="Qty" defaultValue={p.quantity} id={p.uid}/>
+                                                <input className="c-input" type="text" placeholder="Qty" id={p.uid}/>
                                             </td>
                                             <td className="c-table__cell add-action">
                                                 <a className="c-btn c-btn--success" onClick={()=>this.addToCart(p)}>
@@ -172,4 +194,7 @@ class ProductList extends Component {
 	}
 }
 
-export default ProductList;
+export default connect(
+	(state) => ({carts: state.carts}),
+	{ cart_update }
+)(ProductList)

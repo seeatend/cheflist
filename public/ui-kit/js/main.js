@@ -31429,7 +31429,9 @@ var Sidebar = function(){
 			$sidebar.removeClass('is-visible');
 		}
 	});
-}; 
+};
+
+window.Sidebar = Sidebar;
 //
 // Switches
 //

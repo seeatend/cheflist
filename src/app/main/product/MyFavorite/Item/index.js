@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
+import { connect } from 'react-redux'
 import { SERVER_URL } from '../../../../config'
+import { cart_update } from '../../../../reducer/cart'
 import './style.css'
 
 const $ = window.$;
@@ -26,6 +28,7 @@ class Item extends Component {
                 quantity: $('#'+p.uid).val()
             }
         });
+        this.getCarts();
     }
 
     getConnections() {
@@ -50,6 +53,21 @@ class Item extends Component {
         });
         return connection.length?connection[0].accountName:'None'
     }
+
+    getCarts() {
+        var scope = this;
+        $.ajax({
+            method: 'GET',
+            url: SERVER_URL + '/restaurant/carts',
+            headers: {
+                'x-api-token': localStorage.getItem('accessToken')
+            }
+        }).done(function(response) {
+            scope.props.cart_update({
+                carts: response.carts
+            });
+        })
+	}
 
 	render() {
         var {item, products, back} = this.props;
@@ -100,7 +118,7 @@ class Item extends Component {
                                                     {/* <a className="c-btn c-btn--secondary">
                                                         <i className="fa fa-plus u-mr-xsmall"></i>Note
                                                     </a> */}
-                                                    <a className="c-btn c-btn--info" onClick={() => this.addToCart(p)}>
+                                                    <a className="c-btn c-btn--success" onClick={() => this.addToCart(p)}>
                                                         <i className="fa fa-plus u-mr-xsmall"></i>Add
                                                     </a>
                                                 </div>
@@ -128,4 +146,7 @@ class Item extends Component {
 	}
 }
 
-export default Item;
+export default connect(
+	(state) => ({carts: state.carts}),
+	{ cart_update }
+)(Item)
