@@ -129,7 +129,7 @@ class Item extends Component {
                                                 {p.unit}
                                             </td>
                                             <td className="c-table__cell qty">
-                                                <input className="c-input" type="text" placeholder="Qty" defaultValue={p.quantity} id={p.uid}/>
+                                                <input className="c-input" type="text" id={p.uid}/>
                                             </td>
                                             <td className="c-table__cell action">
                                                 <div className="c-btn-group">

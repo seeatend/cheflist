@@ -166,7 +166,7 @@ class ProductList extends Component {
                                                 {p.unit}
                                             </td>
                                             <td className="c-table__cell qty">
-                                                <input className="c-input" type="text" placeholder="Qty" id={p.uid}/>
+                                                <input className="c-input" type="text" id={p.uid}/>
                                             </td>
                                             <td className="c-table__cell add-action">
                                                 <a className="c-btn c-btn--success" onClick={()=>this.addToCart(p)}>

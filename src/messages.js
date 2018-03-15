@@ -112,8 +112,8 @@ export default {
             product: 'Artikel bestellen'
         },
         home: {
-            mySuppliers: 'Meine Lieferanten',
-            orderList: 'Bestell-Historie',
+            mySuppliers: 'Lieferanten',
+            orderList: 'Historie',
             product: 'Produkte',
             welcome: 'Willkommen!'
         },
