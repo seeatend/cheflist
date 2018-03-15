@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import { FormattedMessage } from 'react-intl'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { sidebar_menu_update } from '../../reducer/sidebar_menu'
@@ -28,7 +29,7 @@ class Product extends Component {
 	componentDidMount() {
 		this.props.sidebar_menu_update({
 			index: 'rest-product',
-			navTitle: 'Products'
+			navTitle: 'menu.product'
 		});
 	}
 
@@ -46,12 +47,12 @@ class Product extends Component {
                         <ul className="c-tabs__list nav nav-tabs">
                             <li>
 								<a className="c-tabs__link active" data-toggle="tab" href="#all-product" role="tab" aria-controls="nav-home" aria-selected="true">
-									All Products
+									<FormattedMessage id="product.allProducts"/>
 								</a>
 							</li>
                             <li>
 								<a className="c-tabs__link" data-toggle="tab" href="#my-favorite" role="tab" aria-controls="nav-profile" aria-selected="false">
-									My Favorites
+									<FormattedMessage id="product.myList"/>
 								</a>
 							</li>
                         </ul>

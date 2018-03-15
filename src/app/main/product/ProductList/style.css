@@ -9,6 +9,8 @@
       width: 50px; }
     .product-list .product-table table tbody tr .price {
       width: 100px; }
+    .product-list .product-table table tbody tr .unit {
+      width: 100px; }
     .product-list .product-table table tbody tr .qty {
       min-width: 100px;
       width: 100px; }

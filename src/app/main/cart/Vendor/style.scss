@@ -68,24 +68,19 @@
     }
     .item-table {
         margin-top: 20px;
-        .table-container {
-            display: block;
-            width: 100%;
-            overflow-x: auto;
-            table {
-                display: table;
-                .no {
-                    width: 50px;
-                }
-                .quantity {
-                    width: 100px;
-                }
-                .price {
-                    width: 100px;
-                }
-                .action {
-                    width: 100px;
-                }
+        table {
+            display: table;
+            .no {
+                width: 50px;
+            }
+            .quantity {
+                width: 100px;
+            }
+            .price {
+                width: 100px;
+            }
+            .action {
+                width: 100px;
             }
         }
     }

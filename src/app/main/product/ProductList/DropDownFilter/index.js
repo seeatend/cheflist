@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import { FormattedMessage } from 'react-intl'
 
 class DropDownFilter extends Component {
 
@@ -29,7 +30,12 @@ class DropDownFilter extends Component {
         var {options, curOption} = this.state;
 		return (
             <div className={"c-dropdown dropdown " + this.props.className}>
-                <button className="c-btn c-btn--secondary has-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{curOption}</button>
+                <button className="c-btn c-btn--secondary has-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {curOption === 'All' ?
+                        <FormattedMessage id="product.allSuppliers" />
+                        :curOption
+                    }
+                </button>
                 <div className="c-dropdown__menu dropdown-menu">
                     {options.map((option, i) =>
                         <a className="c-dropdown__item dropdown-item" key={i} onClick={() => this.update(option)}>{option}</a>

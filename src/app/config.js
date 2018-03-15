@@ -1,36 +1,36 @@
 export const SIDEBAR_MENU_LIST = [
 	{
-		title: 'Home',
+		title: 'menu.home',
 		icon: 'fa fa-home',
 		link: '/restaurant/home',
 		index: 'rest-home'
 	},
 	{
-		title: 'Product',
+		title: 'menu.product',
 		icon: 'fa fa-cutlery',
 		link: '/restaurant/product',
 		index: 'rest-product'
 	},
 	{
-		title: 'Order History',
+		title: 'menu.orderHistory',
 		icon: 'fa fa-file-text-o',
 		link: '/restaurant/order',
 		index: 'rest-order'
 	},
 	{
-		title: 'My Suppliers',
+		title: 'menu.mySuppliers',
 		icon: 'fa fa-truck',
 		link: '/restaurant/supplier',
 		index: 'rest-supplier'
 	},
 	{
-		title: 'Cart',
+		title: 'menu.cart',
 		icon: 'fa fa-shopping-cart',
 		link: '/restaurant/cart',
 		index: 'rest-cart'
 	},
 	{
-		title: 'Logout',
+		title: 'menu.logout',
 		icon: 'fa fa-unlock',
 		link: '/logout',
 		index: 'rest-logout'

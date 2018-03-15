@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import { FormattedMessage } from 'react-intl'
 import { SERVER_URL } from '../../../config'
 import './style.css'
 
@@ -43,10 +44,8 @@ class MyConnection extends Component {
     filter() {
         var f = $('#vendor-filter').val();
         var filtered = this.state.connections.filter(function(con) {
-            console.log(con.meta.businessName, f, con.meta.businessName.includes(f));
             return con.meta.businessName.includes(f)
         })
-        console.log(filtered);
         this.setState({
             filtered
         })
@@ -57,19 +56,19 @@ class MyConnection extends Component {
 		return (
             <div className="new-connection">
                 <h3 className="u-mb-small">
-                    Connect New Supplier
+                    <FormattedMessage id="mySuppliers.otherAvailableSuppliers"/>
                 </h3>
-                <input className="c-input" id="vendor-filter" type="text" placeholder="Placeholder" onChange={() => this.filter()}/>
+                <input className="c-input" id="vendor-filter" type="text" placeholder="" onChange={() => this.filter()}/>
                 <div className="c-table-responsive">
-                    <table className="c-table my-connection-table">
-                        <caption className="c-table__title">
-                            {filtered.length} Connection
-                        </caption>
+                    <p className="u-color-success">
+                        {filtered.length} <FormattedMessage id="mySuppliers.connections"/>
+                    </p>
+                    <table className="c-table new-connection-table">
                         <thead className="c-table__head c-table__head--slim">
                             <tr className="c-table__row">
-                                <th className="c-table__cell c-table__cell--head">Business Name</th>
-                                <th className="c-table__cell c-table__cell--head">Contact</th>
-                                <th className="c-table__cell c-table__cell--head">Status</th>
+                                <th className="c-table__cell c-table__cell--head"><FormattedMessage id="mySuppliers.supplierName"/></th>
+                                <th className="c-table__cell c-table__cell--head"><FormattedMessage id="mySuppliers.contact"/></th>
+                                <th className="c-table__cell c-table__cell--head"><FormattedMessage id="mySuppliers.status"/></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -84,7 +83,8 @@ class MyConnection extends Component {
                                     </td>
                                     <td className="c-table__cell action">
                                         <a className="c-btn c-btn--secondary" onClick={()=>this.addConnection(con)}>
-                                            <i className="fa fa-plus u-mr-xsmall"></i>Add
+                                            <i className="fa fa-plus u-mr-xsmall"></i>
+                                            <FormattedMessage id="mySuppliers.add"/>
                                         </a>
                                     </td>
                                 </tr>

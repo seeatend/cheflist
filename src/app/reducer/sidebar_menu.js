@@ -1,6 +1,6 @@
 const initState = {
 	index: '',
-	navTitle: ''
+	navTitle: 'menu.home'
 }
 
 const SIDEBAR_MENU_UPDATE = 'SIDEBAR_MENU_UPDATE'

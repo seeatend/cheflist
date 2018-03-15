@@ -34,7 +34,7 @@ class Order extends Component {
     componentDidMount() {
 		this.props.sidebar_menu_update({
 			index: 'rest-order',
-			navTitle: 'Orders'
+			navTitle: 'menu.orderHistory'
 		});
         this.load();
     }

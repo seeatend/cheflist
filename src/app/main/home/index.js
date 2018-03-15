@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import { FormattedMessage } from 'react-intl'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Redirect } from 'react-router-dom'
@@ -31,7 +32,7 @@ class Home extends Component {
 	componentDidMount() {
 		this.props.sidebar_menu_update({
 			index: 'rest-home',
-			navTitle: 'Home'
+			navTitle: 'menu.home'
 		});
 		this.load();
 		window.Sidebar();
@@ -120,7 +121,9 @@ class Home extends Component {
 							</div>
 
 							<div className="c-state-card__content">
-								<h5 className="c-state-card__number">Product</h5>
+								<h5 className="c-state-card__number">
+									<FormattedMessage id="home.product"/>
+								</h5>
 								<p className="c-state-card__meta"><span className="u-text-success">{products}</span></p>
 							</div>
 						</div>
@@ -133,7 +136,9 @@ class Home extends Component {
 							</div>
 
 							<div className="c-state-card__content">
-								<h5 className="c-state-card__number">Order List</h5>
+								<h5 className="c-state-card__number">
+									<FormattedMessage id="home.orderList"/>
+								</h5>
 								<p className="c-state-card__meta"><span className="u-text-success">{orders}</span></p>
 							</div>
 						</div>
@@ -146,7 +151,9 @@ class Home extends Component {
 							</div>
 
 							<div className="c-state-card__content">
-								<h5 className="c-state-card__number">My Supplier</h5>
+								<h5 className="c-state-card__number">
+									<FormattedMessage id="home.mySuppliers"/>
+								</h5>
 								<p className="c-state-card__meta"><span className="u-text-success">{suppliers}</span></p>
 							</div>
 						</div>

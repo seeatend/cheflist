@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import { FormattedMessage } from 'react-intl'
 import { Redirect } from 'react-router-dom'
 import { SERVER_URL, AUTH_HEADER } from '../../config'
 
@@ -65,26 +66,38 @@ class Login extends Component {
                                 <a className="c-login__icon c-login__icon--rounded c-login__icon--left">
                                     <img src="img/logo-login.svg" alt="Dashboard's Logo" />
                                 </a>
-                                <h2 className="c-login__title">Sign In</h2>
+                                <h2 className="c-login__title">
+                                    <FormattedMessage id="signIn.signIn"/>
+                                </h2>
                             </header>
                             <form className="c-login__content">
                                 <div className="c-field u-mb-small">
-                                    <label className="c-field__label" htmlFor="email">Email Address</label> 
-                                    <input className="c-input" type="email" id="email" placeholder="Email" autoComplete="off"/> 
+                                    <label className="c-field__label" htmlFor="email">
+                                        <FormattedMessage id="signIn.emailAddress"/>
+                                    </label> 
+                                    <input className="c-input" type="email" id="email" autoComplete="off"/> 
                                 </div>
                                 <div className="c-field u-mb-small">
-                                    <label className="c-field__label" htmlFor="password">Password</label> 
-                                    <input className="c-input" type="password" id="password" placeholder="Password" autoComplete="new-password" /> 
+                                    <label className="c-field__label" htmlFor="password">
+                                        <FormattedMessage id="signIn.password"/>
+                                    </label> 
+                                    <input className="c-input" type="password" id="password" autoComplete="new-password" /> 
                                 </div>
-                                <a className="c-btn c-btn--success c-btn--fullwidth" onClick={() => this.login()}>Sign in</a>
+                                <a className="c-btn c-btn--success c-btn--fullwidth" onClick={() => this.login()}>
+                                    <FormattedMessage id="signIn.signIn"/>
+                                </a>
                                 <span className="c-divider u-mv-small"></span>
-                                <a href="/login" className="c-btn c-btn--secondary c-btn--fullwidth">Create Account</a>
+                                <a href="/login" className="c-btn c-btn--secondary c-btn--fullwidth">
+                                    <FormattedMessage id="signIn.createAccount"/>
+                                </a>
                             </form>
                         </div>
                         <div className="c-login__content-image">
                             <img src="img/login2.jpg" alt="Welcome to Dashboard UI Kit" />
-                            <h3>Welcome to ChefsList</h3>
-                            <p className="u-text-large">Perfect dashboard designed for restaurant and vendors to keep all activities in one place</p>
+                            <h3><FormattedMessage id="signIn.welcomeToCheflist"/></h3>
+                            <p className="u-text-large">
+                                <FormattedMessage id="signIn.welcomeText"/>
+                            </p>
                         </div>
                     </div>
                 </div>

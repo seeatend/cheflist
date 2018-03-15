@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import { FormattedMessage } from 'react-intl'
 import { SERVER_URL } from '../../../config'
 import './style.css'
 
@@ -39,17 +40,15 @@ class MyConnection extends Component {
 		return (
             <div className="my-connection">
                 <h3 className="u-mb-small">
-                    My Connections
+                    <FormattedMessage id="mySuppliers.myConnections"/>
                 </h3>
                 <div className="c-table-responsive">
+                    <p className="u-color-success">{connections.length} <FormattedMessage id="mySuppliers.connections"/></p>
                     <table className="c-table my-connection-table">
-                        <caption className="c-table__title">
-                            {connections.length} Connection
-                        </caption>
                         <thead className="c-table__head c-table__head--slim">
                             <tr className="c-table__row">
-                                <th className="c-table__cell c-table__cell--head">Business Name</th>
-                                <th className="c-table__cell c-table__cell--head">Status</th>
+                                <th className="c-table__cell c-table__cell--head"><FormattedMessage id="mySuppliers.supplierName"/></th>
+                                <th className="c-table__cell c-table__cell--head"><FormattedMessage id="mySuppliers.status"/></th>
                                 <th className="c-table__cell c-table__cell--head">
                                     <span className="u-hidden-visually">Actions</span>
                                 </th>
@@ -62,11 +61,13 @@ class MyConnection extends Component {
                                         {con.meta.businessName}
                                     </td>
                                     <td className="c-table__cell status">
-                                        {con.status}
+                                        {con.status === 'accepted' && <FormattedMessage id="mySuppliers.accepted"/>}
+                                        {con.status === 'pending' && <FormattedMessage id="mySuppliers.pending"/>}
                                     </td>
                                     <td className="c-table__cell remove">
                                         <a className="c-btn c-btn--danger" onClick={()=>this.removeConnection(con)}>
-                                            <i className="fa fa-trash-o u-mr-xsmall"></i>Remove
+                                            <i className="fa fa-trash-o u-mr-xsmall"></i>
+                                            <FormattedMessage id="mySuppliers.remove"/>
                                         </a>
                                     </td>
                                 </tr>

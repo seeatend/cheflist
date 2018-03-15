@@ -60,17 +60,13 @@
 
 .vendor .item-table {
   margin-top: 20px; }
-  .vendor .item-table .table-container {
-    display: block;
-    width: 100%;
-    overflow-x: auto; }
-    .vendor .item-table .table-container table {
-      display: table; }
-      .vendor .item-table .table-container table .no {
-        width: 50px; }
-      .vendor .item-table .table-container table .quantity {
-        width: 100px; }
-      .vendor .item-table .table-container table .price {
-        width: 100px; }
-      .vendor .item-table .table-container table .action {
-        width: 100px; }
+  .vendor .item-table table {
+    display: table; }
+    .vendor .item-table table .no {
+      width: 50px; }
+    .vendor .item-table table .quantity {
+      width: 100px; }
+    .vendor .item-table table .price {
+      width: 100px; }
+    .vendor .item-table table .action {
+      width: 100px; }

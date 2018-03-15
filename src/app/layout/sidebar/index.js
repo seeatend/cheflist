@@ -1,7 +1,9 @@
-import React, {Component} from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { SIDEBAR_MENU_LIST } from '../../config';
+import React, {Component} from 'react'
+import { FormattedMessage } from 'react-intl'
+import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { SIDEBAR_MENU_LIST } from '../../config'
+import './style.css'
 
 const $ = window.$;
 
@@ -13,10 +15,10 @@ class Sidebar extends Component {
 
 	render() {
 		return(
-			<div className="o-page__sidebar js-page-sidebar">
+			<div className="o-page__sidebar js-page-sidebar sidebar">
 				<div className="c-sidebar">
 					<a className="c-sidebar__brand" href="/home">
-						<img className="c-sidebar__brand-img" src="/ui-kit/img/logo.png" alt="Logo" /> CHEFSLIST
+						<img className="c-sidebar__brand-img logo" src="/ui-kit/img/logo.png" alt="Logo" />
 					</a>
 					<h4 className="c-sidebar__title">Restaurant</h4>
 					<ul className="c-sidebar__list">
@@ -26,7 +28,9 @@ class Sidebar extends Component {
 									className={this.props.activeMenu.index === m.index?"c-sidebar__link is-active":"c-sidebar__link"}
 									to={m.link}
 									onClick={() => this.hideMenu()}>
-									<i className={"fa " + m.icon + " u-mr-xsmall"}></i>{m.title}
+									<i className={"fa " + m.icon + " u-mr-xsmall"}></i>
+									<FormattedMessage id={m.title} />
+									{/* {m.title} */}
 								</Link>
 							</li>
 						)}

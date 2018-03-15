@@ -1,7 +1,7 @@
 .new-connection #vendor-filter {
   margin-bottom: 20px; }
 
-.new-connection table {
-  display: table !important; }
-  .new-connection table .action {
+.new-connection .new-connection-table {
+  display: table; }
+  .new-connection .new-connection-table .action {
     width: 100px; }

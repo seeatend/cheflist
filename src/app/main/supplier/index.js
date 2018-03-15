@@ -23,7 +23,7 @@ class Supplier extends Component {
 	componentDidMount() {
 		this.props.sidebar_menu_update({
 			index: 'rest-supplier',
-			navTitle: 'Suppliers'
+			navTitle: 'menu.mySuppliers'
 		});
 		this.load();
 	}

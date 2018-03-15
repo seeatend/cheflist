@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import { FormattedMessage } from 'react-intl'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { sidebar_menu_update } from '../../reducer/sidebar_menu'
@@ -33,7 +34,7 @@ class Cart extends Component {
 	componentDidMount() {
 		this.props.sidebar_menu_update({
 			index: 'rest-cart',
-			navTitle: 'Cart'
+			navTitle: 'menu.cart'
 		});
 		this.load();
 	}
@@ -140,14 +141,18 @@ class Cart extends Component {
 					<div className="col-lg-4 col-sm-12 checkout-box">
 						<div className="c-card u-p-medium u-mb-medium">
 							<h3 className="u-mb-small">
-								Checkout Summary
+								<FormattedMessage id="cart.checkoutSummary"/>
 							</h3>
 							<h3 className="u-mb-small">
-								<div className="title">Total</div>
+								<div className="title">
+									<FormattedMessage id="cart.total"/>
+								</div>
 								<div className="price">&euro; {this.cartsTotal(carts).toFixed(2)}</div>
 							</h3>
 							<p className="u-mb-xsmall">
-								<a className="c-btn c-btn--success c-btn--fullwidth" onClick={()=>this.bulkOrder()}>Send Orders</a>
+								<a className="c-btn c-btn--success c-btn--fullwidth" onClick={()=>this.bulkOrder()}>
+									<FormattedMessage id="cart.sendAllOrders"/>
+								</a>
 							</p>
 							{/* <p className="u-mb-xsmall">
 								<a className="c-btn c-btn--secondary c-btn--fullwidth">Remove all orders from cart</a>

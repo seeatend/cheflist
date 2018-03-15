@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import { FormattedMessage } from 'react-intl'
 import { connect } from 'react-redux'
 import { SERVER_URL } from '../../../config'
 import { cart_update } from '../../../reducer/cart'
@@ -76,17 +77,21 @@ class Vendor extends Component {
         });
     }
 
-    updateCart(product) {
+    updateQty(product) {
         var {cart} = this.props;
+        var uid = product.product.uid;
+        var price = product.product.price;
+        var qty = parseInt($('#' + uid + ' .quantity input').val(), 10);
+        $('#' + uid + " .price").html('&euro; ' + qty * price);
         $.ajax({
             method: 'POST',
-            url: SERVER_URL + '/restaurant/cart/update/' + cart.uid + '/' + product.product.uid,
+            url: SERVER_URL + '/restaurant/cart/update/' + cart.uid + '/' + uid,
             headers: {
                 'x-api-token': localStorage.getItem('accessToken')
             },
             data: {
                 message: '',
-                quantity: $('#' + product.product.uid).val()
+                quantity: qty
             }
         }).done(function(response) {
         }).fail(function() {
@@ -161,8 +166,10 @@ class Vendor extends Component {
                 </p> */}
                 <div className="actions">
                     <a className="c-btn c-btn--secondary toggle-items" onClick={() => this.toggleTable()}>
-                        {showTable?'Hide':'Show'}
-                        {cart.products.length} Item(s)
+                        {showTable
+                            ?<FormattedMessage id="cart.hideList" values={{number: cart.products.length}}/>
+                            :<FormattedMessage id="cart.showList" values={{number: cart.products.length}}/>
+                        }
                     </a>
                     <div className="delivery-date">
                         <input className="c-input"
@@ -171,27 +178,41 @@ class Vendor extends Component {
                             placeholder="Delivery Date"
                             ref="deliveryDate"
                             defaultValue={moment(cart.deliveryDate).format('MM/DD/YYYY')}/>
-                        <span className="u-color-info">Delivery Date</span>
+                        <span className="u-color-info">
+                            <FormattedMessage id="cart.deliveryDate"/>
+                        </span>
                     </div>
                     <div className="order-action">
-                        <a className="c-btn c-btn--success place-order" onClick={() => this.placeOrder(cart)}>Place Order</a>
-                        <a className="c-btn c-btn--danger remove-order" onClick={() => this.removeOrder(cart)}>Remove Order</a>
+                        <a className="c-btn c-btn--success place-order" onClick={() => this.placeOrder(cart)}>
+                            <FormattedMessage id="cart.placeOrder"/>
+                        </a>
+                        <a className="c-btn c-btn--danger remove-order" onClick={() => this.removeOrder(cart)}>
+                            <FormattedMessage id="cart.remove"/>
+                        </a>
                     </div>
                 </div>
                 {showTable &&
                     <div className="row u-mb-large item-table">
                         <div className="col-sm-12">
-                            <div className="table-container">
+                            <div className="c-table-responsive table-container">
+                                <p className="u-color-success">
+                                    {cart.products.length} <FormattedMessage id="cart.item"/>
+                                </p>
                                 <table className="c-table">
-                                    <caption className="c-table__title">
-                                    {cart.products.length} Items
-                                    </caption>
                                     <thead className="c-table__head c-table__head--slim">
                                         <tr className="c-table__row">
-                                            <th className="c-table__cell c-table__cell--head">No</th>
-                                            <th className="c-table__cell c-table__cell--head">Item</th>
-                                            <th className="c-table__cell c-table__cell--head">Quantity</th>
-                                            <th className="c-table__cell c-table__cell--head">Total</th>
+                                            <th className="c-table__cell c-table__cell--head">
+                                                <FormattedMessage id="cart.no"/>
+                                            </th>
+                                            <th className="c-table__cell c-table__cell--head">
+                                                <FormattedMessage id="cart.item"/>
+                                            </th>
+                                            <th className="c-table__cell c-table__cell--head">
+                                                <FormattedMessage id="cart.quantity"/>
+                                            </th>
+                                            <th className="c-table__cell c-table__cell--head">
+                                                <FormattedMessage id="cart.total"/>
+                                            </th>
                                             <th className="c-table__cell c-table__cell--head">
                                                 <span className="u-hidden-visually">Actions</span>
                                             </th>
@@ -199,7 +220,7 @@ class Vendor extends Component {
                                     </thead>
                                     <tbody>
                                         {cart.products.map((p, i) =>
-                                            <tr className="c-table__row" key={i}>
+                                            <tr className="c-table__row" key={i} id={p.product.uid}>
                                                 <td className="c-table__cell no">
                                                     {i+1}
                                                 </td>
@@ -207,7 +228,7 @@ class Vendor extends Component {
                                                     {p.product.name}
                                                 </td>
                                                 <td className="c-table__cell quantity">
-                                                    <input className="c-input" type="text" placeholder="Qty" defaultValue={p.quantity} id={p.product.uid} onBlur={() => this.updateCart(p)}/>
+                                                    <input className="c-input" type="text" placeholder="Qty" defaultValue={p.quantity} onBlur={() => this.updateQty(p)}/>
                                                 </td>
                                                 <td className="c-table__cell price">
                                                     &euro; {(p.product.price * p.quantity).toFixed(2)}
@@ -215,7 +236,9 @@ class Vendor extends Component {
                                                 <td className="c-table__cell action">
                                                     <div className="c-btn-group">
                                                         {/* <a className="c-btn c-btn--secondary">Add note</a> */}
-                                                        <a className="c-btn c-btn--secondary" onClick={() => this.removeProduct(cart, p)}>Remove</a>
+                                                        <a className="c-btn c-btn--secondary" onClick={() => this.removeProduct(cart, p)}>
+                                                            <FormattedMessage id="cart.remove"/>
+                                                        </a>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -229,7 +252,7 @@ class Vendor extends Component {
                 {showTable &&
                     <div>
                         <p className="u-mb-xsmall">
-                            Order Message
+                            <FormattedMessage id="cart.orderMessage"/>
                         </p>
                         <p>
                             {cart.message}

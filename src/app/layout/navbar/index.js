@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import { FormattedMessage } from 'react-intl'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { SERVER_URL } from '../../config'
@@ -65,7 +66,9 @@ class Navbar extends Component {
 					<span className="c-sidebar-toggle__bar"></span>
 				</button>
 
-				<h2 className="c-navbar__title u-mr-auto">{this.props.activeMenu.navTitle}</h2>
+				<h2 className="c-navbar__title u-mr-auto">
+					<FormattedMessage id={this.props.activeMenu.navTitle} />
+				</h2>
 				<div className="right-pane">
 					<Link className="c-btn c-btn--success to-cart" to="/restaurant/cart">
 						<i className="fa fa-shopping-cart u-mr-xsmall"></i>Cart ({this.cartAmount()})

@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import { FormattedMessage } from 'react-intl'
 import { connect } from 'react-redux'
 import { SERVER_URL } from '../../../config'
 import { cart_update } from '../../../reducer/cart'
@@ -128,24 +129,22 @@ class ProductList extends Component {
     }
     
 	render() {
-        var {vendorNames, filteredProduct, vendorFilter} = this.state;
+        var {vendorNames, filteredProduct} = this.state;
 		return (
             <div className="product-list">
                 <DropDownFilter options={vendorNames} action={(f) => this.filter(f)} className="vendor-filter"/>
                 <div className="row u-mb-large product-table">
                     <div className="col-sm-12">
                         <div className="c-table-responsive">
+                            <p className="u-color-success">{filteredProduct.length} <FormattedMessage id="product.productTotal"/></p>
                             <table className="c-table">
-                                <caption className="c-table__title">
-                                    {vendorFilter}
-                                    <small>{filteredProduct.length} Product</small>
-                                </caption>
                                 <thead className="c-table__head c-table__head--slim">
                                     <tr className="c-table__row">
-                                        <th className="c-table__cell c-table__cell--head">No</th>
-                                        <th className="c-table__cell c-table__cell--head">Product Name</th>
-                                        <th className="c-table__cell c-table__cell--head">Price</th>
-                                        <th className="c-table__cell c-table__cell--head">Qty</th>
+                                        <th className="c-table__cell c-table__cell--head"><FormattedMessage id="product.no"/></th>
+                                        <th className="c-table__cell c-table__cell--head"><FormattedMessage id="product.productName"/></th>
+                                        <th className="c-table__cell c-table__cell--head"><FormattedMessage id="product.price"/></th>
+                                        <th className="c-table__cell c-table__cell--head"><FormattedMessage id="product.unit"/></th>
+                                        <th className="c-table__cell c-table__cell--head"><FormattedMessage id="product.qty"/></th>
                                         <th className="c-table__cell c-table__cell--head">
                                             <span className="u-hidden-visually">Actions</span>
                                         </th>
@@ -161,7 +160,10 @@ class ProductList extends Component {
                                                 {p.name}
                                             </td>
                                             <td className="c-table__cell price">
-                                                &euro; {p.price.toFixed(2)}/{p.unit}
+                                                &euro; {p.price.toFixed(2)}
+                                            </td>
+                                            <td className="c-table__cell unit">
+                                                {p.unit}
                                             </td>
                                             <td className="c-table__cell qty">
                                                 <input className="c-input" type="text" placeholder="Qty" id={p.uid}/>

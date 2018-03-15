@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import { FormattedMessage } from 'react-intl'
 import './style.css'
 
 const moment = window.moment;
@@ -43,7 +44,7 @@ class List extends Component {
 	}
 
 	render() {
-		var {list, check, filtered, totalPrice} = this.state;
+		var {list, check, filtered} = this.state;
 		return (
 			<div className="order-list">
 				<div className="row">
@@ -51,7 +52,9 @@ class List extends Component {
 						<div className="c-state-card total-order">
 							<div className="c-state-card__content">
 								<h5 className="c-state-card__number u-text-info">{list.length}</h5>
-								<p>Total Orders</p>
+								<p>
+									<FormattedMessage id="orderHistory.totalOrders"/>
+								</p>
 							</div>
 						</div>
 					</div>
@@ -96,28 +99,24 @@ class List extends Component {
 					<div className="col-sm-12">
 						<div className="c-table-responsive">
 							<table className="c-table">
-								<caption className="c-table__title">
-									{/* {filtered.length} orders */}
-									Order Details
-								</caption>
 								<thead className="c-table__head c-table__head--slim">
 									<tr className="c-table__row">
-										<th className="c-table__cell c-table__cell--head">Status</th>
-										<th className="c-table__cell c-table__cell--head">Order #</th>
-										<th className="c-table__cell c-table__cell--head">Creation Date</th>
-										<th className="c-table__cell c-table__cell--head">Supplier</th>
-										<th className="c-table__cell c-table__cell--head">Delivery Date</th>
-										<th className="c-table__cell c-table__cell--head">Order Total</th>
-										<th className="c-table__cell c-table__cell--head">More</th>
+										<th className="c-table__cell c-table__cell--head"><FormattedMessage id="orderHistory.status"/></th>
+										<th className="c-table__cell c-table__cell--head"><FormattedMessage id="orderHistory.orderNumber"/></th>
+										<th className="c-table__cell c-table__cell--head"><FormattedMessage id="orderHistory.creationDate"/></th>
+										<th className="c-table__cell c-table__cell--head"><FormattedMessage id="orderHistory.supplier"/></th>
+										<th className="c-table__cell c-table__cell--head"><FormattedMessage id="orderHistory.deliveryDate"/></th>
+										<th className="c-table__cell c-table__cell--head"><FormattedMessage id="orderHistory.orderTotal"/></th>
+										<th className="c-table__cell c-table__cell--head"><FormattedMessage id="orderHistory.more"/></th>
 									</tr>
 								</thead>
 								<tbody>
 									{filtered.map((order, i) =>
 										<tr className="c-table__row" key={i}>
 											<td className="c-table__cell status">
-												{order.status === 0 && 'pending'}
-												{order.status === 1 && 'accepted'}
-												{order.status === 2 && 'rejected'}
+												{order.status === 0 && <FormattedMessage id="orderHistory.pending"/>}
+												{order.status === 1 && <FormattedMessage id="orderHistory.confirmed"/>}
+												{order.status === 2 && <FormattedMessage id="orderHistory.canceled"/>}
 											</td>
 											<td className="c-table__cell order-number">
 												{order.uid}
@@ -129,14 +128,14 @@ class List extends Component {
 												{order.vendor.meta.businessName}
 											</td>
 											<td className="c-table__cell delivery-date">
-												{moment(order.deliveryDate).format('MMM DD, YYYY hh:mm:ss A')}
+												{moment(order.deliveryDate).format('MMM DD, YYYY')}
 											</td>
 											<td className="c-table__cell u-text-success order-total">
 												&euro; {this.orderPrice(order).toFixed(2)}
 											</td>
 											<td className="c-table__cell more">
 												<a className="c-btn c-btn--info" onClick={() => check(order)}>
-													Check-in
+													<FormattedMessage id="orderHistory.details"/>
 												</a>
 											</td>
 										</tr>
