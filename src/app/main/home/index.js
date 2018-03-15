@@ -112,7 +112,7 @@ class Home extends Component {
 
 		return (
 			<div id="home" className="container">
-				<h1 className="welcome">Welcome!</h1>
+				<h1 className="welcome"><FormattedMessage id="home.welcome"/></h1>
 				<div className="row">
 					<Link className="col-sm-12 col-lg-6 col-xl-4 box" to="/restaurant/product">
 						<div className="c-state-card" data-mh="state-cards">

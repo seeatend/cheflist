@@ -11,7 +11,8 @@ export default {
         home: {
             mySuppliers: 'My Suppliers',
             orderList: 'Order List',
-            product: 'Product'
+            product: 'Product',
+            welcome: 'Welcome!'
         },
         product: {
             add: 'Add',
@@ -103,7 +104,7 @@ export default {
     },
     'de-DE': {
         menu: {
-            cart: 'Einkaufswagen',
+            cart: 'Kasse',
             home: 'Start',
             logout: 'Abmelden',
             mySuppliers: 'Lieferanten verwalten',
@@ -113,7 +114,8 @@ export default {
         home: {
             mySuppliers: 'Meine Lieferanten',
             orderList: 'Bestell-Historie',
-            product: 'Produkte'
+            product: 'Produkte',
+            welcome: 'Willkommen!'
         },
         product: {
             add: 'Hinzu',
@@ -125,7 +127,7 @@ export default {
             myList: 'Meine Listen',
             no: 'Nr.',
             price: 'Preis ohne MwSt.',
-            productTotal: 'produkte insgesamt',
+            productTotal: 'Produkte insgesamt',
             productName: 'Name',
             qty: 'Anzahl',
             supplier: 'Lieferant',
@@ -157,7 +159,7 @@ export default {
             orderNum: 'Bestellung #',
             orderSummary: 'Zusammenfassung',
             orderTotal: 'Gesamtsumme',
-            phone: 'Telefon:',
+            phone: 'Telefon',
             priceUnit: 'Preis/ Einheit',
             product: 'Artikel',
             quantity: 'Anzahl',
@@ -182,7 +184,7 @@ export default {
         cart: {
             cart: 'Einkaufswagen',
             checkoutSummary: 'Übersicht',
-            deliveryDate: 'Lieferdatum',
+            deliveryDate: 'Wähle Lieferdatum',
             hideList: 'Verberge Liste ({number} Artikel)',
             item: 'Artikel',
             no: 'Nr.',

@@ -71,7 +71,8 @@ class Navbar extends Component {
 				</h2>
 				<div className="right-pane">
 					<Link className="c-btn c-btn--success to-cart" to="/restaurant/cart">
-						<i className="fa fa-shopping-cart u-mr-xsmall"></i>Cart ({this.cartAmount()})
+						<i className="fa fa-shopping-cart u-mr-xsmall"></i>
+						<FormattedMessage id="menu.cart"/> ({this.cartAmount()})
 					</Link>
 					<a className="c-btn c-btn--secondary to-cart">
 						<i className="fa fa-user-o u-mr-xsmall"></i>{this.state.name}

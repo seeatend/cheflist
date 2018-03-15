@@ -170,7 +170,8 @@ class ProductList extends Component {
                                             </td>
                                             <td className="c-table__cell add-action">
                                                 <a className="c-btn c-btn--success" onClick={()=>this.addToCart(p)}>
-                                                    <i className="fa fa-plus u-mr-xsmall"></i>Add
+                                                    <i className="fa fa-plus u-mr-xsmall"></i>
+                                                    <FormattedMessage id="product.add"/>
                                                 </a>
                                             </td>
                                         </tr>
