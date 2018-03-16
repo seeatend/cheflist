@@ -30,7 +30,6 @@ class Sidebar extends Component {
 									onClick={() => this.hideMenu()}>
 									<i className={"fa " + m.icon + " u-mr-xsmall"}></i>
 									<FormattedMessage id={m.title} />
-									{/* {m.title} */}
 								</Link>
 							</li>
 						)}

@@ -1,3 +1,5 @@
+
+
 export function flattenMessages(nestedMessages, prefix='') {
     return Object.keys(nestedMessages).reduce((messages, key) => {
         let value = nestedMessages[key];

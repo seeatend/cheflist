@@ -19,6 +19,13 @@ let locale =
 	|| navigator.userLanguage
 	|| 'en-US';
 
+if(locale.search('de') === -1) {
+	locale = 'en-US';
+} else {
+	locale = 'de-DE';
+}
+console.log(locale);
+
 ReactDOM.render(
 	<Provider store={store}>
 		<IntlProvider locale={locale} messages={flattenMessages(messages[locale])}>
