@@ -80,7 +80,7 @@ class ProductList extends Component {
 
         $.ajax({
             method: 'POST',
-            url: SERVER_URL + '/restaurant/cart/add/'+catalogId,
+            url: SERVER_URL + '/restaurant/cart/add/' + catalogId,
             headers: {
                 'x-api-token': localStorage.getItem('accessToken')
             },
@@ -127,9 +127,46 @@ class ProductList extends Component {
             filteredProduct
         })
     }
-    
+
+    getAllProductFromCart() {
+        var products = [];
+        this.props.carts.carts.forEach(function(cart) {
+            cart.products.forEach(function(p) {
+                products.push(p.product.uid);
+            })
+        });
+        return products;
+    }
+
+    qtyPlus(id) {
+        var qty = parseInt($('#' + id).val(),10) + 1;
+        $('#' + id).val(qty);
+    }
+
+    qtyMinus(id) {
+        var qty = parseInt($('#' + id).val(),10);
+        qty = qty>1 ? qty-1 : 1;
+        $('#' + id).val(qty);
+    }
+
+    germanFormat(number) {
+        var nums = number.toString().split('.');
+        var int = nums[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        return int + ',' + nums[1];
+    }
+
 	render() {
         var {vendorNames, filteredProduct} = this.state;
+        var products = this.getAllProductFromCart();
+
+        filteredProduct.sort(function(a, b) {
+            if (a.name.toLowerCase() > b.name.toLowerCase()) {
+                return 1
+            } else {
+                return -1
+            }
+        });
+
 		return (
             <div className="product-list">
                 <DropDownFilter options={vendorNames} action={(f) => this.filter(f)} className="vendor-filter"/>
@@ -143,7 +180,7 @@ class ProductList extends Component {
                                         <th className="c-table__cell c-table__cell--head"><FormattedMessage id="product.no"/></th>
                                         <th className="c-table__cell c-table__cell--head"><FormattedMessage id="product.productName"/></th>
                                         <th className="c-table__cell c-table__cell--head"><FormattedMessage id="product.price"/></th>
-                                        <th className="c-table__cell c-table__cell--head"><FormattedMessage id="product.unit"/></th>
+                                        <th className="c-table__cell c-table__cell--head"><FormattedMessage id="product.packagingUnit"/></th>
                                         <th className="c-table__cell c-table__cell--head"><FormattedMessage id="product.qty"/></th>
                                         <th className="c-table__cell c-table__cell--head">
                                             <span className="u-hidden-visually">Actions</span>
@@ -156,20 +193,24 @@ class ProductList extends Component {
                                             <td className="c-table__cell no">
                                                 {i+1}
                                             </td>
-                                            <td className="c-table__cell">
-                                                {p.name}
+                                            <td className="c-table__cell name">
+                                                {p.name} ({p.quantity} {p.unit})
                                             </td>
                                             <td className="c-table__cell price">
-                                                &euro; {p.price.toFixed(2)}
+                                                {this.germanFormat(p.price.toFixed(2))} &euro;
                                             </td>
-                                            <td className="c-table__cell unit">
-                                                {p.unit}
+                                            <td className="c-table__cell package">
+                                                {p.packaging}
                                             </td>
                                             <td className="c-table__cell qty">
-                                                <input className="c-input" type="text" id={p.uid}/>
+                                                <div className="c-btn-group">
+                                                    <a className="c-btn c-btn--secondary" onClick={() => this.qtyMinus(p.uid)}>-</a>
+                                                    <input className="c-input" type="text" value={1} onChange={()=>{}} id={p.uid}/>
+                                                    <a className="c-btn c-btn--secondary" onClick={() => this.qtyPlus(p.uid)}>+</a>
+                                                </div>
                                             </td>
                                             <td className="c-table__cell add-action">
-                                                <a className="c-btn c-btn--success" onClick={()=>this.addToCart(p)}>
+                                                <a className={products.indexOf(p.uid)===-1?"c-btn c-btn--info":"c-btn c-btn--success"} onClick={()=>this.addToCart(p)}>
                                                     <i className="fa fa-plus u-mr-xsmall"></i>
                                                     <FormattedMessage id="product.add"/>
                                                 </a>

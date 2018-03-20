@@ -1,7 +1,8 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom'
-import Sidebar   from './layout/sidebar'
-import NavBar    from './layout/navbar'
+import Sidebar from './layout/sidebar'
+import NavBar from './layout/navbar'
+import Alert from './layout/alert'
 import Home from './main/home'
 import Product from './main/product'
 import Order from './main/order'
@@ -26,6 +27,7 @@ const App = (props) => (
 				<Sidebar />
 				<main className="o-page__content">
 					<NavBar />
+					<Alert/>
 					<Route exact path='/restaurant/home' component={Home}/>
 					<Route exact path='/restaurant/product' component={Product}/>
 					<Route exact path='/restaurant/order' component={Order}/>

@@ -8,23 +8,79 @@
         margin-top: 20px;
         table {
             display: table;
+            @media screen and (max-width: 600px) {
+                display: block;
+            }
+            thead {
+                @media screen and (max-width: 600px) {
+                    display: none;
+                }
+            }
             tbody {
+                @media screen and (max-width: 600px) {
+                    display: block;
+                }
                 tr {
+                    @media screen and (max-width: 600px) {
+                        display: block;
+                        padding: 0 0 30px;
+                    }
                     .no {
                         width: 50px;
+                        @media screen and (max-width: 600px) {
+                            display: block;
+                            width: 100%;
+                            padding: 5px;
+                            font-weight: bold;
+                        }
+                    }
+                    .name {
+                        @media screen and (max-width: 600px) {
+                            display: block;
+                            text-align: center;
+                            padding: 5px;
+                            width: 100%
+                        }
                     }
                     .price {
                         width: 100px;
+                        @media screen and (max-width: 600px) {
+                            display: block;
+                            text-align: center;
+                            padding: 5px;
+                            width: 100%;
+                        }
                     }
-                    .unit {
+                    .package {
                         width: 100px;
+                        @media screen and (max-width: 600px) {
+                            display: block;
+                            text-align: center;
+                            padding: 5px;
+                            width: 100%;
+                        }
                     }
                     .qty {
-                        min-width: 100px;
                         width: 100px;
+                        input {
+                            min-width: 50px;
+                            text-align: center;
+                        }
+                        @media screen and (max-width: 600px) {
+                            display: block;
+                            text-align: center;
+                            padding: 5px;
+                            width: 100%;
+                        }
                     }
                     .add-action {
                         width: 100px;
+                        @media screen and (max-width: 600px) {
+                            display: block;
+                            text-align: center;
+                            padding: 5px;
+                            width: 100%;
+                        }
                     }
                 }
             }

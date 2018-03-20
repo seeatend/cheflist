@@ -24,7 +24,6 @@ if(locale.search('de') === -1) {
 } else {
 	locale = 'de-DE';
 }
-console.log(locale);
 
 ReactDOM.render(
 	<Provider store={store}>

@@ -1,3 +1,6 @@
+.cart .empty-cart {
+  text-align: center; }
+
 .cart .cart-container .checkout-box {
   float: right; }
   .cart .cart-container .checkout-box .title {

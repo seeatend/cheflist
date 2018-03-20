@@ -14,6 +14,12 @@ class Item extends Component {
 		return price;
 	}
 
+	germanFormat(number) {
+        var nums = number.toFixed(2).toString().split('.');
+        var int = nums[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        return int + ',' + nums[1];
+    }
+
 	render() {
 		var {item, back} = this.props;
 		return (
@@ -91,10 +97,12 @@ class Item extends Component {
 															<div className="u-color-info">{p.name}</div>
 														</td>
 														<td className="c-table__cell price-unit">
-															&euro; {p.price.toFixed(2)}/{p.unit}
+															{this.germanFormat(p.price)} &euro; / {p.unit}
 														</td>
 														<td className="c-table__cell total-price">
-															<div className="u-color-success">&euro; {(p.price * p.quantity).toFixed(2)}</div>
+															<div className="u-color-success">
+																{this.germanFormat(p.price * p.quantity)} &euro;
+															</div>
 														</td>
 													</tr>
 												)}
@@ -127,7 +135,9 @@ class Item extends Component {
 								</li>
 								<li>
 									<div className="label"><FormattedMessage id="orderDetail.orderTotal"/>:</div>
-									<div className="content u-text-success">&euro; {this.orderPrice(item).toFixed(2)}</div>
+									<div className="content u-text-success">
+										{this.germanFormat(this.orderPrice(item))} &euro;
+									</div>
 								</li>
 							</ul>
 						</div>

@@ -1,0 +1,54 @@
+.my-favorite-create #supplier-filter {
+  margin-bottom: 20px; }
+
+.my-favorite-create .supplier-table {
+  display: table; }
+  .my-favorite-create .supplier-table tr {
+    cursor: pointer; }
+
+.my-favorite-create #product-filter {
+  margin-bottom: 20px; }
+
+.my-favorite-create .product-table {
+  display: table; }
+  .my-favorite-create .product-table tr .add {
+    width: 20px; }
+    .my-favorite-create .product-table tr .add i {
+      background-color: #1bb934;
+      color: white;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      line-height: 24px;
+      text-align: center;
+      cursor: pointer; }
+
+.my-favorite-create .selected {
+  background-color: #FFFED0; }
+
+.my-favorite-create #list-name {
+  display: inline-block;
+  width: calc(100% - 30px);
+  padding: 5px; }
+
+.my-favorite-create #list-product-filter {
+  margin-bottom: 20px; }
+
+.my-favorite-create .list-table {
+  display: table; }
+  .my-favorite-create .list-table tr .remove {
+    width: 20px; }
+    .my-favorite-create .list-table tr .remove i {
+      background-color: #d35847;
+      color: white;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      line-height: 24px;
+      text-align: center;
+      cursor: pointer; }
+
+.my-favorite-create .buttons {
+  margin-top: 20px; }
+  .my-favorite-create .buttons .create-list {
+    margin-right: 10px; }

@@ -75,6 +75,10 @@
             }
             .quantity {
                 width: 100px;
+                input {
+                    min-width: 50px;
+                    text-align: center;
+                }
             }
             .price {
                 width: 100px;

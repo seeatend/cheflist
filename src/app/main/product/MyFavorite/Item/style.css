@@ -1,4 +1,7 @@
-.my-favorite-item .back-to-favorite {
+.my-favorite-item .title {
+  text-align: center; }
+
+.my-favorite-item .add-product {
   float: right; }
 
 .my-favorite-item .product-table {
@@ -13,5 +16,8 @@
       width: 100px; }
     .my-favorite-item .product-table table .qty {
       width: 100px; }
+      .my-favorite-item .product-table table .qty input {
+        min-width: 50px;
+        text-align: center; }
     .my-favorite-item .product-table table .action {
       width: 100px; }

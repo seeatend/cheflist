@@ -18,6 +18,7 @@ class Item extends Component {
     }
 
     addToCart(p) {
+        console.log($('#fav-'+p.uid).val());
         $.ajax({
             method: 'POST',
             url: SERVER_URL + '/restaurant/cart/add/'+p.catalog,
@@ -26,7 +27,7 @@ class Item extends Component {
             },
             data: {
                 productId: p.uid,
-                quantity: $('#'+p.uid).val()
+                quantity: $('#fav-'+p.uid).val()
             }
         });
         this.getCarts();
@@ -68,17 +69,54 @@ class Item extends Component {
                 carts: response.carts
             });
         })
-	}
+    }
+    
+    getAllProductFromCart() {
+        var products = [];
+        this.props.carts.carts.forEach(function(cart) {
+            cart.products.forEach(function(p) {
+                products.push(p.product.uid);
+            })
+        });
+        return products;
+    }
+
+    qtyPlus(id) {
+        var qty = parseInt($('#' + id).val(),10) + 1;
+        $('#' + id).val(qty);
+    }
+
+    qtyMinus(id) {
+        var qty = parseInt($('#' + id).val(),10);
+        qty = qty>0 ? qty-1 : 0;
+        $('#' + id).val(qty);
+    }
+
+    germanFormat(number) {
+        var nums = number.toString().split('.');
+        var int = nums[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        return int + ',' + nums[1];
+    }
 
 	render() {
-        var {products, back} = this.props;
+        var {products, back, item} = this.props;
+        var purchased = this.getAllProductFromCart();
+        products.sort(function(a, b) {
+            if (a.name.toLowerCase() > b.name.toLowerCase()) {
+                return 1
+            } else {
+                return -1
+            }
+        });
+
 		return (
             <div className="my-favorite-item">
-                <a className="c-btn c-btn--info add-product">
-                    <FormattedMessage id="product.addProductToList"/>
-                </a>
+                <h2 className="title">{item.name}</h2>
                 <a className="c-btn c-btn--secondary back-to-favorite" onClick={() => back()}>
-                    <FormattedMessage id="product.back"/> &gt;
+                    &lt; <FormattedMessage id="product.back"/>
+                </a>
+                <a className="c-btn c-btn--info add-product" onClick={()=>this.props.edit(item)}>
+                    <FormattedMessage id="product.addProductToList"/>
                 </a>
                 <div className="row u-mb-large product-table">
                     <div className="col-sm-12">
@@ -123,20 +161,21 @@ class Item extends Component {
                                                 {this.getSupplier(p)}
                                             </td>
                                             <td className="c-table__cell price">
-                                                &euro; {p.price.toFixed(2)}
+                                                {this.germanFormat(p.price.toFixed(2))} &euro;
                                             </td>
                                             <td className="c-table__cell unit">
                                                 {p.unit}
                                             </td>
                                             <td className="c-table__cell qty">
-                                                <input className="c-input" type="text" id={p.uid}/>
+                                                <div className="c-btn-group">
+                                                    <a className="c-btn c-btn--secondary" onClick={() => this.qtyMinus('fav-'+p.uid)}>-</a>
+                                                    <input className="c-input" type="text" defaultValue="0" id={'fav-'+p.uid}/>
+                                                    <a className="c-btn c-btn--secondary" onClick={() => this.qtyPlus('fav-'+p.uid)}>+</a>
+                                                </div>
                                             </td>
                                             <td className="c-table__cell action">
                                                 <div className="c-btn-group">
-                                                    {/* <a className="c-btn c-btn--secondary">
-                                                        <i className="fa fa-plus u-mr-xsmall"></i>Note
-                                                    </a> */}
-                                                    <a className="c-btn c-btn--success" onClick={() => this.addToCart(p)}>
+                                                    <a className={purchased.indexOf(p.uid) === -1?"c-btn c-btn--info":"c-btn c-btn--success"} onClick={() => this.addToCart(p)}>
                                                         <i className="fa fa-plus u-mr-xsmall"></i>
                                                         <FormattedMessage id="product.add"/>
                                                     </a>

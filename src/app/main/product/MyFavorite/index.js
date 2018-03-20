@@ -2,6 +2,8 @@ import React, {Component} from 'react'
 import { SERVER_URL } from '../../../config'
 import List from './List'
 import Item from './Item'
+import NewL from './NewL'
+import EditL from './EditL'
 
 const $ = window.$;
 
@@ -55,13 +57,13 @@ class MyFavorite extends Component {
         });
     }
 
-    edit(item) {
+    view(item) {
         var scope = this;
         this.getFavorite(item.uid).done(function(response) {
             scope.setState({
                 item: item,
                 products: response.products,
-                page: 'edit'
+                page: 'view'
             })
         })
         .fail(function() {
@@ -69,24 +71,37 @@ class MyFavorite extends Component {
         });
     }
 
-    back() {
-        // this.load();
+    edit() {
         this.setState({
-            // list: response.favorites,
-            page: 'list',
-            item: null,
-            products: null
+            page: 'edit'
+        })
+    }
+
+    back() {
+        this.load();
+    }
+
+    backToView() {
+        var {item} = this.state;
+        // this.load();
+        this.view(item);
+    }
+
+    newList() {
+        this.setState({
+            page: 'new'
         })
     }
 
 	render() {
         var {page, list, item, products} = this.state;
 		return (
+            
 			<div>
-                {page === 'list'?
-                    <List list={list} edit={(item) => this.edit(item)}/>:
-                    <Item item={item} products={products} back={() => this.back()}/>
-                }
+                {page === 'list' && <List list={list} view={(item) => this.view(item)} new={() => this.newList()}/>}
+                {page === 'new'  && <NewL back={() => this.back()}/>}
+                {page === 'view' && <Item item={item} products={products} back={() => this.back()} edit={() => this.edit()}/>}
+                {page === 'edit' && <EditL item={item} products={products} backToView={() => this.backToView()}/>}
             </div>
 		)
 	}

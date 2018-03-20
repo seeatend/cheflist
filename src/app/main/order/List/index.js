@@ -43,6 +43,12 @@ class List extends Component {
 		return price;
 	}
 
+	germanFormat(number) {
+        var nums = number.toString().split('.');
+        var int = nums[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        return int + ',' + nums[1];
+    }
+
 	render() {
 		var {list, check, filtered} = this.state;
 		return (
@@ -131,7 +137,7 @@ class List extends Component {
 												{moment(order.deliveryDate).format('MMM DD, YYYY')}
 											</td>
 											<td className="c-table__cell u-text-success order-total">
-												&euro; {this.orderPrice(order).toFixed(2)}
+												{this.germanFormat(this.orderPrice(order).toFixed(2))} &euro;
 											</td>
 											<td className="c-table__cell more">
 												<a className="c-btn c-btn--info" onClick={() => check(order)}>

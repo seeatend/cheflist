@@ -37,6 +37,15 @@ class MyConnection extends Component {
 
     render() {
         var {connections} = this.state;
+
+        connections.sort(function(a, b) {
+            if (a.meta.businessName.toLowerCase() > b.meta.businessName.toLowerCase()) {
+                return 1
+            } else {
+                return -1
+            }
+        })
+
 		return (
             <div className="my-connection">
                 <h3 className="u-mb-small">

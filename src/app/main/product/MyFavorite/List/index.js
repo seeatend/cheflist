@@ -4,21 +4,29 @@ import './style.css'
 
 class List extends Component {
     
-    edit(item) {
-        this.props.edit(item);
+    view(item) {
+        this.props.view(item);
     }
 
 	render() {
+        var {list} = this.props;
+        list.sort(function(a, b) {
+            if (a.name.toLowerCase() > b.name.toLowerCase()) {
+                return 1
+            } else {
+                return -1
+            }
+        });
 		return (
             <div className="my-favorite-list">
-                <a className="c-btn c-btn--info create-new-fav">
+                <a className="c-btn c-btn--info create-new-fav" onClick={() => this.props.new()}>
                     <FormattedMessage id="product.createNewList"/>
                 </a>
-                {this.props.list.map((f, i) =>
+                {list.map((f, i) =>
                     <div className="c-card u-mb-medium my-favorite-item" key={i}>
-                        <div className="u-p-medium" onClick={() => this.edit(f)}>
+                        <div className="u-p-medium" onClick={() => this.view(f)}>
                             {f.name}
-                            <a className="c-btn c-btn--success edit" onClick={() => this.edit(f)}>
+                            <a className="c-btn c-btn--success view" onClick={() => this.view(f)}>
                                 <i className="fa fa-pencil-square-o u-mr-xsmall"></i>
                                 <FormattedMessage id="product.view"/>
                             </a>

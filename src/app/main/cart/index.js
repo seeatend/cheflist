@@ -1,13 +1,20 @@
 import React, {Component} from 'react'
-import { FormattedMessage } from 'react-intl'
-import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import { sidebar_menu_update } from '../../reducer/sidebar_menu'
-import { SERVER_URL } from '../../config'
-import { cart_update } from '../../reducer/cart'
+import { FormattedMessage } from 'react-intl'
 
+// Reducer
+import { connect } from 'react-redux'
+import { sidebar_menu_update } from '../../reducer/sidebar_menu'
+import { cart_update } from '../../reducer/cart'
+import { alert_add, alert_update, alert_remove } from '../../reducer/alert'
+
+// API
+import { SERVER_URL } from '../../config'
+
+// Component
 import Vendor from './Vendor'
 
+// Style
 import './style.css'
 
 const $ = window.$;
@@ -74,6 +81,11 @@ class Cart extends Component {
 	bulkOrder() {
 		var scope = this;
 		scope.updateDeliveryDate();
+		this.props.alert_add({
+			index: 'bulk-order',
+			status: 'process',
+			message: 'Processing all order items ...'
+		});
 		$.ajax({
             method: 'POST',
             url: SERVER_URL + '/restaurant/cart/bulk_checkout',
@@ -81,14 +93,36 @@ class Cart extends Component {
                 'x-api-token': localStorage.getItem('accessToken')
             }
 		}).done(function() {
+			scope.props.alert_update({
+				index: 'bulk-order',
+				status: 'success',
+				message: 'Successfully sent out all orders'
+			});
+			setTimeout(() => {
+				scope.props.alert_remove({
+					index: 'bulk-order'
+				});
+			}, 5000);
 			scope.load();
 			scope.getUpdatedCarts();
-		});
+		})
+		.fail(function() {
+            scope.props.alert_update({
+				index: 'bulk-order',
+				status: 'failed',
+				message: 'Failed sending orders'
+			});
+			setTimeout(() => {
+				scope.props.alert_remove({
+					index: 'bulk-order'
+				});
+			}, 5000);
+        });
 	}
 
 	updateDeliveryDate() {
 		var {carts} = this.state;
-		$('.delivery-date').each(function(i) {
+		$('.delivery-date input').each(function(i) {
 			$.ajax({
 				method: 'POST',
 				url: SERVER_URL + '/restaurant/cart/update/' + carts[i].uid,
@@ -100,11 +134,10 @@ class Cart extends Component {
 					deliveryDate: moment($(this).val(), 'MM/DD/YYYY').format('YYYY-MM-DD')
 				}
 			}).done(function(response) {
-				// console.log(response);
 			}).fail(function() {
 				console.log('error');
 			});
-		})
+		});
 	}
 	
 	getUpdatedCarts() {
@@ -121,6 +154,12 @@ class Cart extends Component {
             });
         })
 	}
+
+	germanFormat(number) {
+        var nums = number.toFixed(2).toString().split('.');
+        var int = nums[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        return int + ',' + nums[1];
+    }
 	
 	render() {
 		var {redirect} = this.state;
@@ -132,34 +171,39 @@ class Cart extends Component {
 
 		return (
 			<div className="container-fluid cart">
-                <div className="row cart-container">
-                    <div className="col-lg-8 col-sm-12 vendor-list">
-						{carts.map((c, i) =>
-							<Vendor cart={c} key={i} load={() => this.load()}/>
-						)}
-                    </div>
-					<div className="col-lg-4 col-sm-12 checkout-box">
-						<div className="c-card u-p-medium u-mb-medium">
-							<h3 className="u-mb-small">
-								<FormattedMessage id="cart.checkoutSummary"/>
-							</h3>
-							<h3 className="u-mb-small">
-								<div className="title">
-									<FormattedMessage id="cart.total"/>
-								</div>
-								<div className="price">&euro; {this.cartsTotal(carts).toFixed(2)}</div>
-							</h3>
-							<p className="u-mb-xsmall">
-								<a className="c-btn c-btn--success c-btn--fullwidth" onClick={()=>this.bulkOrder()}>
-									<FormattedMessage id="cart.sendAllOrders"/>
-								</a>
-							</p>
-							{/* <p className="u-mb-xsmall">
-								<a className="c-btn c-btn--secondary c-btn--fullwidth">Remove all orders from cart</a>
-							</p> */}
+				{carts.length === 0 ?
+					<h2 className="empty-cart">Cart is Empty</h2>:
+					<div className="row cart-container">
+						<div className="col-lg-8 col-sm-12 vendor-list">
+							{carts.map((c, i) =>
+								<Vendor cart={c} key={i} load={() => this.load()}/>
+							)}
+						</div>
+						<div className="col-lg-4 col-sm-12 checkout-box">
+							<div className="c-card u-p-medium u-mb-medium">
+								<h3 className="u-mb-small">
+									<FormattedMessage id="cart.checkoutSummary"/>
+								</h3>
+								<h3 className="u-mb-small">
+									<div className="title">
+										<FormattedMessage id="cart.total"/>
+									</div>
+									<div className="price">
+										{this.germanFormat(this.cartsTotal(carts))} &euro;
+									</div>
+								</h3>
+								<p className="u-mb-xsmall">
+									<a className="c-btn c-btn--success c-btn--fullwidth" onClick={()=>this.bulkOrder()}>
+										<FormattedMessage id="cart.sendAllOrders"/>
+									</a>
+								</p>
+								{/* <p className="u-mb-xsmall">
+									<a className="c-btn c-btn--secondary c-btn--fullwidth">Remove all orders from cart</a>
+								</p> */}
+							</div>
 						</div>
 					</div>
-                </div>
+				}
             </div>
 		)
 	}
@@ -168,7 +212,14 @@ class Cart extends Component {
 export default connect(
 	(state) => ({
 		activeMenu: state.sidebarMenu,
-		carts: state.carts
+		carts: state.carts,
+		alerts: state.alerts
 	}),
-	{ sidebar_menu_update, cart_update }
+	{
+		sidebar_menu_update,
+		cart_update,
+		alert_add,
+		alert_update,
+		alert_remove
+	}
 )(Cart)

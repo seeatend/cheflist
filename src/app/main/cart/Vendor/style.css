@@ -66,6 +66,9 @@
       width: 50px; }
     .vendor .item-table table .quantity {
       width: 100px; }
+      .vendor .item-table table .quantity input {
+        min-width: 50px;
+        text-align: center; }
     .vendor .item-table table .price {
       width: 100px; }
     .vendor .item-table table .action {

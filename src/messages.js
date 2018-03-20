@@ -28,7 +28,7 @@ export default {
             productName: 'Product Name',
             qty: 'Qty',
             supplier: 'Supplier',
-            unit: 'Unit',
+            packagingUnit: 'Packaging Unit',
             view: 'View',
         },
         orderHistory: {
@@ -131,7 +131,7 @@ export default {
             productName: 'Name',
             qty: 'Anzahl',
             supplier: 'Lieferant',
-            unit: 'Einheit',
+            packagingUnit: 'Einheit',
             view: 'Ansehen',
         },
         orderHistory: {

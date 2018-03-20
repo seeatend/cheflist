@@ -67,22 +67,26 @@ class Vendor extends Component {
                 'x-api-token': localStorage.getItem('accessToken')
             },
             data: {
-                message: '',
                 deliveryDate: moment(this.refs.deliveryDate.value, 'MM/DD/YYYY').format('YYYY-MM-DD')
             }
         }).done(function(response) {
-            // console.log(response);
         }).fail(function() {
             console.log('error');
         });
     }
 
-    updateQty(product) {
+    updateQty(product, qty) {
+        var scope = this;
         var {cart} = this.props;
-        var uid = product.product.uid;
-        var price = product.product.price;
-        var qty = parseInt($('#' + uid + ' .quantity input').val(), 10);
-        $('#' + uid + " .price").html('&euro; ' + qty * price);
+        var {uid} = product.product;
+
+        cart.products.forEach(function(p) {
+            if (p.product.uid === uid) {
+                p.quantity = qty;
+            }
+        });
+        this.setState({});
+
         $.ajax({
             method: 'POST',
             url: SERVER_URL + '/restaurant/cart/update/' + cart.uid + '/' + uid,
@@ -92,6 +96,23 @@ class Vendor extends Component {
             data: {
                 message: '',
                 quantity: qty
+            }
+        }).done(function(response) {
+            scope.getCarts();
+        }).fail(function() {
+            console.log('error');
+        });
+    }
+
+    updateMessage(e) {
+        $.ajax({
+            method: 'POST',
+            url: SERVER_URL + '/restaurant/cart/update/' + this.props.cart.uid,
+            headers: {
+                'x-api-token': localStorage.getItem('accessToken')
+            },
+            data: {
+                message: e.target.value
             }
         }).done(function(response) {
         }).fail(function() {
@@ -142,21 +163,53 @@ class Vendor extends Component {
                 'x-api-token': localStorage.getItem('accessToken')
             }
         }).done(function(response) {
-            console.log('test', response);
             scope.props.cart_update({
                 carts: response.carts
             });
         })
-	}
+    }
+    
+    qtyPlus(id, product) {
+        var input = $('#' + id + ' .quantity input');
+        var qty = parseInt(input.val(),10) + 1;
+        input.val(qty);
+        this.updateQty(product, qty);
+    }
+
+    qtyMinus(id, product) {
+        var input = $('#' + id + ' .quantity input');
+        var qty = parseInt(input.val(),10);
+        qty = qty>0 ? qty-1 : 0;
+        input.val(qty);
+        this.updateQty(product, qty);
+    }
+
+    germanFormat(number) {
+        var nums = number.toFixed(2).toString().split('.');
+        var int = nums[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        return int + ',' + nums[1];
+    }
 
 	render() {
         var {cart} = this.props;
         var {showTable} = this.state;
+        var products = cart.products;
+
+        products.sort(function(a, b) {
+            if (a.product.name.toLowerCase() > b.product.name.toLowerCase()) {
+                return 1
+            } else {
+                return -1
+            }
+        });
+
 		return (
             <div className="c-card u-p-medium u-mb-medium vendor">
                 <h4 className="u-mb-small">
                     <div className="vendor-name">{cart.vendor.firstName} {cart.vendor.lastName}</div>
-                    <div className="total-price">&euro; {this.cartPrice(cart).toFixed(2)}</div>
+                    <div className="total-price">
+                        {this.germanFormat(this.cartPrice(cart))} &euro;
+                    </div>
                 </h4>
                 {/* <p className="u-mb-xsmall valid-message">
                     <i className="fa fa-check-circle u-mr-xsmall"></i> Order minimum is met!
@@ -196,7 +249,7 @@ class Vendor extends Component {
                         <div className="col-sm-12">
                             <div className="c-table-responsive table-container">
                                 <p className="u-color-success">
-                                    {cart.products.length} <FormattedMessage id="cart.item"/>
+                                    {products.length} <FormattedMessage id="cart.item"/>
                                 </p>
                                 <table className="c-table">
                                     <thead className="c-table__head c-table__head--slim">
@@ -219,7 +272,7 @@ class Vendor extends Component {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {cart.products.map((p, i) =>
+                                        {products.map((p, i) =>
                                             <tr className="c-table__row" key={i} id={p.product.uid}>
                                                 <td className="c-table__cell no">
                                                     {i+1}
@@ -228,10 +281,16 @@ class Vendor extends Component {
                                                     {p.product.name}
                                                 </td>
                                                 <td className="c-table__cell quantity">
-                                                    <input className="c-input" type="text" placeholder="Qty" defaultValue={p.quantity} onBlur={() => this.updateQty(p)}/>
+                                                    <div className="c-btn-group">
+                                                        <a className="c-btn c-btn--secondary" onClick={() => this.qtyMinus(p.product.uid, p)}>-</a>
+                                                        <input className="c-input" type="text" placeholder="Qty"
+                                                            defaultValue={p.quantity}
+                                                            onBlur={(e) => this.updateQty(p, e.target.value)}/>
+                                                        <a className="c-btn c-btn--secondary" onClick={() => this.qtyPlus(p.product.uid, p)}>+</a>
+                                                    </div>
                                                 </td>
                                                 <td className="c-table__cell price">
-                                                    &euro; {(p.product.price * p.quantity).toFixed(2)}
+                                                    {this.germanFormat(p.product.price * p.quantity)} &euro;
                                                 </td>
                                                 <td className="c-table__cell action">
                                                     <div className="c-btn-group">
@@ -255,7 +314,7 @@ class Vendor extends Component {
                             <FormattedMessage id="cart.orderMessage"/>
                         </p>
                         <p>
-                            {cart.message}
+                            <textarea className="c-input" onBlur={(e) => this.updateMessage(e)} defaultValue={cart.message}/>
                         </p>
                     </div>
                 }
