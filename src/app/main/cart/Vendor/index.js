@@ -3,6 +3,7 @@ import { FormattedMessage } from 'react-intl'
 import { connect } from 'react-redux'
 import { SERVER_URL } from '../../../config'
 import { cart_update } from '../../../reducer/cart'
+import { alert_add, alert_update, alert_remove } from '../../../reducer/alert'
 import './style.css'
 
 const $ = window.$;
@@ -14,7 +15,16 @@ class Vendor extends Component {
         super(props);
         this.state = {
             showTable: false,
+            cart: props.cart,
+            message: props.cart.message
         }
+    }
+
+    componentWillReceiveProps(newProps) {
+        this.setState({
+            cart: newProps.cart,
+            message: newProps.cart.message
+		});
     }
 
     componentDidMount() {
@@ -39,7 +49,12 @@ class Vendor extends Component {
         });
     }
     
-    placeOrder(cart) {
+    placeOrder(cart) {                                                                                                                                                                                                                                                                                                                                                                                                                                       
+        this.props.alert_add({
+			index: 'place-order' + cart.uid,
+			status: 'process',
+			message: 'cart.orderProgressAlert'
+		});
         this.updateDeliveryDate();
         var scope = this;
         this.getAccountInfo().done(function(response) {
@@ -53,13 +68,35 @@ class Vendor extends Component {
                     'deliveryAddress': response.account.meta.address
                 }
             }).done(function() {
+                scope.props.alert_update({
+                    index: 'place-order' + cart.uid,
+                    status: 'success',
+                    message: `Successflly sent order (${cart.vendor.firstName} ${cart.vendor.lastName})`
+                });
+                setTimeout(() => {
+                    scope.props.alert_remove({
+                        index: 'place-order' + cart.uid
+                    });
+                }, 5000);
                 scope.props.load();
                 scope.getCarts();
+            }).fail(function(error) {
+                scope.props.alert_update({
+                    index: 'place-order' + cart.uid,
+                    status: 'failed',
+                    message: 'cart.orderFailedAlert'
+                });
+                setTimeout(() => {
+                    scope.props.alert_remove({
+                        index: 'place-order' + cart.uid
+                    });
+                }, 5000);
             });
         });
     }
 
     updateDeliveryDate() {
+        var date = moment(this.refs.deliveryDate.value, 'MM/DD/YYYY').format('YYYY-MM-DD');
         $.ajax({
             method: 'POST',
             url: SERVER_URL + '/restaurant/cart/update/' + this.props.cart.uid,
@@ -67,7 +104,7 @@ class Vendor extends Component {
                 'x-api-token': localStorage.getItem('accessToken')
             },
             data: {
-                deliveryDate: moment(this.refs.deliveryDate.value, 'MM/DD/YYYY').format('YYYY-MM-DD')
+                deliveryDate: date
             }
         }).done(function(response) {
         }).fail(function() {
@@ -105,6 +142,11 @@ class Vendor extends Component {
     }
 
     updateMessage(e) {
+        var newMsg = e.target.value;
+        this.setState({
+            message : newMsg
+        })
+
         $.ajax({
             method: 'POST',
             url: SERVER_URL + '/restaurant/cart/update/' + this.props.cart.uid,
@@ -112,12 +154,18 @@ class Vendor extends Component {
                 'x-api-token': localStorage.getItem('accessToken')
             },
             data: {
-                message: e.target.value
+                message: newMsg
             }
         }).done(function(response) {
-        }).fail(function() {
-            console.log('error');
+        }).fail(function(err) {
+            console.log(err);
         });
+    }
+
+    handleMessage(e) {
+        this.setState({
+            message: e.target.value
+        })
     }
 
     removeOrder(cart) {
@@ -192,7 +240,7 @@ class Vendor extends Component {
 
 	render() {
         var {cart} = this.props;
-        var {showTable} = this.state;
+        var {showTable, message} = this.state;
         var products = cart.products;
 
         products.sort(function(a, b) {
@@ -314,7 +362,7 @@ class Vendor extends Component {
                             <FormattedMessage id="cart.orderMessage"/>
                         </p>
                         <p>
-                            <textarea className="c-input" onBlur={(e) => this.updateMessage(e)} defaultValue={cart.message}/>
+                            <textarea className="c-input" onBlur={(e) => this.updateMessage(e)} value={message} onChange={(e) => this.handleMessage(e)}/>
                         </p>
                     </div>
                 }
@@ -324,6 +372,14 @@ class Vendor extends Component {
 }
 
 export default connect(
-	(state) => ({carts: state.carts}),
-	{ cart_update }
+	(state) => ({
+        carts: state.carts,
+        alerts: state.alerts
+    }),
+	{ 
+        cart_update,
+        alert_add,
+		alert_update,
+		alert_remove
+    }
 )(Vendor)

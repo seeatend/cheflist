@@ -84,7 +84,7 @@ class Cart extends Component {
 		this.props.alert_add({
 			index: 'bulk-order',
 			status: 'process',
-			message: 'Processing all order items ...'
+			message: 'cart.orderBulkProgressAlert'
 		});
 		$.ajax({
             method: 'POST',
@@ -110,7 +110,7 @@ class Cart extends Component {
             scope.props.alert_update({
 				index: 'bulk-order',
 				status: 'failed',
-				message: 'Failed sending orders'
+				message: 'cart.orderFailedAlert'
 			});
 			setTimeout(() => {
 				scope.props.alert_remove({
@@ -168,6 +168,7 @@ class Cart extends Component {
 		}
 
 		var {carts} = this.state;
+		console.log(carts);
 
 		return (
 			<div className="container-fluid cart">

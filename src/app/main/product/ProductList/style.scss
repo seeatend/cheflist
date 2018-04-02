@@ -27,6 +27,7 @@
                     }
                     .no {
                         width: 50px;
+                        color: gray;
                         @media screen and (max-width: 600px) {
                             display: block;
                             width: 100%;
@@ -39,20 +40,26 @@
                             display: block;
                             text-align: center;
                             padding: 5px;
-                            width: 100%
+                            width: 100%;
+                            font-weight: bolder;
+                            font-size: 16px;
+                            white-space: normal;
                         }
                     }
                     .price {
                         width: 100px;
                         @media screen and (max-width: 600px) {
-                            display: block;
-                            text-align: center;
-                            padding: 5px;
-                            width: 100%;
+                            display: none;
                         }
                     }
                     .package {
                         width: 100px;
+                        @media screen and (max-width: 600px) {
+                            display: none;
+                        }
+                    }
+                    .price-package {
+                        display: none;
                         @media screen and (max-width: 600px) {
                             display: block;
                             text-align: center;

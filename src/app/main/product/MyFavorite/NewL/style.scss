@@ -32,10 +32,20 @@
     .selected {
         background-color: #FFFED0;
     }
-    #list-name {
-        display: inline-block;
-        width: calc(100% - 30px);
-        padding: 5px;
+    .list-name-box {
+        position: relative;
+        span {
+            position: absolute;
+            top: -15px;
+            font-size: 14px;
+            left: 22px;
+            color: #1bb934;
+        }
+        #list-name {
+            display: inline-block;
+            width: calc(100% - 30px);
+            padding: 5px;
+        }
     }
     #list-product-filter {
         margin-bottom: 20px;
@@ -59,7 +69,7 @@
         }
     }
     .buttons {
-        margin-top: 20px;
+        margin-bottom: 20px;
         .create-list {
             margin-right: 10px;
         }

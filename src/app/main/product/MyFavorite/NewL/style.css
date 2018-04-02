@@ -26,10 +26,18 @@
 .my-favorite-create .selected {
   background-color: #FFFED0; }
 
-.my-favorite-create #list-name {
-  display: inline-block;
-  width: calc(100% - 30px);
-  padding: 5px; }
+.my-favorite-create .list-name-box {
+  position: relative; }
+  .my-favorite-create .list-name-box span {
+    position: absolute;
+    top: -15px;
+    font-size: 14px;
+    left: 22px;
+    color: #1bb934; }
+  .my-favorite-create .list-name-box #list-name {
+    display: inline-block;
+    width: calc(100% - 30px);
+    padding: 5px; }
 
 .my-favorite-create #list-product-filter {
   margin-bottom: 20px; }
@@ -49,6 +57,6 @@
       cursor: pointer; }
 
 .my-favorite-create .buttons {
-  margin-top: 20px; }
+  margin-bottom: 20px; }
   .my-favorite-create .buttons .create-list {
     margin-right: 10px; }

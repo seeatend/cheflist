@@ -1,23 +1,97 @@
 .my-favorite-item .title {
   text-align: center; }
 
-.my-favorite-item .add-product {
-  float: right; }
+.my-favorite-item .buttons {
+  display: table; }
+  @media screen and (max-width: 600px) {
+    .my-favorite-item .buttons .back-to-favorite {
+      width: 100%;
+      margin-bottom: 10px; } }
+  .my-favorite-item .buttons .add-product {
+    float: right; }
+    @media screen and (max-width: 600px) {
+      .my-favorite-item .buttons .add-product {
+        width: 100%; } }
 
 .my-favorite-item .product-table {
   margin-top: 20px; }
   .my-favorite-item .product-table table {
     display: table; }
-    .my-favorite-item .product-table table .no {
-      width: 50px; }
-    .my-favorite-item .product-table table .price {
+    @media screen and (max-width: 600px) {
+      .my-favorite-item .product-table table {
+        display: block; } }
+    @media screen and (max-width: 600px) {
+      .my-favorite-item .product-table table thead {
+        display: none; } }
+    @media screen and (max-width: 600px) {
+      .my-favorite-item .product-table table tbody {
+        display: block; } }
+    @media screen and (max-width: 600px) {
+      .my-favorite-item .product-table table tbody tr {
+        display: block;
+        padding: 0 0 30px; } }
+    .my-favorite-item .product-table table tbody tr .no {
+      width: 50px;
+      color: gray; }
+      @media screen and (max-width: 600px) {
+        .my-favorite-item .product-table table tbody tr .no {
+          display: block;
+          width: 100%;
+          padding: 5px;
+          font-weight: bold; } }
+    @media screen and (max-width: 600px) {
+      .my-favorite-item .product-table table tbody tr .name {
+        display: block;
+        text-align: center;
+        padding: 5px;
+        width: 100%;
+        font-weight: bolder;
+        font-size: 16px;
+        white-space: normal; } }
+    .my-favorite-item .product-table table tbody tr .supplier {
+      color: gray; }
+      @media screen and (max-width: 600px) {
+        .my-favorite-item .product-table table tbody tr .supplier {
+          display: block;
+          text-align: center;
+          padding: 5px;
+          width: 100%;
+          font-weight: bolder;
+          font-size: 16px; } }
+    .my-favorite-item .product-table table tbody tr .price {
       width: 100px; }
-    .my-favorite-item .product-table table .unit {
+      @media screen and (max-width: 600px) {
+        .my-favorite-item .product-table table tbody tr .price {
+          display: none; } }
+    .my-favorite-item .product-table table tbody tr .unit {
       width: 100px; }
-    .my-favorite-item .product-table table .qty {
+      @media screen and (max-width: 600px) {
+        .my-favorite-item .product-table table tbody tr .unit {
+          display: none; } }
+    .my-favorite-item .product-table table tbody tr .price-unit {
+      display: none; }
+      @media screen and (max-width: 600px) {
+        .my-favorite-item .product-table table tbody tr .price-unit {
+          display: block;
+          text-align: center;
+          padding: 5px;
+          width: 100%; } }
+    .my-favorite-item .product-table table tbody tr .qty {
       width: 100px; }
-      .my-favorite-item .product-table table .qty input {
+      .my-favorite-item .product-table table tbody tr .qty input {
         min-width: 50px;
         text-align: center; }
-    .my-favorite-item .product-table table .action {
+      @media screen and (max-width: 600px) {
+        .my-favorite-item .product-table table tbody tr .qty {
+          display: block;
+          text-align: center;
+          padding: 5px;
+          width: 100%; } }
+    .my-favorite-item .product-table table tbody tr .action {
       width: 100px; }
+      @media screen and (max-width: 600px) {
+        .my-favorite-item .product-table table tbody tr .action {
+          display: block;
+          text-align: center;
+          padding: 5px;
+          width: 100%; } }

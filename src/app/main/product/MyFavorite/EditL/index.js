@@ -244,9 +244,18 @@ class EditL extends Component {
 	render() {
         var {filteredVendors, filteredProducts, filteredListProducts, selectedVendor} = this.state;
         var {backToView} = this.props;
+        var uidList = filteredListProducts.map(function(p){ return p.uid });
 
 		return (
             <div className="my-favorite-create">
+                <div className="buttons">
+                    <a className="c-btn c-btn--info create-list" onClick={() => this.update()}>
+                        Update List
+                    </a>
+                    <a className="c-btn c-btn--secondary cancel-create" onClick={() => backToView()}>
+                        Cancel
+                    </a>
+                </div>
                 <div className="row">
                     <div className="col-md-4">
                         <h3 className="u-mb-small">
@@ -278,12 +287,13 @@ class EditL extends Component {
                             <table className="c-table product-table">
                                 <tbody>
                                     {filteredProducts.map( (p, i) =>
+                                        uidList.indexOf(p.uid) === -1 &&
                                         <tr className="c-table__row" key={i}>
-                                            <td className="c-table__cell">
-                                                {p.name}
-                                            </td>
                                             <td className="c-table__cell add" onClick={()=>this.addProductToList(p)}>
                                                 <i className="fa fa-plus"></i>
+                                            </td>
+                                            <td className="c-table__cell">
+                                                {p.name}
                                             </td>
                                         </tr>
                                     )}
@@ -311,14 +321,6 @@ class EditL extends Component {
                             </table>
                         </div>
                     </div>
-                </div>
-                <div className="buttons">
-                    <a className="c-btn c-btn--info create-list" onClick={() => this.update()}>
-                        Update
-                    </a>
-                    <a className="c-btn c-btn--secondary cancel-create" onClick={() => backToView()}>
-                        Cancel
-                    </a>
                 </div>
             </div>
 		)

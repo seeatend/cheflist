@@ -83,7 +83,7 @@ class MyFavorite extends Component {
 
     backToView() {
         var {item} = this.state;
-        // this.load();
+        this.load();
         this.view(item);
     }
 

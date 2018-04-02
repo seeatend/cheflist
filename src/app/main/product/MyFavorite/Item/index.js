@@ -18,7 +18,7 @@ class Item extends Component {
     }
 
     addToCart(p) {
-        console.log($('#fav-'+p.uid).val());
+        var scope = this;
         $.ajax({
             method: 'POST',
             url: SERVER_URL + '/restaurant/cart/add/'+p.catalog,
@@ -29,8 +29,11 @@ class Item extends Component {
                 productId: p.uid,
                 quantity: $('#fav-'+p.uid).val()
             }
+        }).done(function(response) {
+            scope.getCarts();
+        }).fail(function(err) {
+            console.log(err);
         });
-        this.getCarts();
     }
 
     getConnections() {
@@ -88,7 +91,7 @@ class Item extends Component {
 
     qtyMinus(id) {
         var qty = parseInt($('#' + id).val(),10);
-        qty = qty>0 ? qty-1 : 0;
+        qty = qty>1 ? qty-1 : 1;
         $('#' + id).val(qty);
     }
 
@@ -112,12 +115,14 @@ class Item extends Component {
 		return (
             <div className="my-favorite-item">
                 <h2 className="title">{item.name}</h2>
-                <a className="c-btn c-btn--secondary back-to-favorite" onClick={() => back()}>
-                    &lt; <FormattedMessage id="product.back"/>
-                </a>
-                <a className="c-btn c-btn--info add-product" onClick={()=>this.props.edit(item)}>
-                    <FormattedMessage id="product.addProductToList"/>
-                </a>
+                <div className="buttons">
+                    <a className="c-btn c-btn--secondary back-to-favorite" onClick={() => back()}>
+                        &lt; <FormattedMessage id="product.back"/>
+                    </a>
+                    <a className="c-btn c-btn--info add-product" onClick={()=>this.props.edit(item)}>
+                        <FormattedMessage id="product.addProductToList"/>
+                    </a>
+                </div>
                 <div className="row u-mb-large product-table">
                     <div className="col-sm-12">
                         <div className="c-table-responsive">
@@ -154,10 +159,10 @@ class Item extends Component {
                                             <td className="c-table__cell no">
                                                 {i+1}
                                             </td>
-                                            <td className="c-table__cell">
-                                                {p.name}
+                                            <td className="c-table__cell name">
+                                                {p.name} ({p.quantity} {p.unit})
                                             </td>
-                                            <td className="c-table__cell">
+                                            <td className="c-table__cell supplier">
                                                 {this.getSupplier(p)}
                                             </td>
                                             <td className="c-table__cell price">
@@ -166,10 +171,13 @@ class Item extends Component {
                                             <td className="c-table__cell unit">
                                                 {p.unit}
                                             </td>
+                                            <td className="c-table__cell price-unit">
+                                                {this.germanFormat(p.price.toFixed(2))} &euro; / {p.unit}
+                                            </td>
                                             <td className="c-table__cell qty">
                                                 <div className="c-btn-group">
                                                     <a className="c-btn c-btn--secondary" onClick={() => this.qtyMinus('fav-'+p.uid)}>-</a>
-                                                    <input className="c-input" type="text" defaultValue="0" id={'fav-'+p.uid}/>
+                                                    <input className="c-input" type="text" defaultValue="1" id={'fav-'+p.uid}/>
                                                     <a className="c-btn c-btn--secondary" onClick={() => this.qtyPlus('fav-'+p.uid)}>+</a>
                                                 </div>
                                             </td>

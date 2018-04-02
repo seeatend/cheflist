@@ -90,7 +90,7 @@ class ProductList extends Component {
             }
         }).done(function() {
             scope.getCarts();
-        })
+        });
     }
 
     addList(_vendor, _products) {
@@ -201,6 +201,9 @@ class ProductList extends Component {
                                             </td>
                                             <td className="c-table__cell package">
                                                 {p.packaging}
+                                            </td>
+                                            <td className="c-table__cell price-package">
+                                                {this.germanFormat(p.price.toFixed(2))} &euro; / {p.packaging}
                                             </td>
                                             <td className="c-table__cell qty">
                                                 <div className="c-btn-group">

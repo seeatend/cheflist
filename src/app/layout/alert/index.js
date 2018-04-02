@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
-// import { FormattedMessage } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
 
 // Reducer
 import { cart_update } from '../../reducer/cart'
@@ -48,7 +48,7 @@ class Alert extends Component {
 			<div className="alert-container">
 				{this.props.alerts.map((alert, i) =>
 					<div className={this.getClassNameFromStatus(alert.status)} key={i}>
-						{this.getIconFromStatus(alert.status)} {alert.message}
+						{this.getIconFromStatus(alert.status)} <FormattedMessage id={alert.message} />
 					</div>
 				)}				
 			</div>

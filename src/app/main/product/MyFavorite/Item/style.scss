@@ -2,31 +2,118 @@
     .title {
         text-align: center;
     }
-    .add-product {
-        float: right;
+    .buttons {
+        display: table;
+        .back-to-favorite {
+            @media screen and (max-width: 600px) {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+        .add-product {
+            float: right;
+            @media screen and (max-width: 600px) {
+                width: 100%;
+            }
+        }
     }
     .product-table {
         margin-top: 20px;
         table {
             display: table;
-            .no {
-                width: 50px;
+            @media screen and (max-width: 600px) {
+                display: block;
             }
-            .price {
-                width: 100px;
-            }
-            .unit {
-                width: 100px;
-            }
-            .qty {
-                width: 100px;
-                input {
-                    min-width: 50px;
-                    text-align: center;
+            thead {
+                @media screen and (max-width: 600px) {
+                    display: none;
                 }
             }
-            .action {
-                width: 100px;
+            tbody {
+                @media screen and (max-width: 600px) {
+                    display: block;
+                }
+                tr {
+                    @media screen and (max-width: 600px) {
+                        display: block;
+                        padding: 0 0 30px;
+                    }
+                    .no {
+                        width: 50px;
+                        color: gray;
+                        @media screen and (max-width: 600px) {
+                            display: block;
+                            width: 100%;
+                            padding: 5px;
+                            font-weight: bold;
+                        }
+                    }
+                    .name {
+                        @media screen and (max-width: 600px) {
+                            display: block;
+                            text-align: center;
+                            padding: 5px;
+                            width: 100%;
+                            font-weight: bolder;
+                            font-size: 16px;
+                            white-space: normal;
+                        }
+                    }
+                    .supplier {
+                        color: gray;
+                        @media screen and (max-width: 600px) {
+                            display: block;
+                            text-align: center;
+                            padding: 5px;
+                            width: 100%;
+                            font-weight: bolder;
+                            font-size: 16px;
+                        }
+                    }
+                    .price {
+                        width: 100px;
+                        @media screen and (max-width: 600px) {
+                            display: none;
+                        }
+                    }
+                    .unit {
+                        width: 100px;
+                        @media screen and (max-width: 600px) {
+                            display: none;
+                        }
+                    }
+                    .price-unit {
+                        display: none;
+                        @media screen and (max-width: 600px) {
+                            display: block;
+                            text-align: center;
+                            padding: 5px;
+                            width: 100%;
+                        }
+                    }
+                    .qty {
+                        width: 100px;
+                        input {
+                            min-width: 50px;
+                            text-align: center;
+                        }
+                        @media screen and (max-width: 600px) {
+                            display: block;
+                            text-align: center;
+                            padding: 5px;
+                            width: 100%;
+                        }
+                    }
+                    .action {
+                        width: 100px;
+                        @media screen and (max-width: 600px) {
+                            display: block;
+                            text-align: center;
+                            padding: 5px;
+                            width: 100%;
+                        }
+                    }
+                }
             }
         }
     }

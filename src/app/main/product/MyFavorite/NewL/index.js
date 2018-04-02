@@ -1,8 +1,15 @@
 import React, {Component} from 'react'
-// import { FormattedMessage } from 'react-intl'
-import { SERVER_URL } from '../../../../config'
+import { FormattedMessage } from 'react-intl'
 import './style.css'
 
+// Reducer
+import { connect } from 'react-redux'
+import { alert_add, alert_update, alert_remove } from '../../../../reducer/alert'
+
+// API
+import { SERVER_URL } from '../../../../config'
+
+// jQuery
 const $ = window.$;
 
 class NewL extends Component {
@@ -62,8 +69,19 @@ class NewL extends Component {
                     scope.updateList(response.favoriteList.uid, p);
                 });
             });
+            this.props.back();
+        } else {
+            this.props.alert_add({
+                index: 'create-favorite-list-name-empty',
+                status: 'failed',
+                message: 'product.emptyNameAlert'
+            });
+            setTimeout(() => {
+				scope.props.alert_remove({
+					index: 'create-favorite-list-name-empty'
+				});
+			}, 5000);
         }
-        this.props.back();
     }
 
     getAcceptedConnection() {
@@ -233,10 +251,18 @@ class NewL extends Component {
         var {filteredVendors, filteredProducts, filteredListProducts, selectedVendor} = this.state;
         var {back} = this.props;
 
-        console.log(filteredVendors, filteredProducts, filteredListProducts, selectedVendor);
+        var uidList = filteredListProducts.map(function(p){ return p.uid });
 
 		return (
             <div className="my-favorite-create">
+                <div className="buttons">
+                    <a className="c-btn c-btn--info create-list" onClick={() => this.create()}>
+                        Create List
+                    </a>
+                    <a className="c-btn c-btn--secondary cancel-create" onClick={() => back()}>
+                        Cancel
+                    </a>
+                </div>
                 <div className="row">
                     <div className="col-md-4">
                         <h3 className="u-mb-small">
@@ -268,12 +294,13 @@ class NewL extends Component {
                             <table className="c-table product-table">
                                 <tbody>
                                     {filteredProducts.map( (p, i) =>
+                                        uidList.indexOf(p.uid) === -1 &&
                                         <tr className="c-table__row" key={i}>
-                                            <td className="c-table__cell">
-                                                {p.name}
-                                            </td>
                                             <td className="c-table__cell add" onClick={()=>this.addProductToList(p)}>
                                                 <i className="fa fa-plus"></i>
+                                            </td>
+                                            <td className="c-table__cell">
+                                                {p.name}
                                             </td>
                                         </tr>
                                     )}
@@ -282,7 +309,8 @@ class NewL extends Component {
                         </div>
                     </div>
                     <div className="col-md-4">
-                        <h3 className="u-mb-small">
+                        <h3 className="u-mb-small list-name-box">
+                            <FormattedMessage id="product.namePlaceholder"/>
                             3. <input className="c-input" id="list-name" type="text"/>
                         </h3>
                         <input className="c-input" id="list-product-filter" type="text" onChange={() => this.filterListProduct()}/>
@@ -304,17 +332,18 @@ class NewL extends Component {
                         </div>
                     </div>
                 </div>
-                <div className="buttons">
-                    <a className="c-btn c-btn--info create-list" onClick={() => this.create()}>
-                        Create
-                    </a>
-                    <a className="c-btn c-btn--secondary cancel-create" onClick={() => back()}>
-                        Cancel
-                    </a>
-                </div>
             </div>
 		)
 	}
 }
 
-export default NewL;
+export default connect(
+	(state) => ({
+		alerts: state.alerts
+	}),
+	{
+		alert_add,
+		alert_update,
+		alert_remove
+	}
+)(NewL)
