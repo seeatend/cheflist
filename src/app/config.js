@@ -37,7 +37,7 @@ export const SIDEBAR_MENU_LIST = [
 	}
 ]
 
-export const SERVER_URL = 'http://195.154.50.156:8000/api'
+export const SERVER_URL = 'http://ec2-54-234-9-17.compute-1.amazonaws.com:8000/api'
 
 export const AUTH_HEADER = {
 	'x-api-token': 'cjd22hzu400042ugn0mi0rdel',
