@@ -1,9 +1,8 @@
 import React, {Component} from 'react'
 import { FormattedMessage } from 'react-intl'
+import $ from 'jquery'
 import { SERVER_URL } from '../../../config'
 import './style.css'
-
-const $ = window.$;
 
 class MyConnection extends Component {
 
@@ -25,7 +24,7 @@ class MyConnection extends Component {
     }
 
     addConnection(connection) {
-        var scope = this;
+        let scope = this;
         $.ajax({
             method: 'POST',
             url: SERVER_URL + '/connection/connect/',
@@ -42,8 +41,8 @@ class MyConnection extends Component {
     }
 
     filter() {
-        var f = $('#vendor-filter').val();
-        var filtered = this.state.connections.filter(function(con) {
+        let f = $('#vendor-filter').val();
+        let filtered = this.state.connections.filter(function(con) {
             return con.meta.businessName.includes(f)
         })
         this.setState({
@@ -52,8 +51,8 @@ class MyConnection extends Component {
     }
 
     render() {
-        var {filtered} = this.state;
-        
+        let {filtered} = this.state;
+
         filtered.sort(function(a, b) {
             if (a.meta.businessName.toLowerCase() > b.meta.businessName.toLowerCase()) {
                 return 1

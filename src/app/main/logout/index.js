@@ -1,10 +1,9 @@
 import React, {Component} from 'react'
 import { Redirect } from 'react-router-dom'
+import $ from 'jquery';
 import { SERVER_URL, AUTH_HEADER } from '../../config'
 
 import './style.css'
-
-const $ = window.$;
 
 class Logout extends Component {
 
@@ -22,7 +21,7 @@ class Logout extends Component {
 	}
 
     login() {
-        var scope = this;
+        let scope = this;
         $.ajax({
             method: 'POST',
             url: SERVER_URL + '/user/login',

@@ -16,6 +16,7 @@ export default {
         },
         product: {
             add: 'Add',
+            added: 'Added',
             addProductToList: 'Add a product to list',
             allProducts: 'All Products',
             allSuppliers: 'All Suppliers',
@@ -32,6 +33,7 @@ export default {
             supplier: 'Supplier',
             packagingUnit: 'Packaging Unit',
             unit: 'Unit',
+            update: 'Update',
             view: 'View',
         },
         orderHistory: {
@@ -126,6 +128,7 @@ export default {
         },
         product: {
             add: 'Hinzu',
+            added: 'Hinzugefügt',
             addProductToList: 'Ein Produkt hinzufügen',
             allProducts: 'Alle Artikel',
             allSuppliers: 'Alle Lieferanten',
@@ -142,6 +145,7 @@ export default {
             supplier: 'Lieferant',
             packagingUnit: 'Einheit',
             unit: 'Einheit',
+            update: 'Aktualisieren',
             view: 'Ansehen',
         },
         orderHistory: {

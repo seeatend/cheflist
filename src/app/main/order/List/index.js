@@ -1,8 +1,7 @@
 import React, {Component} from 'react'
+import moment from 'moment';
 import { FormattedMessage } from 'react-intl'
 import './style.css'
-
-const moment = window.moment;
 
 class List extends Component {
 
@@ -15,7 +14,7 @@ class List extends Component {
 			totalPrice: this.totalPrice(props.list)
 		}
 	}
-	
+
 	componentWillReceiveProps(newProps) {
         this.setState({
 			list: newProps.list,
@@ -26,7 +25,7 @@ class List extends Component {
     }
 
 	totalPrice(list) {
-		var total = 0;
+		let total = 0;
 		list.forEach(d => {
 			d.products.forEach(p => {
 				total += p.price * p.quantity
@@ -36,7 +35,7 @@ class List extends Component {
 	}
 
 	orderPrice(order) {
-		var price = 0;
+		let price = 0;
 		order.products.forEach(function(p) {
 			price += p.price * p.quantity
 		});
@@ -44,13 +43,13 @@ class List extends Component {
 	}
 
 	germanFormat(number) {
-        var nums = number.toString().split('.');
-        var int = nums[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        let nums = number.toString().split('.');
+        let int = nums[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         return int + ',' + nums[1];
     }
 
 	render() {
-		var {list, check, filtered} = this.state;
+		let {list, check, filtered} = this.state;
 		return (
 			<div className="order-list">
 				<div className="row">

@@ -5,7 +5,7 @@ class DropDownFilter extends Component {
 
     constructor(props) {
         super(props);
-        var options = ['All'].concat(this.props.options);
+        let options = ['All'].concat(this.props.options);
         this.state = {
             options: options,
             curOption: options[0]
@@ -13,7 +13,7 @@ class DropDownFilter extends Component {
     }
 
     componentWillReceiveProps(newProps) {
-        var options = ['All'].concat(newProps.options);
+        let options = ['All'].concat(newProps.options);
         this.setState({
             options
         });
@@ -27,7 +27,7 @@ class DropDownFilter extends Component {
     }
 
 	render() {
-        var {options, curOption} = this.state;
+        let {options, curOption} = this.state;
 		return (
             <div className={"c-dropdown dropdown " + this.props.className}>
                 <button className="c-btn c-btn--secondary has-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

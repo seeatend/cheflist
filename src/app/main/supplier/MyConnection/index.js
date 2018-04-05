@@ -1,9 +1,8 @@
 import React, {Component} from 'react'
 import { FormattedMessage } from 'react-intl'
+import $ from 'jquery';
 import { SERVER_URL } from '../../../config'
 import './style.css'
-
-const $ = window.$;
 
 class MyConnection extends Component {
 
@@ -23,7 +22,7 @@ class MyConnection extends Component {
     }
 
     removeConnection(connection) {
-        var scope = this;
+        let scope = this;
         $.ajax({
             method: 'POST',
             url: SERVER_URL + '/connection/remove/'+connection.connectionId,
@@ -36,7 +35,7 @@ class MyConnection extends Component {
     }
 
     render() {
-        var {connections} = this.state;
+        let {connections} = this.state;
 
         connections.sort(function(a, b) {
             if (a.meta.businessName.toLowerCase() > b.meta.businessName.toLowerCase()) {

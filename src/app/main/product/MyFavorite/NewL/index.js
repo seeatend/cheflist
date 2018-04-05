@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import { FormattedMessage } from 'react-intl'
+import $ from 'jquery';
 import './style.css'
 
 // Reducer
@@ -8,9 +9,6 @@ import { alert_add, alert_update, alert_remove } from '../../../../reducer/alert
 
 // API
 import { SERVER_URL } from '../../../../config'
-
-// jQuery
-const $ = window.$;
 
 class NewL extends Component {
 
@@ -28,9 +26,9 @@ class NewL extends Component {
     }
 
     componentDidMount() {
-        var scope = this;
+        let scope = this;
         this.getAcceptedConnection().done(function(response) {
-            var vendors = response.connections.sort(function(a, b) {
+            let vendors = response.connections.sort(function(a, b) {
                 if (a.accountName.toLowerCase() > b.accountName.toLowerCase()) {
                     return 1
                 } else {
@@ -38,7 +36,7 @@ class NewL extends Component {
                 }
             });
             if (vendors.length) {
-                var catalog = vendors[0].catalog;
+                let catalog = vendors[0].catalog;
                 scope.getProducts(catalog).done(function(response) {
                     response.products.sort(function(a, b) {
                         if (a.name.toLowerCase() > b.name.toLowerCase()) {
@@ -60,9 +58,9 @@ class NewL extends Component {
     }
 
     create() {
-        var scope = this;
-        var name = $('#list-name').val();
-        var {listProducts} = this.state;
+        let scope = this;
+        let name = $('#list-name').val();
+        let {listProducts} = this.state;
         if (name !== '') {
             this.createList(name).done(function(response) {
                 listProducts.forEach(function(p) {
@@ -119,7 +117,7 @@ class NewL extends Component {
     }
 
     updateList(listId, product) {
-        var catalogId = this.state.vendors.filter(function(v) {
+        let catalogId = this.state.vendors.filter(function(v) {
             return v.accountId === product.vendor
         })[0].catalog;
 
@@ -136,10 +134,10 @@ class NewL extends Component {
             async: false
 		});
     }
-    
+
     filterVendor() {
-        var f = $('#supplier-filter').val();
-        var filteredVendors = this.state.vendors.filter(function(v) {
+        let f = $('#supplier-filter').val();
+        let filteredVendors = this.state.vendors.filter(function(v) {
             return v.accountName.toLowerCase().includes(f.toLowerCase())
         });
         this.setState({
@@ -148,8 +146,8 @@ class NewL extends Component {
     }
 
     filterProduct() {
-        var f = $('#product-filter').val();
-        var filteredProducts = this.state.products.filter(function(p) {
+        let f = $('#product-filter').val();
+        let filteredProducts = this.state.products.filter(function(p) {
             return p.name.toLowerCase().includes(f.toLowerCase())
         });
         filteredProducts.sort(function(a, b) {
@@ -165,8 +163,8 @@ class NewL extends Component {
     }
 
     filterListProduct() {
-        var f = $('#list-product-filter').val();
-        var filteredListProducts = this.state.listProducts.filter(function(p) {
+        let f = $('#list-product-filter').val();
+        let filteredListProducts = this.state.listProducts.filter(function(p) {
             return p.name.toLowerCase().includes(f.toLowerCase())
         });
         filteredListProducts.sort(function(a, b) {
@@ -182,7 +180,7 @@ class NewL extends Component {
     }
 
     selectVendor(catalog) {
-        var scope = this;
+        let scope = this;
         $('#product-filter').val('');
         scope.getProducts(catalog).done(function(response) {
             response.products.sort(function(a, b) {
@@ -201,14 +199,14 @@ class NewL extends Component {
     }
 
     addProductToList(p) {
-        var {listProducts} = this.state;
-        var duplicate = listProducts.filter(function(product) {
+        let {listProducts} = this.state;
+        let duplicate = listProducts.filter(function(product) {
             return product.uid === p.uid
         });
-        var f = $('#list-product-filter').val();
+        let f = $('#list-product-filter').val();
         if (!duplicate.length) {
             listProducts.push(p);
-            var filteredListProducts = listProducts.filter(function(p) {
+            let filteredListProducts = listProducts.filter(function(p) {
                 return p.name.toLowerCase().includes(f.toLowerCase())
             });
             filteredListProducts.sort(function(a, b) {
@@ -226,12 +224,12 @@ class NewL extends Component {
     }
 
     removeProductFromList(p) {
-        var {listProducts} = this.state;
-        var f = $('#list-product-filter').val();
-        var newProducts = listProducts.filter(function(product) {
+        let {listProducts} = this.state;
+        let f = $('#list-product-filter').val();
+        let newProducts = listProducts.filter(function(product) {
             return product.uid !== p.uid
         });
-        var filteredListProducts = newProducts.filter(function(p) {
+        let filteredListProducts = newProducts.filter(function(p) {
             return p.name.toLowerCase().includes(f.toLowerCase())
         });
         filteredListProducts.sort(function(a, b) {
@@ -246,12 +244,12 @@ class NewL extends Component {
             filteredListProducts
         });
     }
-    
-	render() {
-        var {filteredVendors, filteredProducts, filteredListProducts, selectedVendor} = this.state;
-        var {back} = this.props;
 
-        var uidList = filteredListProducts.map(function(p){ return p.uid });
+	render() {
+        let {filteredVendors, filteredProducts, filteredListProducts, selectedVendor} = this.state;
+        let {back} = this.props;
+
+        let uidList = filteredListProducts.map(function(p){ return p.uid });
 
 		return (
             <div className="my-favorite-create">

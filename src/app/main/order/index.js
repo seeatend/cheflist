@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
+import $ from 'jquery';
 import { SERVER_URL } from '../../config'
 import { sidebar_menu_update } from '../../reducer/sidebar_menu'
 
@@ -9,14 +10,12 @@ import Item from './Item'
 
 import './style.css'
 
-const $ = window.$;
-
 class Order extends Component {
 
 	constructor(props) {
         super(props);
 
-        var tokenType = localStorage.getItem('tokenType');
+        let tokenType = localStorage.getItem('tokenType');
         this.state = {
             redirect: null,
             list: [],
@@ -40,7 +39,7 @@ class Order extends Component {
     }
 
     load() {
-        var scope = this;
+        let scope = this;
         this.getOrders().done(function(response) {
             scope.setState({
                 list: response.orders,
@@ -82,7 +81,7 @@ class Order extends Component {
 		if (redirect) {
 			return <Redirect push to={redirect} />;
         }
-        
+
 		return (
 			<div className="container-fluid order">
 				{page === 'list'?

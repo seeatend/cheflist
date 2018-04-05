@@ -4,9 +4,8 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { SERVER_URL } from '../../config'
 import { cart_update } from '../../reducer/cart'
+import $ from 'jquery';
 import './style.css'
-
-const $ = window.$;
 
 class Navbar extends Component {
 
@@ -19,7 +18,7 @@ class Navbar extends Component {
     }
 
 	componentDidMount() {
-		var scope = this;
+		let scope = this;
 		$.ajax({
             method: 'GET',
             url: SERVER_URL + '/account/profile',
@@ -35,7 +34,7 @@ class Navbar extends Component {
 	}
 
 	cartAmount() {
-		var cartAmount = 0;
+		let cartAmount = 0;
 		this.props.carts.carts.forEach(function(cart) {
 			cartAmount += cart.products.length;
 		});
@@ -43,7 +42,7 @@ class Navbar extends Component {
 	}
 
 	getCarts() {
-        var scope = this;
+        let scope = this;
         $.ajax({
             method: 'GET',
             url: SERVER_URL + '/restaurant/carts',
@@ -77,7 +76,7 @@ class Navbar extends Component {
 					<a className="c-btn c-btn--secondary to-cart">
 						<i className="fa fa-user-o u-mr-xsmall"></i>{this.state.name}
 					</a>
-				</div>				
+				</div>
 			</header>
 		)
 	}

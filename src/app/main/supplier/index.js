@@ -1,13 +1,12 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
+import $ from 'jquery';
 import { SERVER_URL } from '../../config'
 import { sidebar_menu_update } from '../../reducer/sidebar_menu'
 import MyConnection from './MyConnection'
 import NewConnection from './NewConnection'
 
 import './style.css'
-
-const $ = window.$;
 
 class Supplier extends Component {
 
@@ -29,10 +28,10 @@ class Supplier extends Component {
 	}
 
 	load() {
-		var scope = this;
-		
+		let scope = this;
+
 		this.getVendors().done(function(response) {
-			var vendors = response.vendors;
+			let vendors = response.vendors;
 
 			scope.getAcceptedConnection().done(function(response) {
 				scope.setState({
@@ -83,8 +82,8 @@ class Supplier extends Component {
 	}
 
 	getConnectedVendors(connections, vendors, status) {
-		var connected = connections.map(function(d) {
-			var v = vendors.filter(function(vendor) {
+		let connected = connections.map(function(d) {
+			let v = vendors.filter(function(vendor) {
 				return vendor.uid === d.accountId
 			})[0];
 			v.status = status;
@@ -95,22 +94,22 @@ class Supplier extends Component {
 	}
 
 	getNewVendors() {
-		var {acceptedVendors, pendingVendors, vendors} = this.state;
-		var acceptedUid = acceptedVendors.map(function(d) {
+		let {acceptedVendors, pendingVendors, vendors} = this.state;
+		let acceptedUid = acceptedVendors.map(function(d) {
 			return d.uid
 		});
-		var pendingUid = pendingVendors.map(function(d) {
+		let pendingUid = pendingVendors.map(function(d) {
 			return d.uid
 		});
-		var uids = acceptedUid.concat(pendingUid);
-		var newVendors = vendors.filter(function(v) {
+		let uids = acceptedUid.concat(pendingUid);
+		let newVendors = vendors.filter(function(v) {
 			return uids.indexOf(v.uid) === -1
 		});
 		return newVendors;
 	}
 
 	render() {
-		var {acceptedVendors, pendingVendors} = this.state;
+		let {acceptedVendors, pendingVendors} = this.state;
 		return (
 			<div className="container-fluid my-supplier">
                 <div className="row">

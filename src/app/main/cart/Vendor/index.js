@@ -1,13 +1,12 @@
 import React, {Component} from 'react'
 import { FormattedMessage } from 'react-intl'
 import { connect } from 'react-redux'
+import $ from 'jquery';
+import moment from 'moment';
 import { SERVER_URL } from '../../../config'
 import { cart_update } from '../../../reducer/cart'
 import { alert_add, alert_update, alert_remove } from '../../../reducer/alert'
 import './style.css'
-
-const $ = window.$;
-const moment = window.moment;
 
 class Vendor extends Component {
 
@@ -32,7 +31,7 @@ class Vendor extends Component {
     }
 
     cartPrice(cart) {
-		var price = 0;
+		let price = 0;
 		cart.products.forEach(function(p) {
 			price += p.product.price * p.quantity
 		});
@@ -48,15 +47,15 @@ class Vendor extends Component {
             }
         });
     }
-    
-    placeOrder(cart) {                                                                                                                                                                                                                                                                                                                                                                                                                                       
+
+    placeOrder(cart) {
         this.props.alert_add({
 			index: 'place-order' + cart.uid,
 			status: 'process',
 			message: 'cart.orderProgressAlert'
 		});
         this.updateDeliveryDate();
-        var scope = this;
+        let scope = this;
         this.getAccountInfo().done(function(response) {
             $.ajax({
                 method: 'POST',
@@ -96,7 +95,7 @@ class Vendor extends Component {
     }
 
     updateDeliveryDate() {
-        var date = moment(this.refs.deliveryDate.value, 'MM/DD/YYYY').format('YYYY-MM-DD');
+        let date = moment(this.refs.deliveryDate.value, 'MM/DD/YYYY').format('YYYY-MM-DD');
         $.ajax({
             method: 'POST',
             url: SERVER_URL + '/restaurant/cart/update/' + this.props.cart.uid,
@@ -113,9 +112,9 @@ class Vendor extends Component {
     }
 
     updateQty(product, qty) {
-        var scope = this;
-        var {cart} = this.props;
-        var {uid} = product.product;
+        let scope = this;
+        let {cart} = this.props;
+        let {uid} = product.product;
 
         cart.products.forEach(function(p) {
             if (p.product.uid === uid) {
@@ -142,7 +141,7 @@ class Vendor extends Component {
     }
 
     updateMessage(e) {
-        var newMsg = e.target.value;
+        let newMsg = e.target.value;
         this.setState({
             message : newMsg
         })
@@ -169,7 +168,7 @@ class Vendor extends Component {
     }
 
     removeOrder(cart) {
-        var scope = this;
+        let scope = this;
         $.ajax({
             method: 'GET',
             url: SERVER_URL + '/restaurant/cart/delete/' + cart.uid,
@@ -183,7 +182,7 @@ class Vendor extends Component {
     }
 
     removeProduct(cart, product) {
-        var scope = this;
+        let scope = this;
         $.ajax({
             method: 'GET',
             url: SERVER_URL + '/restaurant/cart/delete/' + cart.uid +'/' + product.product.uid,
@@ -203,7 +202,7 @@ class Vendor extends Component {
     }
 
     getCarts() {
-        var scope = this;
+        let scope = this;
         $.ajax({
             method: 'GET',
             url: SERVER_URL + '/restaurant/carts',
@@ -216,32 +215,32 @@ class Vendor extends Component {
             });
         })
     }
-    
+
     qtyPlus(id, product) {
-        var input = $('#' + id + ' .quantity input');
-        var qty = parseInt(input.val(),10) + 1;
+        let input = $('#' + id + ' .quantity input');
+        let qty = parseInt(input.val(),10) + 1;
         input.val(qty);
         this.updateQty(product, qty);
     }
 
     qtyMinus(id, product) {
-        var input = $('#' + id + ' .quantity input');
-        var qty = parseInt(input.val(),10);
+        let input = $('#' + id + ' .quantity input');
+        let qty = parseInt(input.val(),10);
         qty = qty>0 ? qty-1 : 0;
         input.val(qty);
         this.updateQty(product, qty);
     }
 
     germanFormat(number) {
-        var nums = number.toFixed(2).toString().split('.');
-        var int = nums[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        let nums = number.toFixed(2).toString().split('.');
+        let int = nums[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         return int + ',' + nums[1];
     }
 
 	render() {
-        var {cart} = this.props;
-        var {showTable, message} = this.state;
-        var products = cart.products;
+        let {cart} = this.props;
+        let {showTable, message} = this.state;
+        let products = cart.products;
 
         products.sort(function(a, b) {
             if (a.product.name.toLowerCase() > b.product.name.toLowerCase()) {
@@ -376,7 +375,7 @@ export default connect(
         carts: state.carts,
         alerts: state.alerts
     }),
-	{ 
+	{
         cart_update,
         alert_add,
 		alert_update,

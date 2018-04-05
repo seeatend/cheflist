@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
 import { Redirect } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
+import $ from 'jquery';
+import moment from 'moment';
 
 // Reducer
 import { connect } from 'react-redux'
@@ -17,14 +19,11 @@ import Vendor from './Vendor'
 // Style
 import './style.css'
 
-const $ = window.$;
-const moment = window.moment;
-
 class Cart extends Component {
 
 	constructor(props) {
 		super(props);
-        var tokenType = localStorage.getItem('tokenType');
+        let tokenType = localStorage.getItem('tokenType');
 
         this.state = {
 			redirect: null,
@@ -47,7 +46,7 @@ class Cart extends Component {
 	}
 
 	load() {
-        var scope = this;
+        let scope = this;
         this.getCarts().done(function(response) {
             scope.setState({
                 carts: response.carts,
@@ -57,7 +56,7 @@ class Cart extends Component {
             console.log('error');
         });
     }
-	
+
 	getCarts() {
         return $.ajax({
             method: 'GET',
@@ -67,9 +66,9 @@ class Cart extends Component {
             }
         });
 	}
-	
+
 	cartsTotal(carts) {
-		var total = 0;
+		let total = 0;
 		carts.forEach(function(cart) {
 			cart.products.forEach(function(p) {
 				total += p.product.price * p.quantity;
@@ -79,7 +78,7 @@ class Cart extends Component {
 	}
 
 	bulkOrder() {
-		var scope = this;
+		let scope = this;
 		scope.updateDeliveryDate();
 		this.props.alert_add({
 			index: 'bulk-order',
@@ -121,7 +120,7 @@ class Cart extends Component {
 	}
 
 	updateDeliveryDate() {
-		var {carts} = this.state;
+		let {carts} = this.state;
 		$('.delivery-date input').each(function(i) {
 			$.ajax({
 				method: 'POST',
@@ -139,9 +138,9 @@ class Cart extends Component {
 			});
 		});
 	}
-	
+
 	getUpdatedCarts() {
-        var scope = this;
+        let scope = this;
         $.ajax({
             method: 'GET',
             url: SERVER_URL + '/restaurant/carts',
@@ -156,19 +155,18 @@ class Cart extends Component {
 	}
 
 	germanFormat(number) {
-        var nums = number.toFixed(2).toString().split('.');
-        var int = nums[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        let nums = number.toFixed(2).toString().split('.');
+        let int = nums[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         return int + ',' + nums[1];
     }
-	
+
 	render() {
-		var {redirect} = this.state;
+		let {redirect} = this.state;
 		if (this.state.redirect) {
 			return <Redirect push to={redirect} />;
 		}
 
-		var {carts} = this.state;
-		console.log(carts);
+		let {carts} = this.state;
 
 		return (
 			<div className="container-fluid cart">

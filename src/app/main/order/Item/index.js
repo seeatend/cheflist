@@ -1,13 +1,12 @@
 import React, {Component} from 'react'
+import moment from 'moment';
 import { FormattedMessage } from 'react-intl'
 import './style.css'
-
-const moment = window.moment;
 
 class Item extends Component {
 
 	orderPrice(order) {
-		var price = 0;
+		let price = 0;
 		order.products.forEach(function(p) {
 			price += p.price * p.quantity
 		});
@@ -15,13 +14,13 @@ class Item extends Component {
 	}
 
 	germanFormat(number) {
-        var nums = number.toFixed(2).toString().split('.');
-        var int = nums[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        let nums = number.toFixed(2).toString().split('.');
+        let int = nums[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         return int + ',' + nums[1];
     }
 
 	render() {
-		var {item, back} = this.props;
+		let {item, back} = this.props;
 		return (
 			<div className="order-item">
 				<a className="c-btn c-btn--secondary back-to-list" onClick={() => back()}>

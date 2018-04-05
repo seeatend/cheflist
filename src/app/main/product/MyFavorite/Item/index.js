@@ -1,11 +1,10 @@
 import React, {Component} from 'react'
 import { FormattedMessage } from 'react-intl'
 import { connect } from 'react-redux'
+import $ from 'jquery';
 import { SERVER_URL } from '../../../../config'
 import { cart_update } from '../../../../reducer/cart'
 import './style.css'
-
-const $ = window.$;
 
 class Item extends Component {
 
@@ -18,7 +17,7 @@ class Item extends Component {
     }
 
     addToCart(p) {
-        var scope = this;
+        let scope = this;
         $.ajax({
             method: 'POST',
             url: SERVER_URL + '/restaurant/cart/add/'+p.catalog,
@@ -37,7 +36,7 @@ class Item extends Component {
     }
 
     getConnections() {
-        var scope = this;
+        let scope = this;
         $.ajax({
             method: 'GET',
             url: SERVER_URL + '/connection/accepted',
@@ -53,14 +52,14 @@ class Item extends Component {
     }
 
     getSupplier(p) {
-        var connection = this.state.connections.filter(function(con) {
+        let connection = this.state.connections.filter(function(con) {
             return con.catalog === p.catalog
         });
         return connection.length?connection[0].accountName:'None'
     }
 
     getCarts() {
-        var scope = this;
+        let scope = this;
         $.ajax({
             method: 'GET',
             url: SERVER_URL + '/restaurant/carts',
@@ -73,9 +72,9 @@ class Item extends Component {
             });
         })
     }
-    
+
     getAllProductFromCart() {
-        var products = [];
+        let products = [];
         this.props.carts.carts.forEach(function(cart) {
             cart.products.forEach(function(p) {
                 products.push(p.product.uid);
@@ -85,25 +84,25 @@ class Item extends Component {
     }
 
     qtyPlus(id) {
-        var qty = parseInt($('#' + id).val(),10) + 1;
+        let qty = parseInt($('#' + id).val(),10) + 1;
         $('#' + id).val(qty);
     }
 
     qtyMinus(id) {
-        var qty = parseInt($('#' + id).val(),10);
+        let qty = parseInt($('#' + id).val(),10);
         qty = qty>1 ? qty-1 : 1;
         $('#' + id).val(qty);
     }
 
     germanFormat(number) {
-        var nums = number.toString().split('.');
-        var int = nums[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        let nums = number.toString().split('.');
+        let int = nums[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         return int + ',' + nums[1];
     }
 
 	render() {
-        var {products, back, item} = this.props;
-        var purchased = this.getAllProductFromCart();
+        let {products, back, item} = this.props;
+        let purchased = this.getAllProductFromCart();
         products.sort(function(a, b) {
             if (a.name.toLowerCase() > b.name.toLowerCase()) {
                 return 1
@@ -154,7 +153,7 @@ class Item extends Component {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {products.map((p, i) => 
+                                    {products.map((p, i) =>
                                         <tr className="c-table__row" key={i}>
                                             <td className="c-table__cell no">
                                                 {i+1}

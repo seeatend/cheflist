@@ -1,19 +1,18 @@
-import React, {Component} from 'react'
-import { FormattedMessage } from 'react-intl'
-import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { Redirect } from 'react-router-dom'
-import { sidebar_menu_update } from '../../reducer/sidebar_menu'
-import { SERVER_URL } from '../../config'
-import './style.css'
-
-const $ = window.$;
+import React, {Component} from 'react';
+import { FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+import $ from 'jquery';
+import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
+import { sidebar_menu_update } from '../../reducer/sidebar_menu';
+import { SERVER_URL } from '../../config';
+import './style.css';
 
 class Home extends Component {
 
 	constructor(props) {
 		super(props);
-        var tokenType = localStorage.getItem('tokenType');
+        let tokenType = localStorage.getItem('tokenType');
 
         this.state = {
 			redirect: null,
@@ -39,7 +38,7 @@ class Home extends Component {
 	}
 
 	load() {
-		var scope = this;
+		let scope = this;
         this.getVendors().done(function(response) {
             response.connections.forEach(function(d) {
                 scope.getProducts(d.catalog).done(function(response) {
@@ -49,7 +48,7 @@ class Home extends Component {
                 })
             });
         });
-		
+
 		this.getOrders().done(function(response) {
 			scope.setState({
 				orders: response.orders.length
@@ -82,7 +81,7 @@ class Home extends Component {
             }
         });
 	}
-	
+
 	getOrders() {
         return $.ajax({
             method: 'GET',
@@ -92,7 +91,7 @@ class Home extends Component {
             }
         });
 	}
-	
+
 	getAcceptedConnection() {
         return $.ajax({
             method: 'GET',

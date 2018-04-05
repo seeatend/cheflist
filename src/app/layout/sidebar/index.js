@@ -1,11 +1,10 @@
-import React, {Component} from 'react'
-import { FormattedMessage } from 'react-intl'
-import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { SIDEBAR_MENU_LIST } from '../../config'
-import './style.css'
-
-const $ = window.$;
+import React, {Component} from 'react';
+import { FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import $ from 'jquery';
+import { SIDEBAR_MENU_LIST } from '../../config';
+import './style.css';
 
 class Sidebar extends Component {
 
@@ -24,7 +23,7 @@ class Sidebar extends Component {
 					<ul className="c-sidebar__list">
 						{SIDEBAR_MENU_LIST.map((m, i) =>
 							<li className="c-sidebar__item" key={i}>
-								<Link	
+								<Link
 									className={this.props.activeMenu.index === m.index?"c-sidebar__link is-active":"c-sidebar__link"}
 									to={m.link}
 									onClick={() => this.hideMenu()}>

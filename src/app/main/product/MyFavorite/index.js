@@ -1,11 +1,10 @@
 import React, {Component} from 'react'
+import $ from 'jquery';
 import { SERVER_URL } from '../../../config'
 import List from './List'
 import Item from './Item'
 import NewL from './NewL'
 import EditL from './EditL'
-
-const $ = window.$;
 
 class MyFavorite extends Component {
 
@@ -23,7 +22,7 @@ class MyFavorite extends Component {
     }
 
     load() {
-        var scope = this;
+        let scope = this;
         this.getFavorites().done(function(response) {
             scope.setState({
                 list: response.favorites,
@@ -58,7 +57,7 @@ class MyFavorite extends Component {
     }
 
     view(item) {
-        var scope = this;
+        let scope = this;
         this.getFavorite(item.uid).done(function(response) {
             scope.setState({
                 item: item,
@@ -82,7 +81,7 @@ class MyFavorite extends Component {
     }
 
     backToView() {
-        var {item} = this.state;
+        let {item} = this.state;
         this.load();
         this.view(item);
     }
@@ -94,9 +93,9 @@ class MyFavorite extends Component {
     }
 
 	render() {
-        var {page, list, item, products} = this.state;
+        let {page, list, item, products} = this.state;
 		return (
-            
+
 			<div>
                 {page === 'list' && <List list={list} view={(item) => this.view(item)} new={() => this.newList()}/>}
                 {page === 'new'  && <NewL back={() => this.back()}/>}

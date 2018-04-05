@@ -1,17 +1,16 @@
 import React, {Component} from 'react'
 import { FormattedMessage } from 'react-intl'
+import $ from 'jquery';
 import { Redirect } from 'react-router-dom'
 import { SERVER_URL, AUTH_HEADER } from '../../config'
 
 import './style.css'
 
-const $ = window.$;
-
 class Login extends Component {
 
     constructor(props) {
 		super(props);
-        var tokenType = localStorage.getItem('tokenType');
+        let tokenType = localStorage.getItem('tokenType');
 
         this.state = {
             redirect: null
@@ -25,7 +24,7 @@ class Login extends Component {
 	}
 
     login() {
-        var scope = this;
+        let scope = this;
         $.ajax({
             method: 'POST',
             url: SERVER_URL + '/user/login',
@@ -74,14 +73,14 @@ class Login extends Component {
                                 <div className="c-field u-mb-small">
                                     <label className="c-field__label" htmlFor="email">
                                         <FormattedMessage id="signIn.emailAddress"/>
-                                    </label> 
-                                    <input className="c-input" type="email" id="email" autoComplete="off"/> 
+                                    </label>
+                                    <input className="c-input" type="email" id="email" autoComplete="off"/>
                                 </div>
                                 <div className="c-field u-mb-small">
                                     <label className="c-field__label" htmlFor="password">
                                         <FormattedMessage id="signIn.password"/>
-                                    </label> 
-                                    <input className="c-input" type="password" id="password" autoComplete="new-password" /> 
+                                    </label>
+                                    <input className="c-input" type="password" id="password" autoComplete="new-password" />
                                 </div>
                                 <a className="c-btn c-btn--success c-btn--fullwidth" onClick={() => this.login()}>
                                     <FormattedMessage id="signIn.signIn"/>

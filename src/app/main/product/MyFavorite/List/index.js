@@ -9,7 +9,7 @@ class List extends Component {
     }
 
 	render() {
-        var {list} = this.props;
+        let {list} = this.props;
         list.sort(function(a, b) {
             if (a.name.toLowerCase() > b.name.toLowerCase()) {
                 return 1
