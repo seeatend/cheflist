@@ -1,12 +1,8 @@
 import React, {Component} from 'react';
 import { FormattedMessage } from 'react-intl';
-//import { connect } from 'react-redux';
-//import { SERVER_URL } from '../../../config';
-//import { cart_update } from '../../../reducer/cart';
 import DropDownFilter from './DropDownFilter';
 import { Input } from 'semantic-ui-react';
 import ProductsTable from './ProductsTable';
-//import $ from 'jquery';
 
 import './style.css';
 
@@ -56,46 +52,12 @@ class ProductList extends Component {
         })
     }
 
-    /*addList(_vendor, _products) {
-        const { cartProducts } = this.state;
-
-        let quantities = {};
-        _products.forEach( product => {
-            quantities[product.uid] = (cartProducts[product.uid] && cartProducts[product.uid].quantity) || 1
-        });
-        this.setState( prevState => ({
-                quantities: Object.assign({}, prevState.quantities, quantities),
-                vendors: [...prevState.vendors, _vendor],
-                vendorNames: [...prevState.vendorNames, _vendor.meta.businessName],
-                products: [...prevState.products, ..._products],
-                filteredProduct: [...prevState.filteredProduct, ..._products]
-            })
-        );
-    }*/
-
-    /*getAllProductFromCart() {
-        let products = [];
-        this.props.carts.carts.forEach(function(cart) {
-            cart.products.forEach(function(p) {
-                products.push(p.product.uid);
-            })
-        });
-        return products;
-    }*/
-
     qtyPlus = product => {
         this.onQuantityChange(product, this.state.quantities[product.uid]+1);
     }
 
     qtyMinus = product => {
         this.onQuantityChange(product, this.state.quantities[product.uid] - 1);
-    }
-
-    //????? wtf is this even for???
-    germanFormat(number) {
-        let nums = number.toString().split('.');
-        let int = nums[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        return int + ',' + nums[1];
     }
 
     isInCart = product => this.props.cartProducts[product.uid] !== undefined;
@@ -167,9 +129,10 @@ class ProductList extends Component {
         const { vendorFilter, textFilter } = this.state;
 
         const filtered = products.filter( product => {
-            return ((!!vendorFilter && getVendorName(product.vendor) === vendorFilter) && (!vendorFilter && getVendorName(product.vendor).toLowerCase().includes(textFilter)))
-                || (product.id.toLowerCase().includes(textFilter)
-                || product.name.toLowerCase().includes(textFilter))
+            const productMatched = product.id.toLowerCase().includes(textFilter.toLowerCase()) || product.name.toLowerCase().includes(textFilter.toLowerCase())
+            return vendorFilter
+                ? getVendorName(product.vendor) === vendorFilter && productMatched
+                : getVendorName(product.vendor).toLowerCase().includes(textFilter.toLowerCase()) || productMatched;
         });
         this.setState({
             filteredProduct: filtered.length
@@ -194,8 +157,6 @@ class ProductList extends Component {
 
 	render() {
         let { filteredProduct, quantities } = this.state;
-
-        //const sortedList = filteredProduct.slice().sort( (a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1 );
 
 		return (
             <div className="product-list">

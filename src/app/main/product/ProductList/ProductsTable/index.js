@@ -30,7 +30,7 @@ const ProductsTable = props => {
                                     className='quantity-input'
                                     type='number'
                                     onChange={ e => onInputChange(product, e.target.value) }
-                                    value={ quantities[product.uid] } >
+                                    value={ quantities[product.uid] || '' } >
                                     <Button basic onClick={ () => onDecrement(product) }>-</Button>
                                     <input className='quantity-field' />
                                     <Button basic onClick={ () => onIncrement(product) }>+</Button>

@@ -42,7 +42,10 @@ class Product extends Component {
 
 	//Helper functions for products table. Moving theme here and passing through this.props
 	//so we don't have to duplicate loads of componentDidUpdate
-	getVendorName = id => this.state.vendors.find( v => v.accountId === id ).meta.businessName;
+	getVendorName = id => {
+		const vendor = this.state.vendors.find( v => v.accountId === id );
+		return (vendor && vendor.meta.businessName) || 'None';
+	}
 
 	updateCartsState = () => {
         this.props.carts.carts.forEach( cart => {
@@ -139,7 +142,6 @@ class Product extends Component {
                 quantity
             }
         }).done( () => {
-			console.log('Added to cart');
             this.getCarts();
         });
     }
@@ -204,7 +206,16 @@ class Product extends Component {
 									cartProducts={cartProducts} />
 							</div>
 							<div className="c-tabs__pane u-pb-medium" id="my-favorite" role="tabpanel">
-								<MyFavorite />
+								<MyFavorite
+									getVendorName={this.getVendorName}
+									refreshCart={this.updateCartsState}
+									updateCart={this.updateCart}
+									addToCart={this.addToCart}
+									getCarts={this.getCarts}
+									getVendors={this.getVendorsWithMeta}
+									vendors={vendors}
+									products={products}
+									cartProducts={cartProducts} />
 							</div>
                         </div>
                     </div>
