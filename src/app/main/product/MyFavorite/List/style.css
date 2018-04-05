@@ -1,3 +1,10 @@
+.my-favorite-list .my-favorites-card {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px; }
+
 .my-favorite-list .create-new-fav {
   margin-bottom: 20px; }
 

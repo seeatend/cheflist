@@ -1,12 +1,14 @@
 import React, {Component} from 'react'
 import { FormattedMessage } from 'react-intl'
 import { connect } from 'react-redux'
-import $ from 'jquery';
+//import $ from 'jquery';
 import moment from 'moment';
 import { SERVER_URL } from '../../../config'
 import { cart_update } from '../../../reducer/cart'
 import { alert_add, alert_update, alert_remove } from '../../../reducer/alert'
 import './style.css'
+
+const $ = window.$;
 
 class Vendor extends Component {
 

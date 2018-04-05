@@ -21,10 +21,9 @@ class MyFavorite extends Component {
         this.load();
     }
 
-    load() {
-        let scope = this;
-        this.getFavorites().done(function(response) {
-            scope.setState({
+    load = () => {
+        this.getFavorites().done( response => {
+            this.setState({
                 list: response.favorites,
                 page: 'list',
                 item: null,
@@ -56,12 +55,14 @@ class MyFavorite extends Component {
         });
     }
 
-    view(item) {
-        let scope = this;
-        this.getFavorite(item.uid).done(function(response) {
-            scope.setState({
+    view = item => {
+        this.getFavorite(item.uid).done( response => {
+			const productsList = this.props.products.filter( product => {
+				return !!response.products.find( p => p.uid === product.uid );
+			})
+            this.setState({
                 item: item,
-                products: response.products,
+                products: productsList,
                 page: 'view'
             })
         })
@@ -70,37 +71,64 @@ class MyFavorite extends Component {
         });
     }
 
-    edit() {
+    edit = () => {
         this.setState({
             page: 'edit'
         })
     }
 
-    back() {
+	deleteList = favourite => {
+		$.ajax({
+			method: 'GET',
+			url: SERVER_URL + '/favorites/list/' + favourite.uid + '/delete',
+			headers: {
+				'x-api-token': localStorage.getItem('accessToken')
+			}
+		})
+		.done( () => this.load() );
+	}
+
+    back = () => {
         this.load();
     }
 
-    backToView() {
+    backToView = () => {
         let {item} = this.state;
         this.load();
         this.view(item);
     }
 
-    newList() {
+    newList = () => {
         this.setState({
             page: 'new'
         })
     }
 
 	render() {
-        let {page, list, item, products} = this.state;
+        const {page, list, item, products} = this.state;
+		const { getVendorName, refreshCart, vendors, updateCart, addToCart, cartProducts } = this.props;
 		return (
-
 			<div>
-                {page === 'list' && <List list={list} view={(item) => this.view(item)} new={() => this.newList()}/>}
-                {page === 'new'  && <NewL back={() => this.back()}/>}
-                {page === 'view' && <Item item={item} products={products} back={() => this.back()} edit={() => this.edit()}/>}
-                {page === 'edit' && <EditL item={item} products={products} backToView={() => this.backToView()}/>}
+                {page === 'list'
+					&& <List deleteList={ this.deleteList }
+							list={ list }
+							view={ this.view }
+							new={ this.newList } />
+				}
+                {page === 'new'  && <NewL back={ this.back }/>}
+                {page === 'view'
+					&& <Item getVendorName={getVendorName}
+							refreshCart={refreshCart}
+							vendors={vendors}
+							updateCart={updateCart}
+							addToCart={addToCart}
+							cartProducts={cartProducts}
+							item={item}
+							products={products}
+							back={ this.back }
+							edit={ this.edit } />
+				}
+                {page === 'edit' && <EditL item={item} products={products} backToView={ this.backToView }/>}
             </div>
 		)
 	}
