@@ -9,10 +9,11 @@ export default {
             product: 'Product'
         },
         home: {
+            myLists: 'My lists',
             mySuppliers: 'My Suppliers',
             orderList: 'Order List',
             product: 'Product',
-            welcome: 'Welcome!'
+            welcome: 'Welcome {firstName}, manage your orders here'
         },
         product: {
             add: 'Add',
@@ -103,6 +104,8 @@ export default {
             total: 'Total'
         },
         signIn: {
+            incorrectEmail: 'User with this email address does not exist',
+            incorrectPassword: 'Entered password is not correct',
             createAccount: 'Create account',
             emailAddress: 'Email address',
             password: 'Password',
@@ -121,10 +124,11 @@ export default {
             product: 'Artikel bestellen'
         },
         home: {
+            myLists: 'Meine Listen',
             mySuppliers: 'Lieferanten',
-            orderList: 'Historie',
-            product: 'Produkte',
-            welcome: 'Willkommen!'
+            orderList: 'Bestellungen ansehen',
+            product: 'Artikel bestellen',
+            welcome: 'Hallo {firstName}, Bestellungen hier managen'
         },
         product: {
             add: 'Hinzu',
@@ -215,6 +219,8 @@ export default {
             total: 'Summe'
         },
         signIn: {
+            incorrectEmail: 'Für diese Email-Adresse existiert kein Nutzer',
+            incorrectPassword: 'Falsches Passwort',
             createAccount: 'Benutzer erstellen',
             emailAddress: 'Email-Adresse',
             password: 'Passwort',
