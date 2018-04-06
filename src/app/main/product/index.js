@@ -6,6 +6,7 @@ import { Redirect } from 'react-router-dom';
 import { sidebar_menu_update } from '../../reducer/sidebar_menu';
 import $ from 'jquery';
 import { SERVER_URL } from '../../config';
+import { Menu } from 'semantic-ui-react';
 
 import ProductList from './ProductList'
 import MyFavorite from './MyFavorite'
@@ -23,7 +24,8 @@ class Product extends Component {
 			cartProducts: {},
 			quantities: {},
 			products: [],
-			vendors: []
+			vendors: [],
+			activeIndex: (this.props.location.state && this.props.location.state.selectedTab) || 'products'
         }
 
         if (tokenType !== 'restaurant') {
@@ -167,11 +169,13 @@ class Product extends Component {
 	            }
 	        })
 		});
-    }
+    };
+
+	handleTabChange = (e, {name}) => this.setState({activeIndex: name});
 
 	render() {
 
-		let { redirect, vendors, products, cartProducts } = this.state;
+		let { redirect, vendors, products, cartProduct, activeIndex } = this.state;
 		if (redirect) {
 			return <Redirect push to={redirect} />;
 		}
@@ -180,44 +184,38 @@ class Product extends Component {
 			<div className="container-fluid product">
                 <div className="row">
                     <div className="col-xl-12">
-                        <ul className="c-tabs__list nav nav-tabs">
-                            <li>
-								<a className="c-tabs__link active" data-toggle="tab" href="#all-product" role="tab" aria-controls="nav-home" aria-selected="true">
-									<FormattedMessage id="product.allProducts"/>
-								</a>
-							</li>
-                            <li>
-								<a className="c-tabs__link" data-toggle="tab" href="#my-favorite" role="tab" aria-controls="nav-profile" aria-selected="false">
-									<FormattedMessage id="product.myList"/>
-								</a>
-							</li>
-                        </ul>
-                        <div className="c-tabs__content tab-content u-mb-large">
-                            <div className="c-tabs__pane u-pb-medium active" id="all-product" role="tabpanel">
-								<ProductList
-									getVendorName={this.getVendorName}
-									refreshCart={this.updateCartsState}
-									updateCart={this.updateCart}
-									addToCart={this.addToCart}
-									getCarts={this.getCarts}
-									getVendors={this.getVendorsWithMeta}
-									vendors={vendors}
-									products={products}
-									cartProducts={cartProducts} />
-							</div>
-							<div className="c-tabs__pane u-pb-medium" id="my-favorite" role="tabpanel">
-								<MyFavorite
-									getVendorName={this.getVendorName}
-									refreshCart={this.updateCartsState}
-									updateCart={this.updateCart}
-									addToCart={this.addToCart}
-									getCarts={this.getCarts}
-									getVendors={this.getVendorsWithMeta}
-									vendors={vendors}
-									products={products}
-									cartProducts={cartProducts} />
-							</div>
-                        </div>
+						<Menu pointing secondary color='blue'>
+							<Menu.Item name='products' active={activeIndex === 'products'} onClick={this.handleTabChange}>
+								<FormattedMessage id="product.allProducts"/>
+							</Menu.Item>
+							<Menu.Item name='favorites' active={activeIndex === 'favorites'} onClick={this.handleTabChange}>
+								<FormattedMessage id="product.myList"/>
+							</Menu.Item>
+						</Menu>
+						{ activeIndex === 'products' &&
+							<ProductList
+								getVendorName={this.getVendorName}
+								refreshCart={this.updateCartsState}
+								updateCart={this.updateCart}
+								addToCart={this.addToCart}
+								getCarts={this.getCarts}
+								getVendors={this.getVendorsWithMeta}
+								vendors={this.state.vendors}
+								products={this.state.products}
+								cartProducts={this.state.cartProducts} />
+						}
+						{ activeIndex === 'favorites' &&
+							<MyFavorite
+								getVendorName={this.getVendorName}
+								refreshCart={this.updateCartsState}
+								updateCart={this.updateCart}
+								addToCart={this.addToCart}
+								getCarts={this.getCarts}
+								getVendors={this.getVendorsWithMeta}
+								vendors={this.state.vendors}
+								products={this.state.products}
+								cartProducts={this.state.cartProducts} />
+						}
                     </div>
                 </div>
             </div>

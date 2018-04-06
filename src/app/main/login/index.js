@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import { FormattedMessage } from 'react-intl'
 import $ from 'jquery';
+import { Button, Reveal } from 'semantic-ui-react';
 import { Redirect } from 'react-router-dom'
 import { SERVER_URL, AUTH_HEADER } from '../../config'
 
@@ -13,7 +14,11 @@ class Login extends Component {
         let tokenType = localStorage.getItem('tokenType');
 
         this.state = {
-            redirect: null
+            redirect: null,
+            loginError: {
+                email: '',
+                password: ''
+            }
         }
 
         if (tokenType === 'restaurant') {
@@ -23,8 +28,20 @@ class Login extends Component {
         }
 	}
 
-    login() {
-        let scope = this;
+    componentDidMount() {
+        document.addEventListener('keyup', this.onKeyPress);
+    }
+
+    onKeyPress = ({which}) => {
+        if( which === 13 )
+            this.login();
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('keyup', this.onKeyPress);
+    }
+
+    login = () => {
         $.ajax({
             method: 'POST',
             url: SERVER_URL + '/user/login',
@@ -33,26 +50,44 @@ class Login extends Component {
                 'email': $('#email').val(),
                 'password': $('#password').val()
             }
-        }).done(function(data) {
+        }).done( data => {
             localStorage.setItem('accessToken', data.accessToken);
             localStorage.setItem('tokenType', data.tokenType);
             if (data.tokenType === 'restaurant') {
-                scope.setState({
+                this.setState({
                     redirect: '/restaurant/home'
                 })
             } else {
-                scope.setState({
+                this.setState({
                     redirect: '/vendor/home'
                 })
             }
         })
-        .fail(function() {
-            console.log('error');
+        .fail( response => {
+            const {responseJSON: errors} = response;
+            console.log(errors);
+            //The fun part, parsing response
+            if( errors.message ) {
+                if( errors.message === 'User not found.' )
+                    this.setState({
+                        loginError: {
+                            password: '',
+                            email: <FormattedMessage id='signIn.incorrectEmail' />
+                        }
+                    });
+                else if( errors.message === 'Invalid user credentials.' )
+                    this.setState({
+                        loginError: {
+                            email: '',
+                            password: <FormattedMessage id='signIn.incorrectPassword' />
+                        }
+                    })
+            }
         });
     }
 
 	render() {
-        let {redirect} = this.state;
+        let {redirect, loginError} = this.state;
 		if (this.state.redirect) {
 			return <Redirect push to={redirect} />;
 		}
@@ -75,12 +110,18 @@ class Login extends Component {
                                         <FormattedMessage id="signIn.emailAddress"/>
                                     </label>
                                     <input className="c-input" type="email" id="email" autoComplete="off"/>
+                                        <Reveal active={ loginError.email !== '' }>
+                                            <p className='login-error'>{loginError.email}</p>
+                                        </Reveal>
                                 </div>
                                 <div className="c-field u-mb-small">
                                     <label className="c-field__label" htmlFor="password">
                                         <FormattedMessage id="signIn.password"/>
                                     </label>
                                     <input className="c-input" type="password" id="password" autoComplete="new-password" />
+                                    <Reveal active={ loginError.password !== '' }>
+                                        <p className='login-error'>{loginError.password}</p>
+                                    </Reveal>
                                 </div>
                                 <a className="c-btn c-btn--success c-btn--fullwidth" onClick={() => this.login()}>
                                     <FormattedMessage id="signIn.signIn"/>
