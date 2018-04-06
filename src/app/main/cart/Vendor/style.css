@@ -13,50 +13,50 @@
 .vendor .invalid-message {
   color: #ed1c24; }
 
-.vendor .actions .toggle-items {
-  margin-right: 10px;
-  float: left; }
-  @media screen and (max-width: 399px) {
-    .vendor .actions .toggle-items {
-      width: 100%;
-      margin-bottom: 10px; } }
-
-.vendor .actions .delivery-date {
-  display: inline-block; }
-  @media screen and (max-width: 399px) {
-    .vendor .actions .delivery-date {
-      width: 100%; } }
-  .vendor .actions .delivery-date input {
-    width: 100%; }
-  .vendor .actions .delivery-date span {
-    font-size: 12px; }
-
-.vendor .actions .order-action {
-  float: right; }
-  @media screen and (max-width: 1199px) {
-    .vendor .actions .order-action {
-      float: none;
-      text-align: right;
-      margin-top: 20px; } }
-  @media screen and (max-width: 991px) {
-    .vendor .actions .order-action {
-      float: right;
-      text-align: none;
-      margin: 0; } }
-  @media screen and (max-width: 670px) {
-    .vendor .actions .order-action {
-      float: none;
-      text-align: right;
-      margin-top: 20px; } }
-  .vendor .actions .order-action .place-order {
-    margin-right: 5px; }
+.vendor .actions {
+  position: relative; }
+  .vendor .actions .toggle-items {
+    margin-right: 10px;
+    float: left; }
     @media screen and (max-width: 399px) {
-      .vendor .actions .order-action .place-order {
+      .vendor .actions .toggle-items {
         width: 100%;
         margin-bottom: 10px; } }
-  @media screen and (max-width: 399px) {
-    .vendor .actions .order-action .remove-order {
-      width: 100%; } }
+  .vendor .actions .delivery-date {
+    display: inline-block; }
+    @media screen and (max-width: 399px) {
+      .vendor .actions .delivery-date {
+        width: 100%; } }
+    .vendor .actions .delivery-date input {
+      width: 100%; }
+    .vendor .actions .delivery-date span {
+      font-size: 12px; }
+  .vendor .actions .order-action {
+    float: right; }
+    @media screen and (max-width: 1199px) {
+      .vendor .actions .order-action {
+        float: none;
+        text-align: right;
+        margin-top: 20px; } }
+    @media screen and (max-width: 991px) {
+      .vendor .actions .order-action {
+        float: right;
+        text-align: none;
+        margin: 0; } }
+    @media screen and (max-width: 670px) {
+      .vendor .actions .order-action {
+        float: none;
+        text-align: right;
+        margin-top: 20px; } }
+    .vendor .actions .order-action .place-order {
+      margin-right: 5px; }
+      @media screen and (max-width: 399px) {
+        .vendor .actions .order-action .place-order {
+          width: 100%;
+          margin-bottom: 10px; } }
+    @media screen and (max-width: 399px) {
+      .vendor .actions .order-action .remove-order {
+        width: 100%; } }
 
 .vendor .item-table {
   margin-top: 20px; }
@@ -73,3 +73,17 @@
       width: 100px; }
     .vendor .item-table table .action {
       width: 100px; }
+
+.vendor .react-datepicker .react-datepicker__month-container .react-datepicker__header {
+  background-color: #fff; }
+
+.vendor .react-datepicker .react-datepicker__month-container .react-datepicker__month .react-datepicker__week .react-datepicker__day.react-datepicker__day--today {
+  border-radius: 100%;
+  background-color: #216ba5; }
+
+.vendor .react-datepicker .react-datepicker__month-container .react-datepicker__month .react-datepicker__week .react-datepicker__day.react-datepicker__day--selected {
+  /*border-radius: 100%;*/
+  background-color: #fff;
+  border: none;
+  color: #216ba5;
+  font-weight: bold; }

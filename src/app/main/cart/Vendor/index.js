@@ -1,14 +1,14 @@
 import React, {Component} from 'react'
 import { FormattedMessage } from 'react-intl'
 import { connect } from 'react-redux'
-//import $ from 'jquery';
+import $ from 'jquery';
 import moment from 'moment';
+import DatePicker from 'react-datepicker';
+import { Input, Card } from 'semantic-ui-react';
 import { SERVER_URL } from '../../../config'
 import { cart_update } from '../../../reducer/cart'
 import { alert_add, alert_update, alert_remove } from '../../../reducer/alert'
 import './style.css'
-
-const $ = window.$;
 
 class Vendor extends Component {
 
@@ -17,7 +17,8 @@ class Vendor extends Component {
         this.state = {
             showTable: false,
             cart: props.cart,
-            message: props.cart.message
+            message: props.cart.message,
+            selectedDate: moment(props.cart.deliveryDate)
         }
     }
 
@@ -26,10 +27,6 @@ class Vendor extends Component {
             cart: newProps.cart,
             message: newProps.cart.message
 		});
-    }
-
-    componentDidMount() {
-        $('[data-toggle="datepicker"]').datepicker();
     }
 
     cartPrice(cart) {
@@ -239,6 +236,34 @@ class Vendor extends Component {
         return int + ',' + nums[1];
     }
 
+    filterDates = date => {
+        const { vendor } = this.props.cart;
+        return vendor.meta.deadlineHours
+            && vendor.meta.deadlineHours[moment(date).isoWeekday()-1].activeDay;
+    }
+
+    fillDates = dateRange => {
+        //Don't even waste time and RAM if array is empty or not exist
+        if( !dateRange || !dateRange.length )
+            return [];
+
+        const { from: fromDate, to: toDate } = dateRange;
+        let result = [];
+        let currentDate = moment(fromDate);
+        while( currentDate.isSameOrBefore( moment(toDate) ) ) {
+            result.push( moment(currentDate) );
+            currentDate.add(1, 'd');
+        }
+
+        return result;
+    }
+
+    handleDateChange = date => {
+        this.setState({
+            selectedDate: moment(date)
+        })
+    }
+
 	render() {
         let {cart} = this.props;
         let {showTable, message} = this.state;
@@ -274,12 +299,19 @@ class Vendor extends Component {
                         }
                     </a>
                     <div className="delivery-date">
-                        <input className="c-input"
+                        {/*<input className="c-input"
                             data-toggle="datepicker"
                             type="text"
                             placeholder="Delivery Date"
                             ref="deliveryDate"
-                            defaultValue={moment(cart.deliveryDate).format('MM/DD/YYYY')}/>
+                            defaultValue={moment(cart.deliveryDate).format('MM/DD/YYYY')}/>*/}
+                        <DatePicker
+                            dateFormat='DD/MM/YYYY'
+                            customInput={ <Input icon='calendar' placeholder='Select delivery date' /> }
+                            selected={this.state.selectedDate}
+                            onChange={this.handleDateChange}
+                            filterDate={this.filterDates}
+                            excludeDates={ this.fillDates(cart.vendor.meta.holidays) } />
                         <span className="u-color-info">
                             <FormattedMessage id="cart.deliveryDate"/>
                         </span>
