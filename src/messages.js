@@ -11,7 +11,7 @@ export default {
         home: {
             myLists: 'My lists',
             mySuppliers: 'My Suppliers',
-            orderList: 'Order List',
+            orderList: 'My orders',
             product: 'Product',
             welcome: 'Welcome {firstName}, manage your orders here'
         },

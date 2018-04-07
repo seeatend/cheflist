@@ -163,7 +163,7 @@ class ProductList extends Component {
                 <DropDownFilter options={this.getBusinessNames()} action={(f) => this.onDropdownChange(f === 'All' ? '' : f)} className="vendor-filter"/>
                 <Input className='products-searchbar' icon='search' placeholder='Search product, supplier or product ID' value={this.state.textFilter} onChange={ (e) => this.onFilterChange(e.target.value) } />
                 <ProductsTable
-                    productsList={ filteredProduct }
+                    productsList={ (filteredProduct.length && filteredProduct) || this.props.products }
                     onInputChange={ this.onQuantityChange }
                     onIncrement={ this.qtyPlus }
                     onDecrement={ this.qtyMinus }

@@ -7211,7 +7211,7 @@ be a descendant of the grid when it is being dragged.
 .o-page__content {
   margin-left: 250px;
   /* [1] */
-  overflow: hidden; }
+/*overflow: hidden;*/ }
   @media (max-width: 992px) {
     .o-page__content {
       margin-left: 0; } }
@@ -12525,9 +12525,9 @@ textarea.c-input {
     border-radius: 100%;
     color: #fff;
     font-size: 1.25rem;
-    background: #2ea1f8;
-    background: -webkit-gradient(linear, left top, left bottom, from(#2ea1f8), to(#1990ea));
-    background: linear-gradient(to bottom, #2ea1f8, #1990ea); }
+    background: #26303E;
+    background: -webkit-gradient(linear, left top, left bottom, from(#26303E), to(#344154));
+    background: linear-gradient(to bottom, #26303E, #344154); }
   .c-login-horizontal .c-login__icon--left {
     right: initial;
     left: 30px; }
@@ -12536,6 +12536,10 @@ textarea.c-input {
     width: 45px;
     height: 45px;
     border-radius: 4px; }
+    .c-login-horizontal .c-login__icon--rounded img {
+        width: 75%;
+        height: 75%;
+       }
   .c-login-horizontal .c-login__title {
     margin: 0;
     font-size: 24px;
@@ -12569,7 +12573,7 @@ textarea.c-input {
       left: 0;
       width: 100%;
       height: 100%;
-      opacity: .2; }
+      opacity: .35; }
     .c-login-horizontal .c-login__content-image h3,
     .c-login-horizontal .c-login__content-image p {
       color: #fff; }

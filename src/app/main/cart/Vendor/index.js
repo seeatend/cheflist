@@ -1,14 +1,14 @@
 import React, {Component} from 'react'
 import { FormattedMessage } from 'react-intl'
 import { connect } from 'react-redux'
-//import $ from 'jquery';
+import $ from 'jquery';
 import moment from 'moment';
+import DatePicker from 'react-datepicker';
+import { Input } from 'semantic-ui-react';
 import { SERVER_URL } from '../../../config'
 import { cart_update } from '../../../reducer/cart'
 import { alert_add, alert_update, alert_remove } from '../../../reducer/alert'
 import './style.css'
-
-const $ = window.$;
 
 class Vendor extends Component {
 
@@ -17,7 +17,8 @@ class Vendor extends Component {
         this.state = {
             showTable: false,
             cart: props.cart,
-            message: props.cart.message
+            message: props.cart.message,
+            selectedDate: this.selectStartingDate()
         }
     }
 
@@ -26,10 +27,6 @@ class Vendor extends Component {
             cart: newProps.cart,
             message: newProps.cart.message
 		});
-    }
-
-    componentDidMount() {
-        $('[data-toggle="datepicker"]').datepicker();
     }
 
     cartPrice(cart) {
@@ -97,7 +94,7 @@ class Vendor extends Component {
     }
 
     updateDeliveryDate() {
-        let date = moment(this.refs.deliveryDate.value, 'MM/DD/YYYY').format('YYYY-MM-DD');
+        let date = moment(this.state.selectedDate).format('YYYY-MM-DD');
         $.ajax({
             method: 'POST',
             url: SERVER_URL + '/restaurant/cart/update/' + this.props.cart.uid,
@@ -239,12 +236,56 @@ class Vendor extends Component {
         return int + ',' + nums[1];
     }
 
+    filterDates = date => {
+        const { vendor } = this.props.cart;
+        return vendor.meta.deadlineHours
+            && vendor.meta.deadlineHours[moment(date).isoWeekday() === 7 ? 0 : moment(date).isoWeekday()].activeDay
+            && moment(date.format('YYYY-MM-DD')).isSameOrAfter(moment().format('YYYY-MM-DD'));
+    }
+
+    fillDates = dateRange => {
+        //Don't even waste time and RAM if array is empty or not exist
+        if( !dateRange || !dateRange.length )
+            return [];
+
+        let result = [];
+        dateRange.forEach( range => {
+            const { from: fromDate, to: toDate } = range;
+            let currentDate = moment(fromDate);
+            while( currentDate.isSameOrBefore( moment(toDate) ) ) {
+                result.push( moment(currentDate) );
+                currentDate.add(1, 'd');
+            }
+        });
+
+        return result;
+    }
+
+    handleDateChange = date => {
+        this.setState({
+            selectedDate: moment(date)
+        })
+    }
+
+    selectStartingDate = () => {
+        let tryDate = moment().minutes(0).seconds(0);
+        while( !this.dateIsAvailable(tryDate) ) {
+            tryDate.add(1, 'd');
+        }
+
+        return tryDate;
+    }
+
+    dateIsAvailable = date => {
+        return this.filterDates(date)
+            && !this.fillDates(this.props.cart.vendor.meta.holidays).includes(date)
+    }
+
 	render() {
         let {cart} = this.props;
         let {showTable, message} = this.state;
-        let products = cart.products;
 
-        products.sort(function(a, b) {
+        const sortedList = cart.products.slice().sort(function(a, b) {
             if (a.product.name.toLowerCase() > b.product.name.toLowerCase()) {
                 return 1
             } else {
@@ -269,17 +310,18 @@ class Vendor extends Component {
                 <div className="actions">
                     <a className="c-btn c-btn--secondary toggle-items" onClick={() => this.toggleTable()}>
                         {showTable
-                            ?<FormattedMessage id="cart.hideList" values={{number: cart.products.length}}/>
-                            :<FormattedMessage id="cart.showList" values={{number: cart.products.length}}/>
+                            ?<FormattedMessage id="cart.hideList" values={{number: sortedList.length}}/>
+                        :<FormattedMessage id="cart.showList" values={{number: sortedList.length}}/>
                         }
                     </a>
                     <div className="delivery-date">
-                        <input className="c-input"
-                            data-toggle="datepicker"
-                            type="text"
-                            placeholder="Delivery Date"
-                            ref="deliveryDate"
-                            defaultValue={moment(cart.deliveryDate).format('MM/DD/YYYY')}/>
+                        <DatePicker
+                            dateFormat='DD/MM/YYYY'
+                            customInput={ <Input icon='calendar' placeholder='Select delivery date' /> }
+                            selected={this.state.selectedDate}
+                            onChange={this.handleDateChange}
+                            filterDate={this.filterDates}
+                            excludeDates={ this.fillDates(cart.vendor.meta.holidays) } />
                         <span className="u-color-info">
                             <FormattedMessage id="cart.deliveryDate"/>
                         </span>
@@ -298,7 +340,7 @@ class Vendor extends Component {
                         <div className="col-sm-12">
                             <div className="c-table-responsive table-container">
                                 <p className="u-color-success">
-                                    {products.length} <FormattedMessage id="cart.item"/>
+                                    {sortedList.length} <FormattedMessage id="cart.item"/>
                                 </p>
                                 <table className="c-table">
                                     <thead className="c-table__head c-table__head--slim">
@@ -321,7 +363,7 @@ class Vendor extends Component {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {products.map((p, i) =>
+                                        {sortedList.map((p, i) =>
                                             <tr className="c-table__row" key={i} id={p.product.uid}>
                                                 <td className="c-table__cell no">
                                                     {i+1}

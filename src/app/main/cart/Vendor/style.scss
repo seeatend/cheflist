@@ -1,3 +1,5 @@
+$datepicker__selected-color: #3dcc4a;
+
 .vendor {
     .vendor-name {
         display: inline-block;
@@ -15,6 +17,7 @@
         color: #ed1c24;
     }
     .actions {
+        position: relative;
         .toggle-items {
             margin-right: 10px;
             float: left;
@@ -85,6 +88,30 @@
             }
             .action {
                 width: 100px;
+            }
+        }
+    }
+    .react-datepicker {
+        .react-datepicker__month-container {
+            .react-datepicker__header {
+                background-color: #fff;
+            }
+            .react-datepicker__month {
+                .react-datepicker__week {
+                    .react-datepicker__day {
+                        &.react-datepicker__day--today {
+                            border-radius: 100%;
+                            background-color: #216ba5;
+                        }
+                        &.react-datepicker__day--selected {
+                            /*border-radius: 100%;*/
+                            background-color: #fff;
+                            border: none;
+                            color: #216ba5;
+                            font-weight: bold;
+                        }
+                    }
+                }
             }
         }
     }

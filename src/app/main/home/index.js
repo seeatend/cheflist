@@ -118,7 +118,7 @@ class Home extends Component {
 
 	render() {
 
-		let {redirect, products, orders, suppliers, firstName} = this.state;
+		let {redirect, products, orders, firstName} = this.state;
 		if (redirect) {
 			return <Redirect push to={redirect} />;
 		}
