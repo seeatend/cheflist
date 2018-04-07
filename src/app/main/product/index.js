@@ -82,9 +82,9 @@ class Product extends Component {
 	                    vendorWithMeta.meta = vendor.meta;
 						vendorsList.push(vendorWithMeta);
 	                    this.getProducts( connection.catalog ).done( res => {
-	                        this.setState( prevState => ({
-								products: [...prevState.products, ...res.products]
-							}));
+							this.setState({
+								products: res.products
+							});
 	                    })
 	                }
 	            });
@@ -175,7 +175,7 @@ class Product extends Component {
 
 	render() {
 
-		let { redirect, vendors, products, cartProduct, activeIndex } = this.state;
+		let { redirect, vendors, products, cartProducts, activeIndex } = this.state;
 		if (redirect) {
 			return <Redirect push to={redirect} />;
 		}
@@ -200,9 +200,9 @@ class Product extends Component {
 								addToCart={this.addToCart}
 								getCarts={this.getCarts}
 								getVendors={this.getVendorsWithMeta}
-								vendors={this.state.vendors}
-								products={this.state.products}
-								cartProducts={this.state.cartProducts} />
+								vendors={vendors}
+								products={products}
+								cartProducts={cartProducts} />
 						}
 						{ activeIndex === 'favorites' &&
 							<MyFavorite
@@ -212,9 +212,9 @@ class Product extends Component {
 								addToCart={this.addToCart}
 								getCarts={this.getCarts}
 								getVendors={this.getVendorsWithMeta}
-								vendors={this.state.vendors}
-								products={this.state.products}
-								cartProducts={this.state.cartProducts} />
+								vendors={vendors}
+								products={products}
+								cartProducts={cartProducts} />
 						}
                     </div>
                 </div>

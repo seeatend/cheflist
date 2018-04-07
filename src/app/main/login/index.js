@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import { FormattedMessage } from 'react-intl'
 import $ from 'jquery';
-import { Button, Reveal } from 'semantic-ui-react';
+import { Reveal } from 'semantic-ui-react';
 import { Redirect } from 'react-router-dom'
 import { SERVER_URL, AUTH_HEADER } from '../../config'
 
@@ -98,7 +98,7 @@ class Login extends Component {
                         <div className="c-login__content-wrapper">
                             <header className="c-login__header">
                                 <a className="c-login__icon c-login__icon--rounded c-login__icon--left">
-                                    <img src="img/logo-login.svg" alt="Dashboard's Logo" />
+                                    <img src="img/b54e8e12df014d82e34fce08ec5a6643_white.png" alt="Dashboard's Logo" />
                                 </a>
                                 <h2 className="c-login__title">
                                     <FormattedMessage id="signIn.signIn"/>
@@ -133,7 +133,7 @@ class Login extends Component {
                             </form>
                         </div>
                         <div className="c-login__content-image">
-                            <img src="img/login2.jpg" alt="Welcome to Dashboard UI Kit" />
+                            <img src="img/a33832b8060343d146b53b5057ea6310.jpg" alt="Welcome to Dashboard" />
                             <h3><FormattedMessage id="signIn.welcomeToCheflist"/></h3>
                             <p className="u-text-large">
                                 <FormattedMessage id="signIn.welcomeText"/>
