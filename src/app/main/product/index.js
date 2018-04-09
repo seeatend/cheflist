@@ -81,11 +81,14 @@ class Product extends Component {
 	                if( vendor ) {
 	                    vendorWithMeta.meta = vendor.meta;
 						vendorsList.push(vendorWithMeta);
-	                    this.getProducts( connection.catalog ).done( res => {
-							this.setState({
-								products: res.products
-							});
-	                    })
+						//God, please, forgive my soul for doing this.
+						this.setState({ products: [] }, () => {
+							this.getProducts( connection.catalog ).done( res => {
+								this.setState( prevState => ({
+									products: [...prevState.products, ...res.products]
+								}));
+							})
+						})
 	                }
 	            });
 				this.setState({
