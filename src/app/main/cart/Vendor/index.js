@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import $ from 'jquery';
 import moment from 'moment';
 import DatePicker from 'react-datepicker';
-import { Input } from 'semantic-ui-react';
+import { Input, Button } from 'semantic-ui-react';
 import { SERVER_URL } from '../../../config'
 import { cart_update } from '../../../reducer/cart'
 import { alert_add, alert_update, alert_remove } from '../../../reducer/alert'
@@ -296,7 +296,7 @@ class Vendor extends Component {
 		return (
             <div className="c-card u-p-medium u-mb-medium vendor">
                 <h4 className="u-mb-small">
-                    <div className="vendor-name">{cart.vendor.firstName} {cart.vendor.lastName}</div>
+                    <div className="vendor-name">{cart.vendor.meta.businessName}</div>
                     <div className="total-price">
                         {this.germanFormat(this.cartPrice(cart))} &euro;
                     </div>
@@ -327,12 +327,11 @@ class Vendor extends Component {
                         </span>
                     </div>
                     <div className="order-action">
-                        <a className="c-btn c-btn--success place-order" onClick={() => this.placeOrder(cart)}>
-                            <FormattedMessage id="cart.placeOrder"/>
-                        </a>
-                        <a className="c-btn c-btn--danger remove-order" onClick={() => this.removeOrder(cart)}>
-                            <FormattedMessage id="cart.remove"/>
-                        </a>
+                        <Button.Group>
+                            <Button color='red' onClick={() => this.removeOrder(cart)} > <FormattedMessage id="cart.remove" /> </Button>
+                            <Button color='green' onClick={() => this.placeOrder(cart)} > <FormattedMessage id="cart.placeOrder" /> </Button>
+                        </Button.Group>
+
                     </div>
                 </div>
                 {showTable &&
