@@ -32,22 +32,24 @@
     .vendor .actions .delivery-date span {
       font-size: 12px; }
   .vendor .actions .order-action {
-    float: right; }
+    float: right;
+    /*@media screen and (max-width: 991px) {
+                float: right;
+                text-align: none;
+                margin: 0;
+            }*/ }
     @media screen and (max-width: 1199px) {
       .vendor .actions .order-action {
         float: none;
         text-align: right;
         margin-top: 20px; } }
-    @media screen and (max-width: 991px) {
-      .vendor .actions .order-action {
-        float: right;
-        text-align: none;
-        margin: 0; } }
     @media screen and (max-width: 670px) {
       .vendor .actions .order-action {
         float: none;
         text-align: right;
-        margin-top: 20px; } }
+        margin-top: 20px; }
+        .vendor .actions .order-action .ui.buttons {
+          width: 100%; } }
     .vendor .actions .order-action .place-order {
       margin-right: 5px; }
       @media screen and (max-width: 399px) {
@@ -60,30 +62,26 @@
 
 .vendor .item-table {
   margin-top: 20px; }
-  .vendor .item-table table {
-    display: table; }
-    .vendor .item-table table .no {
-      width: 50px; }
-    .vendor .item-table table .quantity {
-      width: 100px; }
-      .vendor .item-table table .quantity input {
-        min-width: 50px;
-        text-align: center; }
-    .vendor .item-table table .price {
-      width: 100px; }
-    .vendor .item-table table .action {
-      width: 100px; }
+  @media only screen and (max-width: 767px) {
+    .vendor .item-table .cart-products-table tbody tr td {
+      text-align: center; } }
+  @media only screen and (max-width: 767px) {
+    .vendor .item-table .cart-products-table tbody tr td:first-child {
+      display: none !important; } }
+  @media only screen and (max-width: 767px) {
+    .vendor .item-table .cart-products-table tbody tr td button {
+      width: 100%; } }
 
 .vendor .react-datepicker .react-datepicker__month-container .react-datepicker__header {
   background-color: #fff; }
 
 .vendor .react-datepicker .react-datepicker__month-container .react-datepicker__month .react-datepicker__week .react-datepicker__day.react-datepicker__day--today {
-  border-radius: 100%;
-  background-color: #216ba5; }
-
-.vendor .react-datepicker .react-datepicker__month-container .react-datepicker__month .react-datepicker__week .react-datepicker__day.react-datepicker__day--selected {
-  /*border-radius: 100%;*/
   background-color: #fff;
   border: none;
   color: #216ba5;
   font-weight: bold; }
+
+.vendor .react-datepicker .react-datepicker__month-container .react-datepicker__month .react-datepicker__week .react-datepicker__day.react-datepicker__day--selected {
+  /*border-radius: 100%;*/
+  border-radius: 100%;
+  background-color: #216ba5; }

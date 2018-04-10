@@ -7,6 +7,8 @@ import DatePicker from 'react-datepicker';
 import { Input, Button } from 'semantic-ui-react';
 import { SERVER_URL } from '../../../config'
 import { cart_update } from '../../../reducer/cart'
+import CartProductsList from '../CartProductsList';
+import { formatPrice } from '../../../helpers';
 import { alert_add, alert_update, alert_remove } from '../../../reducer/alert'
 import './style.css'
 
@@ -18,8 +20,13 @@ class Vendor extends Component {
             showTable: false,
             cart: props.cart,
             message: props.cart.message,
-            selectedDate: this.selectStartingDate()
+            selectedDate: this.selectStartingDate(),
+            quantities: {}
         }
+    }
+
+    componentDidMount() {
+        this.getQuantities();
     }
 
     componentWillReceiveProps(newProps) {
@@ -31,8 +38,8 @@ class Vendor extends Component {
 
     cartPrice(cart) {
 		let price = 0;
-		cart.products.forEach(function(p) {
-			price += p.product.price * p.quantity
+		cart.products.forEach( p => {
+			price += p.product.price * this.state.quantities[p.product.uid];
 		});
 		return price;
     }
@@ -113,14 +120,7 @@ class Vendor extends Component {
     updateQty(product, qty) {
         let scope = this;
         let {cart} = this.props;
-        let {uid} = product.product;
-
-        cart.products.forEach(function(p) {
-            if (p.product.uid === uid) {
-                p.quantity = qty;
-            }
-        });
-        this.setState({});
+        let {uid} = product;
 
         $.ajax({
             method: 'POST',
@@ -215,25 +215,34 @@ class Vendor extends Component {
         })
     }
 
-    qtyPlus(id, product) {
-        let input = $('#' + id + ' .quantity input');
-        let qty = parseInt(input.val(),10) + 1;
-        input.val(qty);
-        this.updateQty(product, qty);
+    qtyPlus = product => {
+        this.onQuantityChange(product, this.state.quantities[product.uid]+1);
     }
 
-    qtyMinus(id, product) {
-        let input = $('#' + id + ' .quantity input');
-        let qty = parseInt(input.val(),10);
-        qty = qty>0 ? qty-1 : 0;
-        input.val(qty);
-        this.updateQty(product, qty);
+    qtyMinus = product => {
+        this.onQuantityChange(product, this.state.quantities[product.uid] - 1);
     }
 
-    germanFormat(number) {
-        let nums = number.toFixed(2).toString().split('.');
-        let int = nums[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        return int + ',' + nums[1];
+    onQuantityChange = (product, quantity) => {
+        this.setState( prevState => ({
+            quantities: {
+                ...prevState.quantities,
+                [product.uid]: Math.max(quantity, 1)
+            }
+        }), () => {
+            //TODO: get rid of this. Why on Earth we send request to backend each time we click button?
+            this.updateQty(product, quantity);
+        });
+    }
+
+    getQuantities = () => {
+        let quantities = {};
+        this.state.cart.products.forEach( product => {
+            quantities[product.product.uid] = product.quantity;
+        });
+        this.setState({
+            quantities
+        });
     }
 
     filterDates = date => {
@@ -283,7 +292,7 @@ class Vendor extends Component {
 
 	render() {
         let {cart} = this.props;
-        let {showTable, message} = this.state;
+        let {showTable, message, quantities} = this.state;
 
         const sortedList = cart.products.slice().sort(function(a, b) {
             if (a.product.name.toLowerCase() > b.product.name.toLowerCase()) {
@@ -298,7 +307,7 @@ class Vendor extends Component {
                 <h4 className="u-mb-small">
                     <div className="vendor-name">{cart.vendor.meta.businessName}</div>
                     <div className="total-price">
-                        {this.germanFormat(this.cartPrice(cart))} &euro;
+                        {formatPrice(this.cartPrice(cart))} &euro;
                     </div>
                 </h4>
                 {/* <p className="u-mb-xsmall valid-message">
@@ -331,71 +340,18 @@ class Vendor extends Component {
                             <Button color='red' onClick={() => this.removeOrder(cart)} > <FormattedMessage id="cart.remove" /> </Button>
                             <Button color='green' onClick={() => this.placeOrder(cart)} > <FormattedMessage id="cart.placeOrder" /> </Button>
                         </Button.Group>
-
                     </div>
                 </div>
                 {showTable &&
                     <div className="row u-mb-large item-table">
-                        <div className="col-sm-12">
-                            <div className="c-table-responsive table-container">
-                                <p className="u-color-success">
-                                    {sortedList.length} <FormattedMessage id="cart.item"/>
-                                </p>
-                                <table className="c-table">
-                                    <thead className="c-table__head c-table__head--slim">
-                                        <tr className="c-table__row">
-                                            <th className="c-table__cell c-table__cell--head">
-                                                <FormattedMessage id="cart.no"/>
-                                            </th>
-                                            <th className="c-table__cell c-table__cell--head">
-                                                <FormattedMessage id="cart.item"/>
-                                            </th>
-                                            <th className="c-table__cell c-table__cell--head">
-                                                <FormattedMessage id="cart.quantity"/>
-                                            </th>
-                                            <th className="c-table__cell c-table__cell--head">
-                                                <FormattedMessage id="cart.total"/>
-                                            </th>
-                                            <th className="c-table__cell c-table__cell--head">
-                                                <span className="u-hidden-visually">Actions</span>
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {sortedList.map((p, i) =>
-                                            <tr className="c-table__row" key={i} id={p.product.uid}>
-                                                <td className="c-table__cell no">
-                                                    {i+1}
-                                                </td>
-                                                <td className="c-table__cell">
-                                                    {p.product.name}
-                                                </td>
-                                                <td className="c-table__cell quantity">
-                                                    <div className="c-btn-group">
-                                                        <a className="c-btn c-btn--secondary" onClick={() => this.qtyMinus(p.product.uid, p)}>-</a>
-                                                        <input className="c-input" type="text" placeholder="Qty"
-                                                            defaultValue={p.quantity}
-                                                            onBlur={(e) => this.updateQty(p, e.target.value)}/>
-                                                        <a className="c-btn c-btn--secondary" onClick={() => this.qtyPlus(p.product.uid, p)}>+</a>
-                                                    </div>
-                                                </td>
-                                                <td className="c-table__cell price">
-                                                    {this.germanFormat(p.product.price * p.quantity)} &euro;
-                                                </td>
-                                                <td className="c-table__cell action">
-                                                    <div className="c-btn-group">
-                                                        {/* <a className="c-btn c-btn--secondary">Add note</a> */}
-                                                        <a className="c-btn c-btn--secondary" onClick={() => this.removeProduct(cart, p)}>
-                                                            <FormattedMessage id="cart.remove"/>
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        )}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                        <CartProductsList
+                            products={ cart.products.map( product => product.product ) }
+                            quantities={ quantities }
+                            onIncrement={ this.qtyPlus }
+                            onDecrement={ this.qtyMinus }
+                            onInputChange={ this.onQuantityChange }
+                            cart={ cart }
+                            removeProduct={ this.removeProduct } />
                     </div>
                 }
                 {showTable &&

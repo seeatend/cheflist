@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import $ from 'jquery';
 import moment from 'moment';
-
+import { formatPrice } from '../../helpers';
 // Reducer
 import { connect } from 'react-redux'
 import { sidebar_menu_update } from '../../reducer/sidebar_menu'
@@ -154,12 +154,6 @@ class Cart extends Component {
         })
 	}
 
-	germanFormat(number) {
-        let nums = number.toFixed(2).toString().split('.');
-        let int = nums[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        return int + ',' + nums[1];
-    }
-
 	render() {
 		let {redirect} = this.state;
 		if (this.state.redirect) {
@@ -170,9 +164,9 @@ class Cart extends Component {
 
 		return (
 			<div className="container-fluid cart">
-				{carts.length === 0 ?
-					<h2 className="empty-cart">Cart is Empty</h2>:
-					<div className="row cart-container">
+				{carts.length === 0
+					? <h2 className="empty-cart">Cart is Empty</h2>
+					: <div className="row cart-container">
 						<div className="col-lg-8 col-sm-12 vendor-list">
 							{carts.map((c, i) =>
 								<Vendor cart={c} key={i} load={() => this.load()}/>
@@ -188,7 +182,7 @@ class Cart extends Component {
 										<FormattedMessage id="cart.total"/>
 									</div>
 									<div className="price">
-										{this.germanFormat(this.cartsTotal(carts))} &euro;
+										{formatPrice(this.cartsTotal(carts))} &euro;
 									</div>
 								</h3>
 								<p className="u-mb-xsmall">

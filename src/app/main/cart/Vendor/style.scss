@@ -45,15 +45,18 @@ $datepicker__selected-color: #3dcc4a;
                 text-align: right;
                 margin-top: 20px;
             }
-            @media screen and (max-width: 991px) {
+            /*@media screen and (max-width: 991px) {
                 float: right;
                 text-align: none;
                 margin: 0;
-            }
+            }*/
             @media screen and (max-width: 670px) {
                 float: none;
                 text-align: right;
                 margin-top: 20px;
+                .ui.buttons {
+                    width: 100%;
+                }
             }
             .place-order {
                 margin-right: 5px;
@@ -70,26 +73,28 @@ $datepicker__selected-color: #3dcc4a;
         }
     }
     .item-table {
-        margin-top: 20px;
-        table {
-            display: table;
-            .no {
-                width: 50px;
-            }
-            .quantity {
-                width: 100px;
-                input {
-                    min-width: 50px;
-                    text-align: center;
+        .cart-products-table {
+            tbody {
+                tr {
+                    td {
+                        @media only screen and (max-width: 767px) {
+                            text-align: center;
+                        }
+                        &:first-child {
+                            @media only screen and (max-width: 767px) {
+                                display: none!important;
+                            }
+                        }
+                        button {
+                            @media only screen and (max-width: 767px) {
+                                width: 100%;
+                            }
+                        }
+                    }
                 }
             }
-            .price {
-                width: 100px;
-            }
-            .action {
-                width: 100px;
-            }
         }
+        margin-top: 20px;
     }
     .react-datepicker {
         .react-datepicker__month-container {
@@ -100,15 +105,15 @@ $datepicker__selected-color: #3dcc4a;
                 .react-datepicker__week {
                     .react-datepicker__day {
                         &.react-datepicker__day--today {
-                            border-radius: 100%;
-                            background-color: #216ba5;
-                        }
-                        &.react-datepicker__day--selected {
-                            /*border-radius: 100%;*/
                             background-color: #fff;
                             border: none;
                             color: #216ba5;
                             font-weight: bold;
+                        }
+                        &.react-datepicker__day--selected {
+                            /*border-radius: 100%;*/
+                            border-radius: 100%;
+                            background-color: #216ba5;
                         }
                     }
                 }
