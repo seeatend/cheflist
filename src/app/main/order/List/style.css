@@ -9,17 +9,6 @@
 .order-list .filter .status-filter {
   margin-right: 10px; }
 
-.order-list .order-table table {
-  display: table; }
-  .order-list .order-table table .status {
-    width: 100px; }
-  .order-list .order-table table .order-number {
-    width: 80px; }
-  .order-list .order-table table .creation-date {
-    width: 160px; }
-  .order-list .order-table table .delivery-date {
-    width: 100px; }
-  .order-list .order-table table .order-total {
-    width: 100px; }
-  .order-list .order-table table .more {
-    width: 100px; }
+@media only screen and (max-width: 767px) {
+  .order-list .order-table table tbody tr td button {
+    width: 100%; } }

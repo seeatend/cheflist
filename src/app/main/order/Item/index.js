@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import moment from 'moment';
 import { FormattedMessage } from 'react-intl'
+import { formatPrice } from '../../../helpers';
 import './style.css'
 
 class Item extends Component {
@@ -13,12 +14,6 @@ class Item extends Component {
 		return price;
 	}
 
-	germanFormat(number) {
-        let nums = number.toFixed(2).toString().split('.');
-        let int = nums[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        return int + ',' + nums[1];
-    }
-
 	render() {
 		let {item, back} = this.props;
 		return (
@@ -30,7 +25,7 @@ class Item extends Component {
                     <div className="col-lg-8 col-sm-12">
 						<div className="c-card u-p-medium u-mb-medium">
 							<h4 className="u-mb-small">
-								<div className="vendor-name"><FormattedMessage id="orderDetail.orderNum"/> {item.uid}</div>
+								<div className="vendor-name"><FormattedMessage id="orderDetail.orderNum"/> {item.orderNumber}</div>
 							</h4>
 							<ul className="summary-list order-from">
 								<li>
@@ -96,11 +91,11 @@ class Item extends Component {
 															<div className="u-color-info">{p.name}</div>
 														</td>
 														<td className="c-table__cell price-unit">
-															{this.germanFormat(p.price)} &euro; / {p.unit}
+															{formatPrice(p.price)} &euro; / {p.unit}
 														</td>
 														<td className="c-table__cell total-price">
 															<div className="u-color-success">
-																{this.germanFormat(p.price * p.quantity)} &euro;
+																{formatPrice(p.price * p.quantity)} &euro;
 															</div>
 														</td>
 													</tr>
@@ -135,7 +130,7 @@ class Item extends Component {
 								<li>
 									<div className="label"><FormattedMessage id="orderDetail.orderTotal"/>:</div>
 									<div className="content u-text-success">
-										{this.germanFormat(this.orderPrice(item))} &euro;
+										{formatPrice(this.orderPrice(item))} &euro;
 									</div>
 								</li>
 							</ul>

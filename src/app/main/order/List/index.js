@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
 import moment from 'moment';
 import { FormattedMessage } from 'react-intl'
+import { sortBy } from 'lodash';
+import OrdersTable from '../OrdersTable';
 import './style.css'
 
 class List extends Component {
@@ -8,21 +10,27 @@ class List extends Component {
 	constructor(props) {
         super(props);
         this.state = {
-			list: props.list,
+			list: this.prepareTableData(),
 			check: props.check,
 			filtered: props.list,
-			totalPrice: this.totalPrice(props.list)
+			totalPrice: this.totalPrice(props.list),
+			column: null,
+			direction: null
 		}
 	}
 
 	componentWillReceiveProps(newProps) {
         this.setState({
-			list: newProps.list,
-			check: newProps.check,
-			filtered: newProps.list,
 			totalPrice: this.totalPrice(newProps.list)
 		});
     }
+
+	componentDidUpdate(prevProps) {
+		if( JSON.stringify(this.props.list) !== JSON.stringify(prevProps.list) )
+			this.setState({
+				list: this.prepareTableData()
+			})
+	}
 
 	totalPrice(list) {
 		let total = 0;
@@ -42,14 +50,64 @@ class List extends Component {
 		return price;
 	}
 
-	germanFormat(number) {
-        let nums = number.toString().split('.');
-        let int = nums[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        return int + ',' + nums[1];
-    }
+	//Probably this can be optimized, i'm just too tired for today, to figure it out
+	handleSort = ( clickedColumn, clickedDirection = '' ) => {
+		const { column, direction, list } = this.state;
+		const sortedList = sortBy(list, o => {
+			if( clickedColumn === 'creationDate' || clickedColumn === 'deliveryDate' )
+				return new moment(o[clickedColumn]).format('YYYYMMDD');
+
+			return o[clickedColumn];
+		});
+		if( column !== clickedColumn ) {
+			this.setState({
+				column: clickedColumn,
+				list: clickedDirection === 'descending' ? sortedList.reverse() : sortedList,
+				direction: clickedDirection || 'ascending'
+			});
+
+			return;
+		}
+
+		this.setState({
+			column: clickedColumn,
+			list: clickedDirection
+				? clickedDirection !== direction ? list.reverse() : list
+				: list.reverse(),
+			direction: clickedDirection || (!clickedDirection && (direction === 'ascending' ? 'descending' : 'ascending'))
+		});
+	}
+
+	getReadableStatus = status => {
+		switch(status) {
+			case 0:
+				return <FormattedMessage id="orderHistory.pending"/>;
+			case 1:
+				return <FormattedMessage id="orderHistory.confirmed"/>;
+			case 2:
+				return <FormattedMessage id="orderHistory.canceled"/>;
+			default:
+				return <FormattedMessage id="orderHistory.pending"/>;
+		}
+	}
+
+	prepareTableData = () => {
+		const preparedData = this.props.list.map( item => ({
+			status: item.status,
+			orderNumber: item.uid,
+			creationDate: item.creationDate,
+			supplier: item.vendor.meta.businessName,
+			deliveryDate: item.deliveryDate,
+			orderTotal: this.orderPrice(item),
+			restaurant: item.restaurant,
+			products: item.products,
+			vendor: item.vendor
+		}));
+		return preparedData;
+	}
 
 	render() {
-		let {list, check, filtered} = this.state;
+		let {list, check, column, direction} = this.state;
 		return (
 			<div className="order-list">
 				<div className="row">
@@ -63,102 +121,16 @@ class List extends Component {
 							</div>
 						</div>
 					</div>
-					{/* <div className="col-sm-12 col-lg-6 col-xl-3">
-						<div className="c-state-card total-order">
-							<div className="c-state-card__content">
-								<h5 className="c-state-card__number u-text-success">&euro; {totalPrice.toFixed(2)}</h5>
-								<p>Total Purchases</p>
-							</div>
-						</div>
-					</div> */}
 				</div>
-                {/* <div className="row">
-					<div className="col-sm-12">
-						<div className="c-state-card filter">
-							<div className="c-state-card__content">
-                                <div className="c-form-field search-filter">
-                                    <label className="c-field__label" htmlFor="input17">Search</label>
-                                    <input className="c-input" id="input17" type="text" placeholder="Search for orders here ..." />
-                                </div>
-                                <div className="c-dropdown dropdown status-filter">
-									<button className="c-btn c-btn--secondary has-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">All Statuses</button>
-									<div className="c-dropdown__menu dropdown-menu">
-										<a className="c-dropdown__item dropdown-item">Statu1</a>
-										<a className="c-dropdown__item dropdown-item">Statu2</a>
-										<a className="c-dropdown__item dropdown-item">Statu3</a>
-									</div>
-								</div>
-                                <div className="c-dropdown dropdown supplier-filter">
-									<button className="c-btn c-btn--secondary has-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">All Suppliers</button>
-									<div className="c-dropdown__menu dropdown-menu">
-										<a className="c-dropdown__item dropdown-item">Supplier1</a>
-										<a className="c-dropdown__item dropdown-item">Supplier2</a>
-										<a className="c-dropdown__item dropdown-item">Supplier3</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div> */}
 				<div className="row u-mb-large order-table">
-					<div className="col-sm-12">
-						<div className="c-table-responsive">
-							<table className="c-table">
-								<thead className="c-table__head c-table__head--slim">
-									<tr className="c-table__row">
-										<th className="c-table__cell c-table__cell--head"><FormattedMessage id="orderHistory.status"/></th>
-										<th className="c-table__cell c-table__cell--head"><FormattedMessage id="orderHistory.orderNumber"/></th>
-										<th className="c-table__cell c-table__cell--head"><FormattedMessage id="orderHistory.creationDate"/></th>
-										<th className="c-table__cell c-table__cell--head"><FormattedMessage id="orderHistory.supplier"/></th>
-										<th className="c-table__cell c-table__cell--head"><FormattedMessage id="orderHistory.deliveryDate"/></th>
-										<th className="c-table__cell c-table__cell--head"><FormattedMessage id="orderHistory.orderTotal"/></th>
-										<th className="c-table__cell c-table__cell--head"><FormattedMessage id="orderHistory.more"/></th>
-									</tr>
-								</thead>
-								<tbody>
-									{filtered.map((order, i) =>
-										<tr className="c-table__row" key={i}>
-											<td className="c-table__cell status">
-												{order.status === 0 && <FormattedMessage id="orderHistory.pending"/>}
-												{order.status === 1 && <FormattedMessage id="orderHistory.confirmed"/>}
-												{order.status === 2 && <FormattedMessage id="orderHistory.canceled"/>}
-											</td>
-											<td className="c-table__cell order-number">
-												{order.uid}
-											</td>
-											<td className="c-table__cell creation-date">
-												{moment(order.creationDate).format('MMM DD, YYYY hh:mm:ss A')}
-											</td>
-											<td className="c-table__cell supplier">
-												{order.vendor.meta.businessName}
-											</td>
-											<td className="c-table__cell delivery-date">
-												{moment(order.deliveryDate).format('MMM DD, YYYY')}
-											</td>
-											<td className="c-table__cell u-text-success order-total">
-												{this.germanFormat(this.orderPrice(order).toFixed(2))} &euro;
-											</td>
-											<td className="c-table__cell more">
-												<a className="c-btn c-btn--info" onClick={() => check(order)}>
-													<FormattedMessage id="orderHistory.details"/>
-												</a>
-											</td>
-										</tr>
-									)}
-								</tbody>
-							</table>
-						</div>
-						{/* <nav className="c-pagination u-mt-small u-justify-between">
-							<a className="c-pagination__control">
-								<i className="fa fa-caret-left"></i>
-							</a>
-
-							<p className="c-pagination__counter">Page 1 of 3</p>
-
-							<a className="c-pagination__control">
-								<i className="fa fa-caret-right"></i>
-							</a>
-						</nav> */}
+					<div className='col-sm-12'>
+						<OrdersTable
+							orders={ list }
+							handleSort={ this.handleSort }
+							detailsClick={ check }
+							column={ column }
+							direction={ direction }
+							getReadableStatus={ this.getReadableStatus } />
 					</div>
 				</div>
 			</div>

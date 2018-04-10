@@ -62,14 +62,14 @@ class Order extends Component {
         });
     }
 
-    check(item) {
+    check = item => {
 		this.setState({
 			item: item,
 			page: 'item'
 		});
     }
 
-    back() {
+    back = () => {
         this.setState({
             page: 'list',
             item: null
@@ -85,8 +85,8 @@ class Order extends Component {
 		return (
 			<div className="container-fluid order">
 				{page === 'list'?
-					<List list={list} check={(item) => this.check(item)}/>:
-					<Item item={item} back={() => this.back()}/>
+					<List list={list} check={this.check}/>:
+					<Item item={item} back={this.back}/>
 				}
 			</div>
 		)
