@@ -27,8 +27,8 @@ const OrdersTable = props => {
             <Table sortable>
                     <Responsive as={Table.Header} minWidth={Responsive.onlyTablet.minWidth} >
                         <Table.Row>
-                            <Table.HeaderCell>
-                            </Table.HeaderCell>
+                            {/*<Table.HeaderCell>
+                            </Table.HeaderCell>*/}
                             <Table.HeaderCell sorted={ column === 'status' ? direction : null } onClick={ () => handleSort('status') }>
                                 <FormattedMessage id="orderHistory.status"/>
                             </Table.HeaderCell>
@@ -55,14 +55,14 @@ const OrdersTable = props => {
                 <Table.Body>
                     { orders.map( (order, index) => (
                         <Table.Row key={index}>
-                            <Table.Cell collapsing>
+                            {/*<Table.Cell collapsing>
                                 <Popup
                                     trigger={
                                         <Checkbox toggle disabled={order.status === 2} checked={order.status === 2} onChange={ (e, {checked}) => handleCheckbox(checked, order.orderNumber) } />
                                     }
                                     content={<FormattedMessage id="orderHistory.checkboxHint" />}
                                     on='hover' />
-                            </Table.Cell>
+                            </Table.Cell>*/}
                             <Table.Cell collapsing>
                                 <Responsive as={'span'} {...Responsive.onlyMobile}>
                                     <FormattedMessage id="orderHistory.status"/>:&nbsp;
