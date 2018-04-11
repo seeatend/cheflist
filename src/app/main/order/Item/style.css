@@ -1,9 +1,32 @@
+.order-item .order-details-container {
+  display: flex;
+  justify-content: space-between; }
+  @media only screen and (max-width: 660px) {
+    .order-item .order-details-container {
+      flex-direction: column; } }
+
+.order-item .order-details-separator {
+  display: none; }
+  @media only screen and (max-width: 660px) {
+    .order-item .order-details-separator {
+      display: block;
+      border: 1px solid rgba(34, 36, 38, 0.15);
+      margin: 5px 0 5px 0; } }
+
+@media only screen and (max-width: 660px) {
+  .order-item .order-products-table {
+    font-size: .85em; } }
+
 .order-item .back-to-list {
   margin-bottom: 10px; }
 
 .order-item .order-to {
-  float: right;
+  /*float: right;*/
   text-align: right; }
+  @media only screen and (max-width: 660px) {
+    .order-item .order-to {
+      /*float: none;*/
+      text-align: left; } }
 
 .order-item .summary-list {
   display: inline-block; }

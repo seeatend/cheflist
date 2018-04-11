@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import moment from 'moment';
 import { FormattedMessage } from 'react-intl'
 import { sortBy } from 'lodash';
-import OrdersTable from '../OrdersTable';
+import { OrdersTable, OrderReceivedModal } from '../OrdersTable';
 import './style.css'
 
 class List extends Component {
@@ -15,7 +15,9 @@ class List extends Component {
 			filtered: props.list,
 			totalPrice: this.totalPrice(props.list),
 			column: null,
-			direction: null
+			direction: null,
+			modalIsOpened: false,
+			selectedOrder: ''
 		}
 	}
 
@@ -106,10 +108,41 @@ class List extends Component {
 		return preparedData;
 	}
 
+	handleCheckbox = (checked, orderId) => {
+		if( !checked ) {
+			return;
+		}
+
+		this.setState({
+			modalIsOpened: true,
+			selectedOrder: orderId
+		});
+	}
+
+	onModalClose = () => {
+		this.setState({
+			modalIsOpened: false,
+			selectedOrder: ''
+		});
+	}
+
+	onModalConfirm = (hasErrors, message = '') => {
+		//alert( `Status: ${message ? '3' : '2'}\n${message? 'Message: ' + message : ''}` );
+		this.setState({
+			modalIsOpened: false,
+			selectedOrder: ''
+		})
+	}
+
 	render() {
-		let {list, check, column, direction} = this.state;
+		const { list, check, column, direction, modalIsOpened, selectedOrder } = this.state;
 		return (
 			<div className="order-list">
+				<OrderReceivedModal
+					order={ selectedOrder }
+					isOpened={ modalIsOpened }
+					onClose={ this.onModalClose }
+					onConfirm={ this.onModalConfirm } />
 				<div className="row">
 					<div className="col-sm-12 col-lg-6 col-xl-3">
 						<div className="c-state-card total-order">
@@ -130,7 +163,8 @@ class List extends Component {
 							detailsClick={ check }
 							column={ column }
 							direction={ direction }
-							getReadableStatus={ this.getReadableStatus } />
+							getReadableStatus={ this.getReadableStatus }
+							handleCheckbox={this.handleCheckbox} />
 					</div>
 				</div>
 			</div>
