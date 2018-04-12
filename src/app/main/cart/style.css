@@ -1,3 +1,7 @@
+@media only screen and (max-width: 782px) {
+  .cart {
+    margin-bottom: 11vh; } }
+
 .cart .empty-cart {
   text-align: center; }
 
@@ -7,6 +11,21 @@
     display: inline-block; }
   .cart .cart-container .checkout-box .price {
     float: right; }
+  @media only screen and (max-width: 782px) {
+    .cart .cart-container .checkout-box {
+      padding: 0px; } }
+
+.cart .cart-container .checkout-summary-mobile {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 10vh;
+  padding: 10px 0 10px;
+  margin: 0;
+  background-color: #00CC51; }
 
 .cart .cart-container .vendor-list {
   float: right; }

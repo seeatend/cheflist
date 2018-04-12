@@ -14,7 +14,77 @@
   color: #ed1c24; }
 
 .vendor .actions {
-  position: relative; }
+  position: relative;
+  display: flex;
+  justify-content: space-between; }
+  @media only screen and (max-width: 1359px) {
+    .vendor .actions {
+      flex-direction: column; }
+      .vendor .actions .vendor-card-left-actions {
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px; }
+        .vendor .actions .vendor-card-left-actions .vendor-button-container {
+          width: 45%; }
+        .vendor .actions .vendor-card-left-actions .delivery-date {
+          width: 45%;
+          margin-left: 0px;
+          margin-right: 0px; }
+          .vendor .actions .vendor-card-left-actions .delivery-date .react-datepicker-wrapper {
+            width: 100%; }
+            .vendor .actions .vendor-card-left-actions .delivery-date .react-datepicker-wrapper .react-datepicker__input-container {
+              width: 100%; }
+              .vendor .actions .vendor-card-left-actions .delivery-date .react-datepicker-wrapper .react-datepicker__input-container .date-picker {
+                width: 100%; }
+      .vendor .actions .ui.buttons {
+        width: 100%; } }
+  @media only screen and (max-width: 993px) {
+    .vendor .actions {
+      flex-direction: row; }
+      .vendor .actions .vendor-card-left-actions {
+        margin-bottom: 0px;
+        display: block; }
+        .vendor .actions .vendor-card-left-actions .vendor-button-container {
+          width: inherit; }
+        .vendor .actions .vendor-card-left-actions .delivery-date {
+          width: inherit;
+          margin-left: 10px;
+          margin-right: 10px; }
+      .vendor .actions .ui.buttons {
+        width: inherit; } }
+  @media only screen and (max-width: 749px) {
+    .vendor .actions {
+      flex-direction: column; }
+      .vendor .actions .vendor-card-left-actions {
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px; }
+        .vendor .actions .vendor-card-left-actions .vendor-button-container {
+          width: 45%; }
+        .vendor .actions .vendor-card-left-actions .delivery-date {
+          width: 45%;
+          margin-left: 0px;
+          margin-right: 0px; }
+          .vendor .actions .vendor-card-left-actions .delivery-date .react-datepicker-wrapper {
+            width: 100%; }
+            .vendor .actions .vendor-card-left-actions .delivery-date .react-datepicker-wrapper .react-datepicker__input-container {
+              width: 100%; }
+              .vendor .actions .vendor-card-left-actions .delivery-date .react-datepicker-wrapper .react-datepicker__input-container .date-picker {
+                width: 100%; }
+      .vendor .actions .ui.buttons {
+        width: 100%; } }
+  @media only screen and (max-width: 399px) {
+    .vendor .actions .vendor-card-left-actions {
+      display: block; }
+      .vendor .actions .vendor-card-left-actions .vendor-button-container {
+        width: 100%;
+        margin-bottom: 10px; }
+      .vendor .actions .vendor-card-left-actions .delivery-date {
+        width: 100%; } }
+  .vendor .actions .vendor-card-left-actions > div {
+    display: inline-block; }
   .vendor .actions .toggle-items {
     margin-right: 10px;
     float: left; }
@@ -23,7 +93,8 @@
         width: 100%;
         margin-bottom: 10px; } }
   .vendor .actions .delivery-date {
-    display: inline-block; }
+    margin-left: 10px;
+    margin-right: 10px; }
     @media screen and (max-width: 399px) {
       .vendor .actions .delivery-date {
         width: 100%; } }
@@ -31,34 +102,6 @@
       width: 100%; }
     .vendor .actions .delivery-date span {
       font-size: 12px; }
-  .vendor .actions .order-action {
-    float: right;
-    /*@media screen and (max-width: 991px) {
-                float: right;
-                text-align: none;
-                margin: 0;
-            }*/ }
-    @media screen and (max-width: 1199px) {
-      .vendor .actions .order-action {
-        float: none;
-        text-align: right;
-        margin-top: 20px; } }
-    @media screen and (max-width: 670px) {
-      .vendor .actions .order-action {
-        float: none;
-        text-align: right;
-        margin-top: 20px; }
-        .vendor .actions .order-action .ui.buttons {
-          width: 100%; } }
-    .vendor .actions .order-action .place-order {
-      margin-right: 5px; }
-      @media screen and (max-width: 399px) {
-        .vendor .actions .order-action .place-order {
-          width: 100%;
-          margin-bottom: 10px; } }
-    @media screen and (max-width: 399px) {
-      .vendor .actions .order-action .remove-order {
-        width: 100%; } }
 
 .vendor .item-table {
   margin-top: 20px; }

@@ -1,9 +1,8 @@
 import React, {Component} from 'react'
 import { Redirect } from 'react-router-dom'
-import { FormattedMessage } from 'react-intl'
 import $ from 'jquery';
 import moment from 'moment';
-import { formatPrice } from '../../helpers';
+import CheckoutBox from './Checkout';
 // Reducer
 import { connect } from 'react-redux'
 import { sidebar_menu_update } from '../../reducer/sidebar_menu'
@@ -167,33 +166,14 @@ class Cart extends Component {
 				{carts.length === 0
 					? <h2 className="empty-cart">Cart is Empty</h2>
 					: <div className="row cart-container">
-						<div className="col-lg-8 col-sm-12 vendor-list">
+						<div className="col-xl-8 col-sm-12 vendor-list">
 							{carts.map((c, i) =>
 								<Vendor cart={c} key={i} load={() => this.load()}/>
 							)}
 						</div>
-						<div className="col-lg-4 col-sm-12 checkout-box">
-							<div className="c-card u-p-medium u-mb-medium">
-								<h3 className="u-mb-small">
-									<FormattedMessage id="cart.checkoutSummary"/>
-								</h3>
-								<h3 className="u-mb-small">
-									<div className="title">
-										<FormattedMessage id="cart.total"/>
-									</div>
-									<div className="price">
-										{formatPrice(this.cartsTotal(carts))} &euro;
-									</div>
-								</h3>
-								<p className="u-mb-xsmall">
-									<a className="c-btn c-btn--success c-btn--fullwidth" onClick={()=>this.bulkOrder()}>
-										<FormattedMessage id="cart.sendAllOrders"/>
-									</a>
-								</p>
-								{/* <p className="u-mb-xsmall">
-									<a className="c-btn c-btn--secondary c-btn--fullwidth">Remove all orders from cart</a>
-								</p> */}
-							</div>
+						<div className="col-xl-4 col-sm-12 checkout-box">
+							<CheckoutBox
+								totalPrice={this.cartsTotal(carts)} />
 						</div>
 					</div>
 				}
