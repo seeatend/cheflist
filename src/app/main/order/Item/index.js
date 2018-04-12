@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import moment from 'moment';
 import { FormattedMessage } from 'react-intl'
-import { formatPrice } from '../../../helpers';
+//import { formatPrice } from '../../../helpers';
 import { OrderProducts } from '../OrdersTable';
 import './style.css';
 
@@ -16,7 +16,7 @@ class Item extends Component {
 	}
 
 	render() {
-		let {item, back} = this.props;
+		let {item, back, email} = this.props;
 		return (
 			<div className="order-item">
 				<a className="c-btn c-btn--secondary back-to-list" onClick={() => back()}>
@@ -45,7 +45,7 @@ class Item extends Component {
 									</li>
 									<li>
 										<div className="label"><FormattedMessage id="orderDetail.email"/>:</div>
-										<div className="content"></div>
+										<div className="content">{email}</div>
 									</li>
 								</ul>
 								<hr className='order-details-separator' />
@@ -73,7 +73,8 @@ class Item extends Component {
 								<div className="col-sm-12">
 									<OrderProducts
 										products={ item.products }
-										orderPrice={ this.orderPrice(item) } />
+										orderPrice={ this.orderPrice(item) }
+										vendor={item.vendor} />
 								</div>
 							</div>
 							<div className="c-feed__comment order-message">

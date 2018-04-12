@@ -15,7 +15,9 @@
 
 @media only screen and (max-width: 660px) {
   .order-item .order-products-table {
-    font-size: .85em; } }
+    font-size: .815em; }
+    .order-item .order-products-table .products-cell-productname p {
+      font-size: .815em; } }
 
 .order-item .back-to-list {
   margin-bottom: 10px; }
@@ -40,14 +42,9 @@
 
 .order-item .item-table {
   margin-bottom: 10px !important; }
-  .order-item .item-table table {
-    display: table; }
-    .order-item .item-table table .quantity {
-      width: 100px; }
-    .order-item .item-table table .price-unit {
-      width: 100px; }
-    .order-item .item-table table .total-price {
-      width: 100px; }
+  @media only screen and (max-width: 660px) {
+    .order-item .item-table .col-sm-12 {
+      padding-left: 0; } }
 
 .order-item .sub-total {
   text-align: right; }

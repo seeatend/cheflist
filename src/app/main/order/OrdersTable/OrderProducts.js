@@ -4,7 +4,7 @@ import { Table } from 'semantic-ui-react';
 import { formatPrice } from '../../../helpers';
 
 const OrderProducts = props => {
-    const { products, orderPrice } = props;
+    const { products, orderPrice, vendor } = props;
     return (
         <Table unstackable className='order-products-table'>
             <Table.Header>
@@ -13,10 +13,13 @@ const OrderProducts = props => {
                         <FormattedMessage id="orderDetail.product"/>
                     </Table.HeaderCell>
                     <Table.HeaderCell>
-                        <FormattedMessage id="orderDetail.quantity"/>
+                        <FormattedMessage id="product.price"/>
                     </Table.HeaderCell>
                     <Table.HeaderCell>
-                        <FormattedMessage id="orderDetail.priceUnit"/>
+                        <FormattedMessage id="product.packagingUnit"/>
+                    </Table.HeaderCell>
+                    <Table.HeaderCell>
+                        <FormattedMessage id="orderDetail.quantity"/>
                     </Table.HeaderCell>
                     <Table.HeaderCell>
                         <FormattedMessage id="orderDetail.totalPrice"/>
@@ -26,18 +29,23 @@ const OrderProducts = props => {
             <Table.Body>
                 { products.map( (product, index) => (
                     <Table.Row key={index}>
-                        <Table.Cell>
-                            {product.name}
+                        <Table.Cell className='products-cell-productname'>
+                            <p>{ product.name } ({ product.packageQuantity } { product.unit })</p>
+                            <p>{ vendor.meta.businessName }</p>
+                            <p>ID: { product.id }</p>
                         </Table.Cell>
                         <Table.Cell>
-                            {product.quantity}
+                            { formatPrice(product.price) } &euro;
                         </Table.Cell>
                         <Table.Cell>
-                            {formatPrice(product.price)} &euro; / {product.unit}
+                            { product.packaging }
+                        </Table.Cell>
+                        <Table.Cell>
+                            { product.quantity }
                         </Table.Cell>
                         <Table.Cell>
                             <div className="u-color-success">
-                                {formatPrice( product.price * product.quantity )} &euro;
+                                { formatPrice( product.price * product.quantity ) } &euro;
                             </div>
                         </Table.Cell>
                     </Table.Row>
@@ -45,7 +53,7 @@ const OrderProducts = props => {
             </Table.Body>
             <Table.Footer>
                 <Table.Row>
-                    <Table.HeaderCell colSpan={3} textAlign='right'>
+                    <Table.HeaderCell colSpan={4} textAlign='right'>
                         <FormattedMessage id="orderDetail.orderTotal"/>:
                     </Table.HeaderCell>
                     <Table.HeaderCell>

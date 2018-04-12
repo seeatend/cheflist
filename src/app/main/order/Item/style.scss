@@ -16,7 +16,13 @@
     }
     .order-products-table {
         @media only screen and (max-width: 660px) {
-            font-size: .85em;
+            font-size: .815em;
+
+            .products-cell-productname {
+                p {
+                    font-size: .815em;
+                }
+            }
         }
     }
     .back-to-list {
@@ -45,16 +51,9 @@
     }
     .item-table {
         margin-bottom: 10px !important;
-        table {
-            display: table;
-            .quantity {
-                width: 100px;
-            }
-            .price-unit {
-                width: 100px;
-            }
-            .total-price {
-                width: 100px;
+        @media only screen and (max-width: 660px) {
+            .col-sm-12 {
+                padding-left: 0;
             }
         }
     }
