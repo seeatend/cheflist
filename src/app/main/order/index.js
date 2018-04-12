@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom'
 import $ from 'jquery';
 import { SERVER_URL } from '../../config'
 import { sidebar_menu_update } from '../../reducer/sidebar_menu'
+import axios from 'axios';
 
 import List from './List'
 import Item from './Item'
@@ -20,7 +21,8 @@ class Order extends Component {
             redirect: null,
             list: [],
             item: [],
-            page: 'list'
+            page: 'list',
+			email: ''
         }
 
         if (tokenType !== 'restaurant') {
@@ -38,18 +40,22 @@ class Order extends Component {
         this.load();
     }
 
-    load() {
-        let scope = this;
-        this.getOrders().done(function(response) {
-            scope.setState({
-                list: response.orders,
-                page: 'list',
-                item: null
-            });
-        })
-        .fail(function() {
-            console.log('error');
-        });
+    load = () => {
+		axios.get(`${SERVER_URL}/account/profile`)
+			.then( res => {
+				const {email} = res.data.user;
+				this.getOrders().done( response => {
+		            this.setState({
+		                list: response.orders,
+		                page: 'list',
+		                item: null,
+						email
+		            });
+		        })
+		        .fail( () => {
+		            console.log('error');
+		        });
+			});
     }
 
     getOrders() {
@@ -62,14 +68,14 @@ class Order extends Component {
         });
     }
 
-    check(item) {
+    check = item => {
 		this.setState({
 			item: item,
 			page: 'item'
 		});
     }
 
-    back() {
+    back = () => {
         this.setState({
             page: 'list',
             item: null
@@ -77,7 +83,7 @@ class Order extends Component {
     }
 
 	render() {
-        let {redirect, list, item, page} = this.state;
+        let {redirect, list, item, page, email} = this.state;
 		if (redirect) {
 			return <Redirect push to={redirect} />;
         }
@@ -85,8 +91,8 @@ class Order extends Component {
 		return (
 			<div className="container-fluid order">
 				{page === 'list'?
-					<List list={list} check={(item) => this.check(item)}/>:
-					<Item item={item} back={() => this.back()}/>
+					<List list={list} check={this.check}/>:
+					<Item item={item} email={email} back={this.back}/>
 				}
 			</div>
 		)
