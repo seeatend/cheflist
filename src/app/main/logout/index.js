@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import { Redirect } from 'react-router-dom'
 import $ from 'jquery';
 import { SERVER_URL, AUTH_HEADER } from '../../config'
+import { setHeaders } from '../../helpers';
 
 import './style.css'
 
@@ -18,6 +19,7 @@ class Logout extends Component {
         });
         localStorage.removeItem('accessToken');
         localStorage.removeItem('tokenType');
+        setHeaders('');
 	}
 
     login() {

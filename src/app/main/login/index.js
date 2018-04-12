@@ -4,6 +4,7 @@ import $ from 'jquery';
 import { Reveal } from 'semantic-ui-react';
 import { Redirect } from 'react-router-dom'
 import { SERVER_URL, AUTH_HEADER } from '../../config'
+import { setHeaders } from '../../helpers';
 
 import './style.css'
 
@@ -53,6 +54,7 @@ class Login extends Component {
         }).done( data => {
             localStorage.setItem('accessToken', data.accessToken);
             localStorage.setItem('tokenType', data.tokenType);
+            setHeaders(data.accessToken);
             if (data.tokenType === 'restaurant') {
                 this.setState({
                     redirect: '/restaurant/home'
