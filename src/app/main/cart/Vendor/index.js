@@ -317,23 +317,25 @@ class Vendor extends Component {
                     Order minimum is not met!
                 </p> */}
                 <div className="actions">
-                    <a className="c-btn c-btn--secondary toggle-items" onClick={() => this.toggleTable()}>
-                        {showTable
-                            ?<FormattedMessage id="cart.hideList" values={{number: sortedList.length}}/>
-                        :<FormattedMessage id="cart.showList" values={{number: sortedList.length}}/>
-                        }
-                    </a>
-                    <div className="delivery-date">
-                        <DatePicker
-                            dateFormat='DD/MM/YYYY'
-                            customInput={ <Input icon='calendar' placeholder='Select delivery date' /> }
-                            selected={this.state.selectedDate}
-                            onChange={this.handleDateChange}
-                            filterDate={this.filterDates}
-                            excludeDates={ this.fillDates(cart.vendor.meta.holidays) } />
-                        <span className="u-color-info">
-                            <FormattedMessage id="cart.deliveryDate"/>
-                        </span>
+                    <div className='vendor-card-left-actions'>
+                        <div className='vendor-button-container'>
+                            <Button fluid basic onClick={() => this.toggleTable()}>
+                                {showTable
+                                ? <FormattedMessage id="cart.hideList" values={{number: sortedList.length}}/>
+                                : <FormattedMessage id="cart.showList" values={{number: sortedList.length}}/>
+                                }
+                            </Button>
+                        </div>
+                        <div className="delivery-date">
+                            <DatePicker
+                                className='date-picker'
+                                dateFormat='DD/MM/YYYY'
+                                customInput={ <Input icon='calendar' placeholder='Select delivery date' /> }
+                                selected={this.state.selectedDate}
+                                onChange={this.handleDateChange}
+                                filterDate={this.filterDates}
+                                excludeDates={ this.fillDates(cart.vendor.meta.holidays) } />
+                        </div>
                     </div>
                     <div className="order-action">
                         <Button.Group>
