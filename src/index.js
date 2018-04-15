@@ -10,6 +10,7 @@ import en from 'react-intl/locale-data/en'
 import de from 'react-intl/locale-data/de'
 import { flattenMessages } from './utils'
 import messages from './messages'
+import 'react-datepicker/dist/react-datepicker.css'
 //import 'semantic-ui-css/semantic.min.css';
 
 addLocaleData([...en, ...de])

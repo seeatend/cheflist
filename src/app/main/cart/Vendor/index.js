@@ -1,14 +1,16 @@
 import React, {Component} from 'react'
 import { FormattedMessage } from 'react-intl'
 import { connect } from 'react-redux'
-//import $ from 'jquery';
+import $ from 'jquery';
 import moment from 'moment';
+import DatePicker from 'react-datepicker';
+import { Input, Button } from 'semantic-ui-react';
 import { SERVER_URL } from '../../../config'
 import { cart_update } from '../../../reducer/cart'
+import CartProductsList from '../CartProductsList';
+import { formatPrice } from '../../../helpers';
 import { alert_add, alert_update, alert_remove } from '../../../reducer/alert'
 import './style.css'
-
-const $ = window.$;
 
 class Vendor extends Component {
 
@@ -17,8 +19,14 @@ class Vendor extends Component {
         this.state = {
             showTable: false,
             cart: props.cart,
-            message: props.cart.message
+            message: props.cart.message,
+            selectedDate: this.selectStartingDate(),
+            quantities: {}
         }
+    }
+
+    componentDidMount() {
+        this.getQuantities();
     }
 
     componentWillReceiveProps(newProps) {
@@ -28,14 +36,10 @@ class Vendor extends Component {
 		});
     }
 
-    componentDidMount() {
-        $('[data-toggle="datepicker"]').datepicker();
-    }
-
     cartPrice(cart) {
 		let price = 0;
-		cart.products.forEach(function(p) {
-			price += p.product.price * p.quantity
+		cart.products.forEach( p => {
+			price += p.product.price * this.state.quantities[p.product.uid];
 		});
 		return price;
     }
@@ -97,7 +101,7 @@ class Vendor extends Component {
     }
 
     updateDeliveryDate() {
-        let date = moment(this.refs.deliveryDate.value, 'MM/DD/YYYY').format('YYYY-MM-DD');
+        let date = moment(this.state.selectedDate).format('YYYY-MM-DD');
         $.ajax({
             method: 'POST',
             url: SERVER_URL + '/restaurant/cart/update/' + this.props.cart.uid,
@@ -116,14 +120,7 @@ class Vendor extends Component {
     updateQty(product, qty) {
         let scope = this;
         let {cart} = this.props;
-        let {uid} = product.product;
-
-        cart.products.forEach(function(p) {
-            if (p.product.uid === uid) {
-                p.quantity = qty;
-            }
-        });
-        this.setState({});
+        let {uid} = product;
 
         $.ajax({
             method: 'POST',
@@ -218,33 +215,86 @@ class Vendor extends Component {
         })
     }
 
-    qtyPlus(id, product) {
-        let input = $('#' + id + ' .quantity input');
-        let qty = parseInt(input.val(),10) + 1;
-        input.val(qty);
-        this.updateQty(product, qty);
+    qtyPlus = product => {
+        this.onQuantityChange(product, this.state.quantities[product.uid]+1);
     }
 
-    qtyMinus(id, product) {
-        let input = $('#' + id + ' .quantity input');
-        let qty = parseInt(input.val(),10);
-        qty = qty>0 ? qty-1 : 0;
-        input.val(qty);
-        this.updateQty(product, qty);
+    qtyMinus = product => {
+        this.onQuantityChange(product, this.state.quantities[product.uid] - 1);
     }
 
-    germanFormat(number) {
-        let nums = number.toFixed(2).toString().split('.');
-        let int = nums[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        return int + ',' + nums[1];
+    onQuantityChange = (product, quantity) => {
+        this.setState( prevState => ({
+            quantities: {
+                ...prevState.quantities,
+                [product.uid]: Math.max(quantity, 1)
+            }
+        }), () => {
+            //TODO: get rid of this. Why on Earth we send request to backend each time we click button?
+            this.updateQty(product, quantity);
+        });
+    }
+
+    getQuantities = () => {
+        let quantities = {};
+        this.state.cart.products.forEach( product => {
+            quantities[product.product.uid] = product.quantity;
+        });
+        this.setState({
+            quantities
+        });
+    }
+
+    filterDates = date => {
+        const { vendor } = this.props.cart;
+        return vendor.meta.deadlineHours
+            && vendor.meta.deadlineHours[moment(date).isoWeekday() === 7 ? 0 : moment(date).isoWeekday()].activeDay
+            && moment(date.format('YYYY-MM-DD')).isSameOrAfter(moment().format('YYYY-MM-DD'));
+    }
+
+    fillDates = dateRange => {
+        //Don't even waste time and RAM if array is empty or not exist
+        if( !dateRange || !dateRange.length )
+            return [];
+
+        let result = [];
+        dateRange.forEach( range => {
+            const { from: fromDate, to: toDate } = range;
+            let currentDate = moment(fromDate);
+            while( currentDate.isSameOrBefore( moment(toDate) ) ) {
+                result.push( moment(currentDate) );
+                currentDate.add(1, 'd');
+            }
+        });
+
+        return result;
+    }
+
+    handleDateChange = date => {
+        this.setState({
+            selectedDate: moment(date)
+        })
+    }
+
+    selectStartingDate = () => {
+        let tryDate = moment().minutes(0).seconds(0);
+        while( !this.dateIsAvailable(tryDate) ) {
+            tryDate.add(1, 'd');
+        }
+
+        return tryDate;
+    }
+
+    dateIsAvailable = date => {
+        return this.filterDates(date)
+            && !this.fillDates(this.props.cart.vendor.meta.holidays).includes(date)
     }
 
 	render() {
         let {cart} = this.props;
-        let {showTable, message} = this.state;
-        let products = cart.products;
+        let {showTable, message, quantities} = this.state;
 
-        products.sort(function(a, b) {
+        const sortedList = cart.products.slice().sort(function(a, b) {
             if (a.product.name.toLowerCase() > b.product.name.toLowerCase()) {
                 return 1
             } else {
@@ -255,9 +305,9 @@ class Vendor extends Component {
 		return (
             <div className="c-card u-p-medium u-mb-medium vendor">
                 <h4 className="u-mb-small">
-                    <div className="vendor-name">{cart.vendor.firstName} {cart.vendor.lastName}</div>
+                    <div className="vendor-name">{cart.vendor.meta.businessName}</div>
                     <div className="total-price">
-                        {this.germanFormat(this.cartPrice(cart))} &euro;
+                        {formatPrice(this.cartPrice(cart))} &euro;
                     </div>
                 </h4>
                 {/* <p className="u-mb-xsmall valid-message">
@@ -267,94 +317,43 @@ class Vendor extends Component {
                     Order minimum is not met!
                 </p> */}
                 <div className="actions">
-                    <a className="c-btn c-btn--secondary toggle-items" onClick={() => this.toggleTable()}>
-                        {showTable
-                            ?<FormattedMessage id="cart.hideList" values={{number: cart.products.length}}/>
-                            :<FormattedMessage id="cart.showList" values={{number: cart.products.length}}/>
-                        }
-                    </a>
-                    <div className="delivery-date">
-                        <input className="c-input"
-                            data-toggle="datepicker"
-                            type="text"
-                            placeholder="Delivery Date"
-                            ref="deliveryDate"
-                            defaultValue={moment(cart.deliveryDate).format('MM/DD/YYYY')}/>
-                        <span className="u-color-info">
-                            <FormattedMessage id="cart.deliveryDate"/>
-                        </span>
+                    <div className='vendor-card-left-actions'>
+                        <div className='vendor-button-container'>
+                            <Button fluid basic onClick={() => this.toggleTable()}>
+                                {showTable
+                                ? <FormattedMessage id="cart.hideList" values={{number: sortedList.length}}/>
+                                : <FormattedMessage id="cart.showList" values={{number: sortedList.length}}/>
+                                }
+                            </Button>
+                        </div>
+                        <div className="delivery-date">
+                            <DatePicker
+                                className='date-picker'
+                                dateFormat='DD/MM/YYYY'
+                                customInput={ <Input icon='calendar' placeholder='Select delivery date' /> }
+                                selected={this.state.selectedDate}
+                                onChange={this.handleDateChange}
+                                filterDate={this.filterDates}
+                                excludeDates={ this.fillDates(cart.vendor.meta.holidays) } />
+                        </div>
                     </div>
                     <div className="order-action">
-                        <a className="c-btn c-btn--success place-order" onClick={() => this.placeOrder(cart)}>
-                            <FormattedMessage id="cart.placeOrder"/>
-                        </a>
-                        <a className="c-btn c-btn--danger remove-order" onClick={() => this.removeOrder(cart)}>
-                            <FormattedMessage id="cart.remove"/>
-                        </a>
+                        <Button.Group>
+                            <Button color='red' onClick={() => this.removeOrder(cart)} > <FormattedMessage id="cart.remove" /> </Button>
+                            <Button color='green' onClick={() => this.placeOrder(cart)} > <FormattedMessage id="cart.placeOrder" /> </Button>
+                        </Button.Group>
                     </div>
                 </div>
                 {showTable &&
                     <div className="row u-mb-large item-table">
-                        <div className="col-sm-12">
-                            <div className="c-table-responsive table-container">
-                                <p className="u-color-success">
-                                    {products.length} <FormattedMessage id="cart.item"/>
-                                </p>
-                                <table className="c-table">
-                                    <thead className="c-table__head c-table__head--slim">
-                                        <tr className="c-table__row">
-                                            <th className="c-table__cell c-table__cell--head">
-                                                <FormattedMessage id="cart.no"/>
-                                            </th>
-                                            <th className="c-table__cell c-table__cell--head">
-                                                <FormattedMessage id="cart.item"/>
-                                            </th>
-                                            <th className="c-table__cell c-table__cell--head">
-                                                <FormattedMessage id="cart.quantity"/>
-                                            </th>
-                                            <th className="c-table__cell c-table__cell--head">
-                                                <FormattedMessage id="cart.total"/>
-                                            </th>
-                                            <th className="c-table__cell c-table__cell--head">
-                                                <span className="u-hidden-visually">Actions</span>
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {products.map((p, i) =>
-                                            <tr className="c-table__row" key={i} id={p.product.uid}>
-                                                <td className="c-table__cell no">
-                                                    {i+1}
-                                                </td>
-                                                <td className="c-table__cell">
-                                                    {p.product.name}
-                                                </td>
-                                                <td className="c-table__cell quantity">
-                                                    <div className="c-btn-group">
-                                                        <a className="c-btn c-btn--secondary" onClick={() => this.qtyMinus(p.product.uid, p)}>-</a>
-                                                        <input className="c-input" type="text" placeholder="Qty"
-                                                            defaultValue={p.quantity}
-                                                            onBlur={(e) => this.updateQty(p, e.target.value)}/>
-                                                        <a className="c-btn c-btn--secondary" onClick={() => this.qtyPlus(p.product.uid, p)}>+</a>
-                                                    </div>
-                                                </td>
-                                                <td className="c-table__cell price">
-                                                    {this.germanFormat(p.product.price * p.quantity)} &euro;
-                                                </td>
-                                                <td className="c-table__cell action">
-                                                    <div className="c-btn-group">
-                                                        {/* <a className="c-btn c-btn--secondary">Add note</a> */}
-                                                        <a className="c-btn c-btn--secondary" onClick={() => this.removeProduct(cart, p)}>
-                                                            <FormattedMessage id="cart.remove"/>
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        )}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                        <CartProductsList
+                            products={ cart.products.map( product => product.product ) }
+                            quantities={ quantities }
+                            onIncrement={ this.qtyPlus }
+                            onDecrement={ this.qtyMinus }
+                            onInputChange={ this.onQuantityChange }
+                            cart={ cart }
+                            removeProduct={ this.removeProduct } />
                     </div>
                 }
                 {showTable &&

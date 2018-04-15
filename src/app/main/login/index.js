@@ -1,8 +1,10 @@
 import React, {Component} from 'react'
 import { FormattedMessage } from 'react-intl'
 import $ from 'jquery';
+import { Reveal } from 'semantic-ui-react';
 import { Redirect } from 'react-router-dom'
 import { SERVER_URL, AUTH_HEADER } from '../../config'
+import { setHeaders } from '../../helpers';
 
 import './style.css'
 
@@ -13,7 +15,11 @@ class Login extends Component {
         let tokenType = localStorage.getItem('tokenType');
 
         this.state = {
-            redirect: null
+            redirect: null,
+            loginError: {
+                email: '',
+                password: ''
+            }
         }
 
         if (tokenType === 'restaurant') {
@@ -23,8 +29,20 @@ class Login extends Component {
         }
 	}
 
-    login() {
-        let scope = this;
+    componentDidMount() {
+        document.addEventListener('keyup', this.onKeyPress);
+    }
+
+    onKeyPress = ({which}) => {
+        if( which === 13 )
+            this.login();
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('keyup', this.onKeyPress);
+    }
+
+    login = () => {
         $.ajax({
             method: 'POST',
             url: SERVER_URL + '/user/login',
@@ -33,26 +51,45 @@ class Login extends Component {
                 'email': $('#email').val(),
                 'password': $('#password').val()
             }
-        }).done(function(data) {
+        }).done( data => {
             localStorage.setItem('accessToken', data.accessToken);
             localStorage.setItem('tokenType', data.tokenType);
+            setHeaders(data.accessToken);
             if (data.tokenType === 'restaurant') {
-                scope.setState({
+                this.setState({
                     redirect: '/restaurant/home'
                 })
             } else {
-                scope.setState({
+                this.setState({
                     redirect: '/vendor/home'
                 })
             }
         })
-        .fail(function() {
-            console.log('error');
+        .fail( response => {
+            const {responseJSON: errors} = response;
+            console.log(errors);
+            //The fun part, parsing response
+            if( errors.message ) {
+                if( errors.message === 'User not found.' )
+                    this.setState({
+                        loginError: {
+                            password: '',
+                            email: <FormattedMessage id='signIn.incorrectEmail' />
+                        }
+                    });
+                else if( errors.message === 'Invalid user credentials.' )
+                    this.setState({
+                        loginError: {
+                            email: '',
+                            password: <FormattedMessage id='signIn.incorrectPassword' />
+                        }
+                    })
+            }
         });
     }
 
 	render() {
-        let {redirect} = this.state;
+        let {redirect, loginError} = this.state;
 		if (this.state.redirect) {
 			return <Redirect push to={redirect} />;
 		}
@@ -63,7 +100,7 @@ class Login extends Component {
                         <div className="c-login__content-wrapper">
                             <header className="c-login__header">
                                 <a className="c-login__icon c-login__icon--rounded c-login__icon--left">
-                                    <img src="img/logo-login.svg" alt="Dashboard's Logo" />
+                                    <img src="img/b54e8e12df014d82e34fce08ec5a6643_white.png" alt="Dashboard's Logo" />
                                 </a>
                                 <h2 className="c-login__title">
                                     <FormattedMessage id="signIn.signIn"/>
@@ -75,12 +112,18 @@ class Login extends Component {
                                         <FormattedMessage id="signIn.emailAddress"/>
                                     </label>
                                     <input className="c-input" type="email" id="email" autoComplete="off"/>
+                                        <Reveal active={ loginError.email !== '' }>
+                                            <p className='login-error'>{loginError.email}</p>
+                                        </Reveal>
                                 </div>
                                 <div className="c-field u-mb-small">
                                     <label className="c-field__label" htmlFor="password">
                                         <FormattedMessage id="signIn.password"/>
                                     </label>
                                     <input className="c-input" type="password" id="password" autoComplete="new-password" />
+                                    <Reveal active={ loginError.password !== '' }>
+                                        <p className='login-error'>{loginError.password}</p>
+                                    </Reveal>
                                 </div>
                                 <a className="c-btn c-btn--success c-btn--fullwidth" onClick={() => this.login()}>
                                     <FormattedMessage id="signIn.signIn"/>
@@ -92,7 +135,7 @@ class Login extends Component {
                             </form>
                         </div>
                         <div className="c-login__content-image">
-                            <img src="img/login2.jpg" alt="Welcome to Dashboard UI Kit" />
+                            <img src="img/a33832b8060343d146b53b5057ea6310.jpg" alt="Welcome to Dashboard" />
                             <h3><FormattedMessage id="signIn.welcomeToCheflist"/></h3>
                             <p className="u-text-large">
                                 <FormattedMessage id="signIn.welcomeText"/>

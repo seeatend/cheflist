@@ -9,10 +9,11 @@ export default {
             product: 'Product'
         },
         home: {
+            myLists: 'My lists',
             mySuppliers: 'My Suppliers',
-            orderList: 'Order List',
+            orderList: 'My orders',
             product: 'Product',
-            welcome: 'Welcome!'
+            welcome: 'Welcome {firstName}, manage your orders here'
         },
         product: {
             add: 'Add',
@@ -37,15 +38,23 @@ export default {
             view: 'View',
         },
         orderHistory: {
-            canceled: 'Canceled',
-            confirmed: 'Confirmed',
+            checkboxHint: 'Your order is delivered? Change it\'s status by checking this checkbox',
+            canceled: 'Done',
+            confirmed: 'On the way',
+            confirmWithErrors: 'Set order as delivered and send supplier your message',
+            confirmWithoutErrors: 'Everything is good, mark order as delivered',
             creationDate: 'Creation date',
             deliveryDate: 'Delivery date',
             details: 'Details',
+            modalContent: 'Order has been delivered to you? Does your order has any errors?',
+            modalError: 'Please, specify in field below, what errors you\'ve encountered? (e.g Missing product, etc.)',
+            modalHeader: 'Confirm arrival of order № {orderNumber}',
             more: 'More',
+            negativeWithErrors: 'Yes, it has errors',
+            negativeWithoutErrors: 'No, it has no errors',
             orderNumber: 'Order Number',
             orderTotal: 'Order total',
-            pending: 'Pending',
+            pending: 'Issued',
             status: 'Status',
             supplier: 'Supplier',
             totalOrders: 'Total orders'
@@ -58,7 +67,7 @@ export default {
             email: 'Email',
             orderDate: 'Order date',
             orderMessage: 'Order message',
-            orderNum: 'Order#',
+            orderNum: 'Order №',
             orderSummary: 'Order Summary',
             orderTotal: 'Order total',
             phone: 'Phone',
@@ -90,6 +99,9 @@ export default {
             empty: 'Cart is empty.',
             hideList: 'Hide list ({number} items)',
             item: 'Item',
+            modalMessage: 'Are you sure you want to send all orders?',
+            modalNo: 'No',
+            modalYes: 'Yes',
             no: 'No',
             orderMessage: 'Order message',
             orderBulkProgressAlert: 'Send all orders',
@@ -103,6 +115,8 @@ export default {
             total: 'Total'
         },
         signIn: {
+            incorrectEmail: 'User with this email address does not exist',
+            incorrectPassword: 'Entered password is not correct',
             createAccount: 'Create account',
             emailAddress: 'Email address',
             password: 'Password',
@@ -121,10 +135,11 @@ export default {
             product: 'Artikel bestellen'
         },
         home: {
+            myLists: 'Meine Listen',
             mySuppliers: 'Lieferanten',
-            orderList: 'Historie',
-            product: 'Produkte',
-            welcome: 'Willkommen!'
+            orderList: 'Bestellungen ansehen',
+            product: 'Artikel bestellen',
+            welcome: 'Hallo {firstName}, Bestellungen hier managen'
         },
         product: {
             add: 'Hinzu',
@@ -149,15 +164,16 @@ export default {
             view: 'Ansehen',
         },
         orderHistory: {
-            canceled: 'Abgelehnt',
-            confirmed: 'Bestätigt',
+            checkboxHint: 'Your order is delivered? Change it\'s status by checking this checkbox',
+            canceled: 'Erledigt',
+            confirmed: 'Unterwegs',
             creationDate: 'Aufgegeben am',
             deliveryDate: 'Lieferdatum',
             details: 'Details',
             more: 'Mehr',
             orderNumber: 'Bestell-Nr.',
             orderTotal: 'Summe',
-            pending: 'Ausstehend',
+            pending: 'Erteilt',
             status: 'Status',
             supplier: 'Lieferant',
             totalOrders: 'Bestellungen insgesamt'
@@ -202,6 +218,9 @@ export default {
             empty: 'Einkaufswagen ist leer.',
             hideList: 'Verberge Liste ({number} Artikel)',
             item: 'Artikel',
+            modalMessage: 'Are you sure you want to send all orders?',
+            modalNo: 'No',
+            modalYes: 'Yes',
             no: 'Nr.',
             orderMessage: 'Nachricht',
             orderBulkProgressAlert: 'Alle Bestellungen aufgeben',
@@ -215,6 +234,8 @@ export default {
             total: 'Summe'
         },
         signIn: {
+            incorrectEmail: 'Für diese Email-Adresse existiert kein Nutzer',
+            incorrectPassword: 'Falsches Passwort',
             createAccount: 'Benutzer erstellen',
             emailAddress: 'Email-Adresse',
             password: 'Passwort',

@@ -15,24 +15,16 @@
     }
     .order-table {
         table {
-            display: table;
-            .status {
-                width: 100px;
-            }
-            .order-number {
-                width: 80px;
-            }
-            .creation-date {
-                width: 160px;
-            }
-            .delivery-date {
-                width: 100px;
-            }
-            .order-total {
-                width: 100px;
-            }
-            .more {
-                width: 100px;
+            tbody {
+                tr {
+                    td {
+                        button {
+                            @media only screen and (max-width: 767px) {
+                                width: 100%;
+                            }
+                        }
+                    }
+                }
             }
         }
     }

@@ -18,7 +18,9 @@ class Home extends Component {
 			redirect: null,
 			products: 0,
 			orders: 0,
-			suppliers: 0
+			suppliers: 0,
+			firstName: '',
+			lastName: ''
         }
 
         if (tokenType !== 'restaurant') {
@@ -32,6 +34,18 @@ class Home extends Component {
 		this.props.sidebar_menu_update({
 			index: 'rest-home',
 			navTitle: 'menu.home'
+		});
+		$.ajax({
+            method: 'GET',
+            url: SERVER_URL + '/account/profile',
+            headers: {
+                'x-api-token': localStorage.getItem('accessToken')
+            }
+		}).done( data => {
+			this.setState({
+				firstName: data.account.firstName,
+				lastName: data.account.lastName
+			})
 		});
 		this.load();
 		window.Sidebar();
@@ -104,14 +118,14 @@ class Home extends Component {
 
 	render() {
 
-		let {redirect, products, orders, suppliers} = this.state;
+		let {redirect, products, orders, firstName} = this.state;
 		if (redirect) {
 			return <Redirect push to={redirect} />;
 		}
 
 		return (
 			<div id="home" className="container">
-				<h1 className="welcome"><FormattedMessage id="home.welcome"/></h1>
+				<h1 className="welcome"><FormattedMessage id="home.welcome" values={{firstName}}/></h1>
 				<div className="row">
 					<Link className="col-sm-12 col-lg-6 col-xl-4 box" to="/restaurant/product">
 						<div className="c-state-card" data-mh="state-cards">
@@ -127,7 +141,20 @@ class Home extends Component {
 							</div>
 						</div>
 					</Link>
+					<Link className="col-sm-12 col-lg-6 col-xl-4 box" to={{pathname: "/restaurant/product", state: {selectedTab: 'favorites'}}}>
+						<div className="c-state-card" data-mh="state-cards">
+							<div className="c-state-card__icon c-state-card__icon--warning">
+								<i className="fa fa-list"></i>
+							</div>
 
+							<div className="c-state-card__content">
+								<h5 className="c-state-card__number">
+									<FormattedMessage id="home.myLists"/>
+								</h5>
+
+							</div>
+						</div>
+					</Link>
 					<Link className="col-sm-12 col-lg-6 col-xl-4 box" to="/restaurant/order">
 						<div className="c-state-card" data-mh="state-cards">
 							<div className="c-state-card__icon c-state-card__icon--fancy">
@@ -139,21 +166,6 @@ class Home extends Component {
 									<FormattedMessage id="home.orderList"/>
 								</h5>
 								<p className="c-state-card__meta"><span className="u-text-success">{orders}</span></p>
-							</div>
-						</div>
-					</Link>
-
-					<Link className="col-sm-12 col-lg-6 col-xl-4 box" to="/restaurant/supplier">
-						<div className="c-state-card" data-mh="state-cards">
-							<div className="c-state-card__icon c-state-card__icon--warning">
-								<i className="fa fa-truck"></i>
-							</div>
-
-							<div className="c-state-card__content">
-								<h5 className="c-state-card__number">
-									<FormattedMessage id="home.mySuppliers"/>
-								</h5>
-								<p className="c-state-card__meta"><span className="u-text-success">{suppliers}</span></p>
 							</div>
 						</div>
 					</Link>

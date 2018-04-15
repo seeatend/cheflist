@@ -1,3 +1,55 @@
+$datepicker__selected-color: #3dcc4a;
+
+@mixin stretch-order-actions() {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    .vendor-button-container {
+        width: 45%;
+    }
+    .delivery-date {
+        width: 45%;
+        margin-left: 0px;
+        margin-right: 0px;
+        .react-datepicker-wrapper {
+            width: 100%;
+            .react-datepicker__input-container {
+                width: 100%;
+                .date-picker {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}
+
+@mixin collapse-order-actions() {
+    margin-bottom: 0px;
+    display: block;
+    .vendor-button-container {
+        width: inherit;
+    }
+    .delivery-date {
+        width: inherit;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+}
+
+@mixin mobile-order-actions() {
+    .vendor-card-left-actions {
+        display: block;
+        .vendor-button-container{
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        .delivery-date {
+            width: 100%;
+        }
+    }
+}
+
 .vendor {
     .vendor-name {
         display: inline-block;
@@ -15,6 +67,44 @@
         color: #ed1c24;
     }
     .actions {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        @media only screen and (max-width: 1359px) {
+            flex-direction: column;
+            .vendor-card-left-actions {
+                @include stretch-order-actions();
+            }
+            .ui.buttons {
+                width: 100%;
+            }
+        }
+        @media only screen and (max-width: 993px) {
+            flex-direction: row;
+            .vendor-card-left-actions {
+                @include collapse-order-actions();
+            }
+            .ui.buttons {
+                width: inherit;
+            }
+        }
+        @media only screen and (max-width: 749px) {
+            flex-direction: column;
+            .vendor-card-left-actions {
+                @include stretch-order-actions();
+            }
+            .ui.buttons {
+                width: 100%;
+            }
+        }
+        @media only screen and (max-width: 399px) {
+            @include mobile-order-actions();
+        }
+        .vendor-card-left-actions {
+            & > div {
+                display: inline-block;
+            }
+        }
         .toggle-items {
             margin-right: 10px;
             float: left;
@@ -24,7 +114,8 @@
             }
         }
         .delivery-date {
-            display: inline-block;
+            margin-left: 10px;
+            margin-right: 10px;
             @media screen and (max-width: 399px) {
                 width: 100%;
             }
@@ -35,56 +126,53 @@
                 font-size: 12px;
             }
         }
-        .order-action {
-            float: right;
-            @media screen and (max-width: 1199px) {
-                float: none;
-                text-align: right;
-                margin-top: 20px;
-            }
-            @media screen and (max-width: 991px) {
-                float: right;
-                text-align: none;
-                margin: 0;
-            }
-            @media screen and (max-width: 670px) {
-                float: none;
-                text-align: right;
-                margin-top: 20px;
-            }
-            .place-order {
-                margin-right: 5px;
-                @media screen and (max-width: 399px) {
-                    width: 100%;
-                    margin-bottom: 10px;
-                }
-            }
-            .remove-order {
-                @media screen and (max-width: 399px) {
-                    width: 100%;
+
+    }
+    .item-table {
+        .cart-products-table {
+            tbody {
+                tr {
+                    td {
+                        @media only screen and (max-width: 767px) {
+                            text-align: center;
+                        }
+                        &:first-child {
+                            @media only screen and (max-width: 767px) {
+                                display: none!important;
+                            }
+                        }
+                        button {
+                            @media only screen and (max-width: 767px) {
+                                width: 100%;
+                            }
+                        }
+                    }
                 }
             }
         }
-    }
-    .item-table {
         margin-top: 20px;
-        table {
-            display: table;
-            .no {
-                width: 50px;
+    }
+    .react-datepicker {
+        .react-datepicker__month-container {
+            .react-datepicker__header {
+                background-color: #fff;
             }
-            .quantity {
-                width: 100px;
-                input {
-                    min-width: 50px;
-                    text-align: center;
+            .react-datepicker__month {
+                .react-datepicker__week {
+                    .react-datepicker__day {
+                        &.react-datepicker__day--today {
+                            background-color: #fff;
+                            border: none;
+                            color: #216ba5;
+                            font-weight: bold;
+                        }
+                        &.react-datepicker__day--selected {
+                            /*border-radius: 100%;*/
+                            border-radius: 100%;
+                            background-color: #216ba5;
+                        }
+                    }
                 }
-            }
-            .price {
-                width: 100px;
-            }
-            .action {
-                width: 100px;
             }
         }
     }
